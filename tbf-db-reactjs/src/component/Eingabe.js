@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 
 export default class Export extends Component {
     constructor(props) {
@@ -26,8 +25,6 @@ export default class Export extends Component {
         });
         
     }
-
-
 
     render() {
         const { table, items } = this.state;
