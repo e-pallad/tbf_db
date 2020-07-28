@@ -24,7 +24,6 @@ export default class Navbar extends Component {
                     <Navitem item="Import" tolink="/import" activec={this.activeitem}></Navitem>
                     <Navitem item="Export" tolink="/export" activec={this.activeitem}></Navitem>
                     <Navitem item="Eingabe" tolink="/eingabe" activec={this.activeitem}></Navitem>
-                    <Navitem item="Contact" tolink="/contact" activec={this.activeitem}></Navitem>
                 </ul>
             </nav>
         )

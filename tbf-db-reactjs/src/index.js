@@ -2,12 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
 import { BrowserRouter as Router, Route, } from "react-router-dom";
-import Navbar from './components/Navbar';
+import Navbar from './component/Navbar';
 import Home from './contents/Home';
-import Import from './contents/Import';
-import Export from './contents/Export';
-import Eingabe from './contents/Eingabe';
-import Contact from './contents/Contact';
 
 function App() {
   return (
@@ -16,18 +12,6 @@ function App() {
               <Navbar />
               <Route exact path="/">
                 <Home />
-              </Route>
-              <Route path="/import">
-                <Import />
-              </Route>
-              <Route path="/export">
-                <Export />
-              </Route>
-              <Route path="/eingabe">
-                <Eingabe />
-              </Route>
-              <Route path="/contact">
-                <Contact />
               </Route>
           </div>
       </Router>

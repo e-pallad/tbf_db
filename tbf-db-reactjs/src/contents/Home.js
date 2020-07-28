@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import Import from '../component/Import';
+import Export from '../component/Export';
+import Eingabe from '../component/Eingabe';
+import Table from './Table';
 
 export default class Home extends Component {
     constructor(props) {
@@ -6,8 +10,18 @@ export default class Home extends Component {
         this.state = {
             error: null,
             isLoaded: false,
-            items: []
+            items: [],
+            redirect: false,
+            tableData: ''
         };
+
+    }
+
+    renderTable = (redirectChild, tableDataChild) => {
+        this.setState({
+            redirect: redirectChild,
+            tableData: tableDataChild
+        })
     }
 
     componentDidMount() {
@@ -31,90 +45,40 @@ export default class Home extends Component {
     }
 
     render() {
-        const { error, isLoaded, items } = this.state;
+        const { error, isLoaded, items, redirect } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            return (
-                <div className="condiv home">
-                    <div className="row row-cols-2">
-                        <div className="col-sm-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">Zum Datenimport</h5>
-                                    <p className="card-text">Für welche Tabelle soll der Datenimport gestartet werden?</p>
-                                    <form>
-                                        <div className="form-row align-items-center">
-                                            <div className="col-md-8 my-1">
-                                            <label className="mr-sm-2 sr-only">Preference</label>
-                                            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                                                {items.map((item, i) => (
-                                                    <option key={i} defaultValue="{item}">{item}</option>
-                                                ))}
-                                            </select>
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Go somewhere</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">Zum Datenexport</h5>
-                                    <p className="card-text">Welcher Export wird benötigt?</p>
-                                    <form>
-                                        <div className="form-row align-items-center">
-                                            <div className="col-md-8 my-1">
-                                            <label className="mr-sm-2 sr-only">Preference</label>
-                                            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                                                {items.map((item, i) => (
-                                                    <option key={i} defaultValue="{item}">{item}</option>
-                                                ))}
-                                            </select>
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Go somewhere</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">Zur Eingabe</h5>
-                                    <p className="card-text">In welcher Tabelle sollen Daten geändert werden?</p>
-                                    <form>
-                                        <div className="form-row align-items-center">
-                                            <div className="col-md-8 my-1">
-                                            <label className="mr-sm-2 sr-only">Preference</label>
-                                            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                                                {items.map((item, i) => (
-                                                    <option key={i} defaultValue="{item}">{item}</option>
-                                                ))}
-                                            </select>
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Go somewhere</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">Special title treatment</h5>
-                                    <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                    <a href="#" className="btn btn-primary">Go somewhere</a>
+            console.log(this.state.redirect)
+            console.log(this.state.tableData)
+            if (redirect) {
+                return (
+                    <Table />
+                )
+            } else {
+                return (
+                    <div className="condiv home">
+                        <div className="row row-cols-2">
+
+                            <Import items={items} />
+                            <Export items={items} />
+                            <Eingabe setRedirect={this.renderTable} items={items} />
+
+                            <div className="col-sm-6">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <h5 className="card-title">Special title treatment</h5>
+                                        <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        <a href="#" className="btn btn-primary">Go somewhere</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )
+                )
+            }
         }
     }
 }
