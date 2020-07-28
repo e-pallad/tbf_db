@@ -11,14 +11,15 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        fetch("https://api.example.com/items")
+        fetch("http://localhost/fetchTables.php")
         .then(res => res.json())
         .then(
             (result) => {
                 this.setState({
                     isLoaded: true,
-                    items: result.items
+                    items: result.tables
                 });
+                
             },
             (error) => {
                 this.setState({
@@ -41,21 +42,20 @@ export default class Home extends Component {
                     <div className="row row-cols-2">
                         <div className="col-sm-6">
                             <div className="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Zum Datenimport</h5>
-                                    <p class="card-text">Für welche Tabelle soll der Datenimport gestartet werden?</p>
+                                <div className="card-body">
+                                    <h5 className="card-title">Zum Datenimport</h5>
+                                    <p className="card-text">Für welche Tabelle soll der Datenimport gestartet werden?</p>
                                     <form>
-                                        <div class="form-row align-items-center">
-                                            <div class="col-md-8 my-1">
-                                            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>
-                                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                                                <option selected>Choose...</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                        <div className="form-row align-items-center">
+                                            <div className="col-md-8 my-1">
+                                            <label className="mr-sm-2 sr-only">Preference</label>
+                                            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                                {items.map((item, i) => (
+                                                    <option key={i} defaultValue="{item}">{item}</option>
+                                                ))}
                                             </select>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Go somewhere</button>
+                                            <button type="submit" className="btn btn-primary">Go somewhere</button>
                                         </div>
                                     </form>
                                 </div>
@@ -63,21 +63,20 @@ export default class Home extends Component {
                         </div>
                         <div className="col-sm-6">
                             <div className="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Zum Datenexport</h5>
-                                    <p class="card-text">Welcher Export wird benötigt?</p>
+                                <div className="card-body">
+                                    <h5 className="card-title">Zum Datenexport</h5>
+                                    <p className="card-text">Welcher Export wird benötigt?</p>
                                     <form>
-                                        <div class="form-row align-items-center">
-                                            <div class="col-md-8 my-1">
-                                            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>
-                                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                                                <option selected>Choose...</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                        <div className="form-row align-items-center">
+                                            <div className="col-md-8 my-1">
+                                            <label className="mr-sm-2 sr-only">Preference</label>
+                                            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                                {items.map((item, i) => (
+                                                    <option key={i} defaultValue="{item}">{item}</option>
+                                                ))}
                                             </select>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Go somewhere</button>
+                                            <button type="submit" className="btn btn-primary">Go somewhere</button>
                                         </div>
                                     </form>
                                 </div>
@@ -85,21 +84,20 @@ export default class Home extends Component {
                         </div>
                         <div className="col-sm-6">
                             <div className="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Zur Eingabe</h5>
-                                    <p class="card-text">In welcher Tabelle sollen Daten geändert werden?</p>
+                                <div className="card-body">
+                                    <h5 className="card-title">Zur Eingabe</h5>
+                                    <p className="card-text">In welcher Tabelle sollen Daten geändert werden?</p>
                                     <form>
-                                        <div class="form-row align-items-center">
-                                            <div class="col-md-8 my-1">
-                                            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>
-                                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                                                <option selected>Choose...</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                        <div className="form-row align-items-center">
+                                            <div className="col-md-8 my-1">
+                                            <label className="mr-sm-2 sr-only">Preference</label>
+                                            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                                {items.map((item, i) => (
+                                                    <option key={i} defaultValue="{item}">{item}</option>
+                                                ))}
                                             </select>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Go somewhere</button>
+                                            <button type="submit" className="btn btn-primary">Go somewhere</button>
                                         </div>
                                     </form>
                                 </div>
@@ -107,10 +105,10 @@ export default class Home extends Component {
                         </div>
                         <div className="col-sm-6">
                             <div className="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Special title treatment</h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <div className="card-body">
+                                    <h5 className="card-title">Special title treatment</h5>
+                                    <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <a href="#" className="btn btn-primary">Go somewhere</a>
                                 </div>
                             </div>
                         </div>
