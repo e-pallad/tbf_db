@@ -13,7 +13,7 @@ export default class Fields extends Component {
         return (
             <tr key={rowData[0]}>
                 {rowData.map((item, i) =>(
-                    <td key={i} contentEditable='true' onInput={e => console.log('Text inside td', e.currentTarget.textContent)}>{item}</td>
+                    <td key={rowData[0]+"-"+i} contentEditable='true' onInput={e => console.log('Text inside td', e.currentTarget.textContent)}>{item}</td>
                 ))}
             </tr>
         )
