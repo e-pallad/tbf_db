@@ -45,17 +45,15 @@ export default class Home extends Component {
     }
 
     render() {
-        const { error, isLoaded, items, redirect } = this.state;
+        const { error, isLoaded, items, redirect, tableData } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            console.log(this.state.redirect)
-            console.log(this.state.tableData)
             if (redirect) {
                 return (
-                    <Table />
+                    <Table data={tableData}/>
                 )
             } else {
                 return (

@@ -5,7 +5,7 @@ export default class Export extends Component {
         super(props);
         this.state = {
             items: this.props.items,
-            table: ''
+            table: 'RI-TBF_SEF_Apparateliste'
         };
 
         this.handleChange = this.handleChange.bind(this);

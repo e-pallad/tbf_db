@@ -5,7 +5,7 @@ export default class Navbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            'NavItemActive':''
+            NavItemActive: ''
         }
     }
     activeitem = (x) => {
