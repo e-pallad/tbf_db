@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Export extends Component {
+export default class ExportCard extends Component {
     constructor(props) {
         super(props);
         this.state = {

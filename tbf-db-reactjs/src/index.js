@@ -1,22 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './App.css';
-import { BrowserRouter as Router, Route, } from "react-router-dom";
-import Home from './contents/Home';
+import './index.css';
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
-function App() {
-  return (
-      <Router>
-          <div className="App">
-              <Route exact path="/">
-                <Home />
-              </Route>
-          </div>
-      </Router>
-  )
-}
+import App from './App';
+import Eingabe from './contents/Eingabe';
+import Import from './contents/Import';
+import ExportCard from './component/ExportCard';
+
+const routing = (
+  <Router>
+    <Route exact path="/" component={App} />
+    <Route path="/import" component={Import} />
+    <Route path="/export" component={ExportCard} />
+    <Route path="/eingabe" component={Eingabe} />
+  </Router>
+)
 
 ReactDOM.render(
-  <App />,
+  routing,
   document.getElementById('root')
 )

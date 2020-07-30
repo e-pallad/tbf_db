@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import Fields from '../component/Fields'
+import Fields from './Fields'
 
 export default class Table extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            tableData: this.props.data,
+            tableData: this.props.tableData,
             search: null
         };
     }
@@ -18,7 +18,6 @@ export default class Table extends Component {
 
     render() {
         const { tableData, search } = this.state
-        
         return(
             <div className="">
                 <form className="form-inline my-2 my-lg-0 justify-content-start">
@@ -38,16 +37,12 @@ export default class Table extends Component {
                                 return(
                                     <Fields rowData={row}/>
                                 );
-                            } else (
+                            } else if (
                                 row[0].toLowerCase().includes(search.toLowerCase()) || 
                                 row[6].toLowerCase().includes(search.toLowerCase())
-                            )
+                            )   
                                 return(
-                                    <tr key={row[0]}>
-                                        {row.map((item, i) =>(
-                                            <td key={i}>{item}</td>
-                                        ))}
-                                    </tr>
+                                    <Fields rowData={row}/>
                                 );
                         })}
                     </tbody>
