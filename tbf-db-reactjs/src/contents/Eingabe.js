@@ -17,7 +17,7 @@ export default class Eingabe extends Component {
             (result) => {
                 this.setState({
                     isLoaded: true,
-                    tableData: result.content
+                    tableData: result
                 });
             },
             (error) => {

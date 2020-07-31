@@ -3,30 +3,17 @@
 
     $method = $_SERVER['REQUEST_METHOD'];
     $table = $_GET['table'];
-    //$table = "RI-TBF_SEF_Apparateliste";
     $headerQuery = "DESCRIBE `$table`";
     $query = "SELECT * FROM `$table`";
-    $listTableContent = array();
-
-    $header = array_column(mysqli_fetch_all($con->query($headerQuery)),0);
-    array_push($listTableContent, $header);
-    
-    $data = mysqli_fetch_all($con->query($query));
-    
-    foreach ($data as $rowKey => $rowArray) {
-        foreach ($rowArray as $cellKey => $cellContent) {
-            $newKey = $header[$cellKey];
-            $newRow[$newKey] = $cellContent;
-        }
-        array_push($listTableContent, $newRow);
-        unset($newRow);
-    }
+    $listTableContent = array('content' => array());
 
     switch ($method) {
         case 'GET':
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
-            
+            array_push($listTableContent['content'], array_column(mysqli_fetch_all($con->query($headerQuery)),0));
+            array_push($listTableContent['content'], mysqli_fetch_all($con->query($query)),0);
+            //$listTableContent = array('content' => mysqli_fetch_all($con->query($query)),0);
             echo json_encode($listTableContent);
             break;
         case 'POST':
@@ -39,5 +26,7 @@
             $sql = "insert into contacts (name, email, city, country, job) values ('$name', '$email', '$city', '$country', '$job')"; 
             break;
     }
+
+
 
 ?>
