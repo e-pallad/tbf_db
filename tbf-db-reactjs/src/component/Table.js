@@ -1,5 +1,28 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTable, usePagination, useGlobalFilter, useFilters } from 'react-table'
+
+const EditableCell = ({
+    value: initialValue,
+    row: { index },
+    column: { id },
+    updateMyData, 
+}) => {
+    const [value, setValue] = useState(initialValue)
+  
+    const onChange = e => {
+        setValue(e.target.value)
+    }
+  
+    const onBlur = () => {
+        updateMyData(index, id, value)
+    }
+  
+    React.useEffect(() => {
+        setValue(initialValue)
+    }, [initialValue])
+  
+    return <input value={value} onChange={onChange} onBlur={onBlur} />
+}
 
 function GlobalFilter({
     preGlobalFilteredRows,
@@ -40,7 +63,7 @@ function DefaultColumnFilter({
     );
 }
 
-function TableRender({ columns, data }) {
+function TableRender({ columns, data, updateMyData, skipPageReset }) {
     const filterTypes = React.useMemo(
         () => ({
             text: (rows, id, filterValue) => {
@@ -57,12 +80,10 @@ function TableRender({ columns, data }) {
         []
     );
 
-    const defaultColumn = React.useMemo(
-        () => ({
-          Filter: DefaultColumnFilter
-        }),
-        []
-    );
+    const defaultColumn = {
+          Filter: DefaultColumnFilter,
+          Cell: EditableCell,
+    };
 
     const {
         getTableProps,
@@ -87,7 +108,9 @@ function TableRender({ columns, data }) {
             data,
             initialState: { pageindex: 2 },
             defaultColumn,
-            filterTypes
+            filterTypes,
+            autoResetPage: !skipPageReset,
+            updateMyData,
         },
         useFilters,
         useGlobalFilter,
@@ -97,101 +120,101 @@ function TableRender({ columns, data }) {
 
     return (
         <React.Fragment>
-        <GlobalFilter
-            preGlobalFilteredRows={preGlobalFilteredRows}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-        />
-        <table {...getTableProps()} className="table table-striped">
-            <thead>
-            {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                    <th
-                    {...column.getHeaderProps()}
-                    style={{ verticalAlign: "middle" }}
-                    scope="col"
-                    >
-                        {column.render("Header")}
-                        <div>{column.canFilter ? column.render("Filter") : null}</div>
-                    </th>
+            <GlobalFilter
+                preGlobalFilteredRows={preGlobalFilteredRows}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+            />
+            <table {...getTableProps()} className="table table-striped">
+                <thead>
+                {headerGroups.map(headerGroup => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map(column => (
+                        <th
+                        {...column.getHeaderProps()}
+                        style={{ verticalAlign: "middle" }}
+                        scope="col"
+                        >
+                            {column.render("Header")}
+                            <div>{column.canFilter ? column.render("Filter") : null}</div>
+                        </th>
+                    ))}
+                    </tr>
                 ))}
-                </tr>
-            ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-            {page.map((row, i) => {
-                prepareRow(row);
-                return (
-                <tr {...row.getRowProps()}>
-                    {row.cells.map(cell => {
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                {page.map((row, i) => {
+                    prepareRow(row);
                     return (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <tr {...row.getRowProps()}>
+                        {row.cells.map(cell => {
+                        return (
+                            <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                        );
+                        })}
+                    </tr>
                     );
-                    })}
-                </tr>
-                );
-            })}
-            </tbody>
-        </table>
-        <div className="justify-content-center mb-3">
-            <select
-                style={{
-                    padding: "7px",
-                    borderRadius: "3px",
-                    border: "1px solid #007bff"
-                }}
-                value={pageSize}
-                onChange={e => {
-                    setPageSize(Number(e.target.value));
-                }}
-            >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                    <option key={pageSize} value={pageSize}>
-                    Zeige {pageSize}
-                    </option>
-                ))}
-            </select>{" "}
-            <button
-                className="btn btn-outline-primary"
-                style={{ marginTop: "-4px" }}
-                onClick={() => gotoPage(0)}
-                disabled={!canPreviousPage}
-            >
-            {"<<"}
-            </button>{" "}
-            <button
-                className="btn btn-outline-primary"
-                style={{ marginTop: "-4px" }}
-                onClick={() => previousPage()}
-                disabled={!canPreviousPage}
-            >
-            {"<"}
-            </button>{" "}
-            <span>
-                Seite{" "}
-                <strong>
-                    {pageIndex + 1} von {pageOptions.length}
-                </strong>{" "}
-            </span>
-            <button
-                className="btn btn-outline-primary"
-                style={{ marginTop: "-4px" }}
-                onClick={() => nextPage()}
-                disabled={!canNextPage}
-            >
-            {">"}
-            </button>{" "}
-            <button
-                className="btn btn-outline-primary"
-                style={{ marginTop: "-4px" }}
-                onClick={() => gotoPage(pageCount - 1)}
-                disabled={!canNextPage}
-            >
-            {">>"}
-            </button>
-        </div>
-    </React.Fragment>
+                })}
+                </tbody>
+            </table>
+            <div className="justify-content-center mb-3">
+                <select
+                    style={{
+                        padding: "7px",
+                        borderRadius: "3px",
+                        border: "1px solid #007bff"
+                    }}
+                    value={pageSize}
+                    onChange={e => {
+                        setPageSize(Number(e.target.value));
+                    }}
+                >
+                    {[10, 20, 30, 40, 50].map(pageSize => (
+                        <option key={pageSize} value={pageSize}>
+                        Zeige {pageSize}
+                        </option>
+                    ))}
+                </select>{" "}
+                <button
+                    className="btn btn-outline-primary"
+                    style={{ marginTop: "-4px" }}
+                    onClick={() => gotoPage(0)}
+                    disabled={!canPreviousPage}
+                >
+                {"<<"}
+                </button>{" "}
+                <button
+                    className="btn btn-outline-primary"
+                    style={{ marginTop: "-4px" }}
+                    onClick={() => previousPage()}
+                    disabled={!canPreviousPage}
+                >
+                {"<"}
+                </button>{" "}
+                <span>
+                    Seite{" "}
+                    <strong>
+                        {pageIndex + 1} von {pageOptions.length}
+                    </strong>{" "}
+                </span>
+                <button
+                    className="btn btn-outline-primary"
+                    style={{ marginTop: "-4px" }}
+                    onClick={() => nextPage()}
+                    disabled={!canNextPage}
+                >
+                {">"}
+                </button>{" "}
+                <button
+                    className="btn btn-outline-primary"
+                    style={{ marginTop: "-4px" }}
+                    onClick={() => gotoPage(pageCount - 1)}
+                    disabled={!canNextPage}
+                >
+                {">>"}
+                </button>
+            </div>
+        </React.Fragment>
     )
 }
 
@@ -207,11 +230,37 @@ export default function Table(props) {
         )
     })) 
     
-    const data = useMemo(() => tableData.slice(1))
+    const [data, setData] = useState(() => tableData.slice(1))
+    const [originalData] = useState(data)
+    const [skipPageReset, setSkipPageReset] = useState(false)
+
+    const updateMyData = (rowIndex, columnId, value) => {
+        setSkipPageReset(true)
+        setData(old =>
+            old.map((row, index) => {
+                if (index === rowIndex) {
+                    return {
+                        ...old[rowIndex],
+                        [columnId]: value,
+                    }
+                }
+                return row
+            })
+        )
+    }
+
+    React.useEffect(() => {
+        setSkipPageReset(false)
+    }, [data])
     
     return(
         <React.Fragment>
-            <TableRender columns={columns} data={data} />
+            <TableRender 
+                columns={columns}
+                data={data}
+                updateMyData={updateMyData}
+                skipPageReset={skipPageReset} 
+            />
         </React.Fragment>
     )
 }
