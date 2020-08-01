@@ -17,7 +17,7 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost/fetchTables.php")
+        fetch("https://tbf-db-backend.ep-webdesign.de/fetchTables.php")
         .then(res => res.json())
         .then(
             (result) => {
