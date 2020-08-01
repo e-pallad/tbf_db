@@ -53,9 +53,9 @@ export default class App extends Component {
                 <div className="col-sm-6">
                   <div className="card">
                     <div className="card-body">
-                      <h5 className="card-title">Special title treatment</h5>
-                      <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                      <a href="#" className="btn btn-primary">Go somewhere</a>
+                      <h5 className="card-title">Platzhalter</h5>
+                      <p className="card-text">Platzhalter Text</p>
+                      <a href="https://www.reactjs.org" className="btn btn-primary">Hier könnte ihr Button stehen</a>
                     </div>
                   </div>
                 </div>

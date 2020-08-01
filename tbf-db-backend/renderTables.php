@@ -26,18 +26,10 @@
         case 'GET':
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
-            
             echo json_encode($listTableContent);
             break;
-        case 'POST':
-            $name = $_POST["name"];
-            $email = $_POST["email"];
-            $country = $_POST["country"];
-            $city = $_POST["city"];
-            $job = $_POST["job"];
-        
-            $sql = "insert into contacts (name, email, city, country, job) values ('$name', '$email', '$city', '$country', '$job')"; 
-            break;
+        default:
+            echo http_response_code(403);
     }
 
 ?>
