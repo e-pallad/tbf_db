@@ -36,7 +36,7 @@ export default class Import extends Component {
     }
 
     onFormSubmit(e){
-        e.preventDefault() // Stop form submit
+        e.preventDefault()
         this.fileUpload(this.state.file).then((response)=>{
             console.log(response.data);
         })
@@ -44,10 +44,11 @@ export default class Import extends Component {
 
     onChange(e) {
         this.setState({file:e.target.files[0]})
+        console.log({file:e.target.files[0].name})
     }
 
     fileUpload(file) {
-        const url = 'http://example.com/file-upload';
+        const url = 'http://localhost/importTable.php';
         const formData = new FormData();
 
         formData.append('file',file)
@@ -62,29 +63,24 @@ export default class Import extends Component {
     }
      
     render() { 
-        const { tables } = this.state;
+        const { tables, file } = this.state;
         return (
             <section>
                 <div className="row mx-1 my-4 pt-2 pb-3">
                     {tables.map((table) => (
-
                         <div className="col-md-6 mb-3">
                             <div className="card py-4 px-5">
                                 <h5 className="card-title">Import für: {table}</h5>
                                 <form className="md-form" onSubmit={this.onFormSubmit}>
-                                    <div className="file-field">
                                         <div className="btn btn-sm float-left">
-                                            <span>Choose file<i className="fas fa-cloud-upload-alt ml-3" aria-hidden="true"></i></span>
-                                            <input type="file" onChange={this.onChange} />
+                                            <label className="btn btn-primary">
+                                                Datei auswählen<input type="file" onChange={this.onChange} hidden/>
+                                            </label>
                                         </div>
-                                        <div className="file-path-wrapper">
-                                            <input className="file-path validate text-white" type="text" placeholder="Upload your file" />
-                                        </div>
-                                    </div>
+                                        <button type="submit" className="btn btn-primary">Hochladen</button>
                                 </form>
                             </div>
                         </div>
-
                     ))}
                 </div>
             </section> 
