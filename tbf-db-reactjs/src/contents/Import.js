@@ -68,16 +68,22 @@ export default class Import extends Component {
             <section>
                 <div className="row mx-1 my-4 pt-2 pb-3">
                     {tables.map((table) => (
-                        <div className="col-md-6 mb-3">
+                        <div className="col-md-3 mb-3">
                             <div className="card py-4 px-5">
                                 <h5 className="card-title">Import für: {table}</h5>
                                 <form className="md-form" onSubmit={this.onFormSubmit}>
-                                        <div className="btn btn-sm float-left">
-                                            <label className="btn btn-primary">
-                                                Datei auswählen<input type="file" onChange={this.onChange} hidden/>
-                                            </label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div className="btn btn-sm float-left">
+                                                <label className="btn btn-primary">
+                                                    Datei auswählen<input type="file" onChange={this.onChange} hidden/>
+                                                </label>
+                                            </div>
                                         </div>
-                                        <button type="submit" className="btn btn-primary">Hochladen</button>
+                                        <div class="col">
+                                            <button type="submit" className="btn btn-primary">Hochladen</button>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
