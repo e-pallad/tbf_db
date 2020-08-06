@@ -8,5 +8,7 @@
 
     if (!$con) {
         die("Connection failed: " . mysqli_connect_error() . PHP_EOL);
+    } else {
+        $con->set_charset("utf8");
     }
 ?>
