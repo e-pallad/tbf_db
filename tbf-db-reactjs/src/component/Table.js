@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { useTable, usePagination, useGlobalFilter, useFilters } from 'react-table'
 
 const EditableCell = ({
@@ -17,7 +17,7 @@ const EditableCell = ({
         updateMyData(index, id, value)
     }
   
-    React.useEffect(() => {
+    useEffect(() => {
         setValue(initialValue)
     }, [initialValue])
   
@@ -64,7 +64,7 @@ function DefaultColumnFilter({
 }
 
 function TableRender({ columns, data, updateMyData, skipPageReset }) {
-    const filterTypes = React.useMemo(
+    const filterTypes = useMemo(
         () => ({
             text: (rows, id, filterValue) => {
                 return rows.filter(row => {
@@ -221,14 +221,14 @@ function TableRender({ columns, data, updateMyData, skipPageReset }) {
 
 export default function Table(props) {
     const tableData = props.tableData
-    const columns = useMemo(() => tableData[0].map(( item ) => {
+    const columns = () => tableData[0].map(( item ) => {
         return(
             {
                 Header: item,
                 accessor: item
             }
         )
-    })) 
+    })
     
     const [data, setData] = useState(() => tableData.slice(1))
     const [originalData] = useState(data)
@@ -249,7 +249,7 @@ export default function Table(props) {
         )
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         setSkipPageReset(false)
     }, [data])
     
