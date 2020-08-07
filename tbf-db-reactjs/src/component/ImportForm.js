@@ -13,7 +13,8 @@ export default class ImportForm extends Component {
 
     submit(e, table) {    
         e.preventDefault();    
-        const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';    
+        const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';
+        //const url = 'http://localhost/importTable.php';    
         
         const formData = new FormData();  
         formData.append('table', table)  
@@ -26,10 +27,19 @@ export default class ImportForm extends Component {
         fetch(url, config)
         .then( this.setState({ responseReady: 'loading' }) )
         .then( result => result.json() )
-        .then(result => {
-            this.setState({ responseReady: true })
-            this.setState({ data: result })
-        })
+        .then(
+            (result) => {
+                this.setState({ 
+                    responseReady: true,
+                    data: result
+                })
+            },
+            (error) => {
+                this.setState({ 
+                    data: error 
+                })
+            } 
+        )
     }
 
     setFile(e) {    

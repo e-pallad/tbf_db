@@ -3,14 +3,14 @@
 
     /* 
     
-        https://askubuntu.com/a/767534 
+        https://askubuntu.com/a/767534 */
     
         error_reporting(-1);
         ini_set("display_errors", "1");
         ini_set("log_errors", 1);
         ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
 
-    */
+    
 
     ini_set('mysql.allow_local_infile', 1);
 
@@ -21,7 +21,7 @@
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
     $fileName = basename($_FILES["file"]["name"]);
     $targetFilePath = $targetDir . $fileName;
-    $testfile = "./uploads/" . $fileName;
+    $sourceFile = "./uploads/" . $fileName;
 
     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
@@ -37,22 +37,23 @@
                     $fieldData = mysqli_fetch_fields($fields);
                     $fieldNames = "";
                     foreach($fieldData as $var) {
-                        $fieldNames .= $var->name . ",";
+                        $fieldNames .= "`".$var->name."`,";
                     }
                     $fieldNames = substr($fieldNames, 0, -1);
-                    $query = "LOAD DATA LOCAL INFILE '$testfile' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
+                    $query = "LOAD DATA INFILE '$sourceFile' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
                     $insert = $con->query($query);
                     if($insert) {
                         $statusMsg = "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
                     } else {
                         $statusMsg = "Fehlgeschlagen: " . $con->error . PHP_EOL;
+                        $statusMsg .= $query . PHP_EOL;
                     }
                 } else {
                     $statusMsg = $con->error . PHP_EOL;
-                    $statusMsg .= "Couldn't find fields";
+                    $statusMsg .= "Leider konnten keine Tabellenfelder eingelesen werden";
                 }
             } else {
-                $statusMsg = "Sorry, there was an error uploading your file.";
+                $statusMsg = "Leider konnte die Datai nicht hochgeladen werden";
             }
             echo json_encode($statusMsg);
             break;
