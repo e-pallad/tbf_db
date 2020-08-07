@@ -13,7 +13,7 @@ export default class ImportForm extends Component {
 
     submit(e, table) {    
         e.preventDefault();    
-        const url = 'http://localhost/importTable.php';    
+        const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';    
         
         const formData = new FormData();  
         formData.append('table', table)  
