@@ -221,14 +221,14 @@ function TableRender({ columns, data, updateMyData, skipPageReset }) {
 
 export default function Table(props) {
     const tableData = props.tableData
-    const columns = () => tableData[0].map(( item ) => {
+    const columns = useMemo(() => tableData[0].map(( item ) => {
         return(
             {
                 Header: item,
                 accessor: item
             }
         )
-    })
+    }))
     
     const [data, setData] = useState(() => tableData.slice(1))
     const [originalData] = useState(data)

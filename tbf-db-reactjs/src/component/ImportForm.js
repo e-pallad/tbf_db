@@ -40,7 +40,6 @@ export default class ImportForm extends Component {
 
     render() {
         const { table, responseReady, data, file } = this.state;
-        console.log(data)
         return (
             <div>
                 <form className="md-form" onSubmit={e => this.submit(e, table)}>
