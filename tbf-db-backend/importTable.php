@@ -31,7 +31,7 @@
         case 'POST':
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
-            if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)){
+            if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
                 $fields = $con->query($fieldquery);
                 if($fields) {
                     $fieldData = mysqli_fetch_fields($fields);
@@ -40,7 +40,7 @@
                         $fieldNames .= "`".$var->name."`,";
                     }
                     $fieldNames = substr($fieldNames, 0, -1);
-                    $query = "LOAD DATA INFILE '$sourceFile' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
+                    $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
                     $insert = $con->query($query);
                     if($insert) {
                         $statusMsg = "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
