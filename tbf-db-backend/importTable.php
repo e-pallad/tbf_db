@@ -3,7 +3,7 @@
 
     /* 
     
-        https://askubuntu.com/a/767534
+        https://askubuntu.com/a/767534 
     
         error_reporting(-1);
         ini_set("display_errors", "1");
@@ -15,7 +15,7 @@
     ini_set('mysql.allow_local_infile', 1);
 
     $method = $_SERVER['REQUEST_METHOD'];
-    $table = $con->real_escape_string($_POST['table']);
+    $table = $_POST['table'];
     $statusMsg = "";
     
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
@@ -25,7 +25,7 @@
 
     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
-    $fieldquery = "SELECT * FROM $table LIMIT 0,2";
+    $fieldquery = "SELECT * FROM `$table` LIMIT 0,2";
 
     switch ($method) {
         case 'POST':
@@ -40,21 +40,21 @@
                         $fieldNames .= $var->name . ",";
                     }
                     $fieldNames = substr($fieldNames, 0, -1);
-                    $query = "LOAD DATA LOCAL INFILE '$testfile' INTO TABLE $table FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
+                    $query = "LOAD DATA LOCAL INFILE '$testfile' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
                     $insert = $con->query($query);
-                    if($insert){
-                        $statusMsg .= "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
+                    if($insert) {
+                        $statusMsg = "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
                     } else {
                         $statusMsg = "Fehlgeschlagen: " . $con->error . PHP_EOL;
                     }
                 } else {
-                    $statusMsg = "Couldn't find fields";
+                    $statusMsg = $con->error . PHP_EOL;
+                    $statusMsg .= "Couldn't find fields";
                 }
             } else {
-                $statusMsg = $targetFilePath . PHP_EOL;
-                $statusMsg .= "Sorry, there was an error uploading your file.";
+                $statusMsg = "Sorry, there was an error uploading your file.";
             }
-            echo $statusMsg;
+            echo json_encode($statusMsg);
             break;
         default:
             echo http_response_code(403);

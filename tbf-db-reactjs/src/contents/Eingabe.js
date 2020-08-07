@@ -36,7 +36,7 @@ export default class Eingabe extends Component {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else 
-        return(
+        return (
             <Table tableData={tableData}/>
         )
     }

@@ -23,13 +23,11 @@ export default class ImportCard extends Component {
                     <div className="card-body">
                         <h5 className="card-title">Zum Datenimport</h5>
                         <p className="card-text">Für welche Tabelle soll der Datenimport gestartet werden?</p>
-
-                            <div className="form-row align-items-center">
-                                <div className="col-md-8 my-1">
-                                    <Link to={{ pathname: "/import", state: {tables: items} }} className="btn btn-primary">zum Import</Link>
-                                </div>
+                        <div className="form-row align-items-center">
+                            <div className="col-md-8 my-1">
+                                <Link to={{ pathname: "/import", state: {tables: items} }} className="btn btn-primary">zum Import</Link>
                             </div>
-                            
+                        </div>
                     </div>
                 </div>
             </div>
