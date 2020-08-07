@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Modal from '../component/Modal';
 
 export default class ImportForm extends Component {
     constructor(props) {
@@ -23,11 +22,12 @@ export default class ImportForm extends Component {
             method: 'POST',
             body: formData
         };
+
         fetch(url, config)
         .then( this.setState({ responseReady: 'loading' }) )
+        .then( result => result.json() )
         .then(result => {
             this.setState({ responseReady: true })
-            console.log(result)
             this.setState({ data: result })
         })
     }
@@ -35,17 +35,14 @@ export default class ImportForm extends Component {
     setFile(e) {    
         this.setState({ file: e.target.files[0] }); 
         this.setState({ data: null });
-        console.log(this.state.file)
         e.target.value = ''
     }
 
     render() {
         const { table, responseReady, data, file } = this.state;
-
-        console.log(table)
+        console.log(data)
         return (
             <div>
-                {responseReady && <Modal data={data} table={table} />}
                 <form className="md-form" onSubmit={e => this.submit(e, table)}>
                     <div className="row">
                         <div className="col">
@@ -60,6 +57,11 @@ export default class ImportForm extends Component {
                                 Hochladen
                             </button>
                             }
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            {data ? <span>{data}</span> : null}
                         </div>
                     </div>
                 </form>
