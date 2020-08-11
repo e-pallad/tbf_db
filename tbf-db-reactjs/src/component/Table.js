@@ -24,6 +24,32 @@ const EditableCell = ({
     return <input value={value} onChange={onChange} onBlur={onBlur} />
 }
 
+async function pushDataToDb(pushData, table) {
+
+    const url = 'https://tbf-db-backend.ep-webdesign.de/updateTable.php';
+    //const url = 'http://localhost/updateTable.php';
+
+    const formData = new FormData();  
+    formData.append('table', table); 
+    formData.append('data', JSON.stringify(pushData));  
+
+    const config = { 
+        method: 'POST',
+        body: formData
+    };
+    try {
+        const result = await fetch(url, config)
+        if (!result.ok) {
+            throw Error(result.statusText);
+        } else {
+            console.log(result)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
 function GlobalFilter({
     preGlobalFilteredRows,
     globalFilter,
@@ -56,7 +82,7 @@ function DefaultColumnFilter({
             value={filterValue || ""}
             className="form-control"
             onChange={e => {
-            setFilter(e.target.value || undefined); 
+                setFilter(e.target.value || undefined); 
             }}
             placeholder={`Durchsuche ${count} Einträge...`}
         />
@@ -239,6 +265,14 @@ export default function Table(props) {
         setData(old =>
             old.map((row, index) => {
                 if (index === rowIndex) {
+
+                    const pushData = row
+                    const table = props.table
+                    pushData[columnId] = value
+                    console.log(pushData)
+                    
+                    pushDataToDb(pushData, table)
+
                     return {
                         ...old[rowIndex],
                         [columnId]: value,

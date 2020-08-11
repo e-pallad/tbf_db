@@ -30,14 +30,14 @@ export default class Eingabe extends Component {
     }
 
     render() {
-        const { tableData, isLoaded, error } = this.state
+        const { tableData, isLoaded, error, table } = this.state
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else 
         return (
-            <Table tableData={tableData}/>
+            <Table tableData={tableData} table={table} />
         )
     }
 }
