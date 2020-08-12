@@ -140,8 +140,7 @@ function TableRender({ columns, data, updateMyData, skipPageReset }) {
         },
         useFilters,
         useGlobalFilter,
-        usePagination,
-        
+        usePagination,  
     );
 
     return (
@@ -174,9 +173,9 @@ function TableRender({ columns, data, updateMyData, skipPageReset }) {
                     return (
                     <tr {...row.getRowProps()}>
                         {row.cells.map(cell => {
-                        return (
-                            <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                        );
+                            return (
+                                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                            );
                         })}
                     </tr>
                     );
@@ -247,17 +246,19 @@ function TableRender({ columns, data, updateMyData, skipPageReset }) {
 
 export default function Table(props) {
     const tableData = props.tableData
+    console.log(tableData)
     const columns = useMemo(() => tableData[0].map(( item ) => {
         return(
             {
                 Header: item,
-                accessor: item
+                accessor: item.replace(/[^a-zA-Z0-9 ]/g, "")
             }
         )
     }))
+
+    console.log(columns)
     
     const [data, setData] = useState(() => tableData.slice(1))
-    const [originalData] = useState(data)
     const [skipPageReset, setSkipPageReset] = useState(false)
 
     const updateMyData = (rowIndex, columnId, value) => {
