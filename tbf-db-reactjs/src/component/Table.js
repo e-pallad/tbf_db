@@ -42,7 +42,7 @@ async function pushDataToDb(pushData, table) {
         if (!result.ok) {
             throw Error(result.statusText);
         } else {
-            console.log(result)
+            //console.log(result)
         }
     } catch (error) {
         console.log(error)
@@ -269,7 +269,6 @@ export default function Table(props) {
                     const pushData = row
                     const table = props.table
                     pushData[columnId] = value
-                    console.log(pushData)
                     
                     pushDataToDb(pushData, table)
 
