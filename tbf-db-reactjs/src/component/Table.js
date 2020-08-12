@@ -246,7 +246,6 @@ function TableRender({ columns, data, updateMyData, skipPageReset }) {
 
 export default function Table(props) {
     const tableData = props.tableData
-    console.log(tableData)
     const columns = useMemo(() => tableData[0].map(( item ) => {
         return(
             {
@@ -255,8 +254,6 @@ export default function Table(props) {
             }
         )
     }))
-
-    console.log(columns)
     
     const [data, setData] = useState(() => tableData.slice(1))
     const [skipPageReset, setSkipPageReset] = useState(false)
