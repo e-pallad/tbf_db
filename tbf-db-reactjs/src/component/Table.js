@@ -1,28 +1,8 @@
-import React, { useMemo, useState, useEffect } from 'react'
-import { useTable, usePagination, useGlobalFilter, useFilters } from 'react-table'
+import React, { Component } from 'react'
+import { AgGridReact } from 'ag-grid-react';
 
-const EditableCell = ({
-    value: initialValue,
-    row: { index },
-    column: { id },
-    updateMyData, 
-}) => {
-    const [value, setValue] = useState(initialValue)
-  
-    const onChange = e => {
-        setValue(e.target.value)
-    }
-  
-    const onBlur = () => {
-        updateMyData(index, id, value)
-    }
-  
-    useEffect(() => {
-        setValue(initialValue)
-    }, [initialValue])
-  
-    return <input value={value} onChange={onChange} onBlur={onBlur} />
-}
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 async function pushDataToDb(pushData, table) {
 
@@ -50,248 +30,62 @@ async function pushDataToDb(pushData, table) {
     
 }
 
-function GlobalFilter({
-    preGlobalFilteredRows,
-    globalFilter,
-    setGlobalFilter
-}) {
-    const count = preGlobalFilteredRows.length;
-  
-    return (
-        <div className="m-2 w-25 justify-content-start">
-            Globale Suche:{" "}
-            <input
-                value={globalFilter || ""}
-                onChange={e => {
-                    setGlobalFilter(e.target.value || undefined);
-                }}
-                placeholder={`${count} Einträge...`}
-                className="form-control mr-sm-2"
-            />
-        </div>
-    );
-}
-  
-function DefaultColumnFilter({
-    column: { filterValue, preFilteredRows, setFilter }
-}) {
-    const count = preFilteredRows.length;
-  
-    return (
-        <input
-            value={filterValue || ""}
-            className="form-control"
-            onChange={e => {
-                setFilter(e.target.value || undefined); 
-            }}
-            placeholder={`Durchsuche ${count} Einträge...`}
-        />
-    );
-}
-
-function TableRender({ columns, data, updateMyData, skipPageReset }) {
-    const filterTypes = useMemo(
-        () => ({
-            text: (rows, id, filterValue) => {
-                return rows.filter(row => {
-                const rowValue = row.values[id];
-                return rowValue !== undefined
-                    ? String(rowValue)
-                        .toLowerCase()
-                        .startsWith(String(filterValue).toLowerCase())
-                    : true;
-                });
-            }
-        }),
-        []
-    );
-
-    const defaultColumn = {
-          Filter: DefaultColumnFilter,
-          Cell: EditableCell,
-    };
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        prepareRow,
-        page,
-        canPreviousPage,
-        canNextPage,
-        pageOptions,
-        pageCount,
-        gotoPage,
-        nextPage,
-        previousPage,
-        setPageSize,
-        state: { pageIndex, pageSize, globalFilter },
-        preGlobalFilteredRows,
-        setGlobalFilter
-    } = useTable(
-        {
-            columns,
-            data,
-            initialState: { pageindex: 2 },
-            defaultColumn,
-            filterTypes,
-            autoResetPage: !skipPageReset,
-            updateMyData,
-        },
-        useFilters,
-        useGlobalFilter,
-        usePagination,  
-    );
-
-    return (
-        <React.Fragment>
-            <GlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
-            />
-            <table {...getTableProps()} className="table table-striped">
-                <thead>
-                {headerGroups.map(headerGroup => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
-                        <th
-                        {...column.getHeaderProps()}
-                        style={{ verticalAlign: "middle" }}
-                        scope="col"
-                        >
-                            {column.render("Header")}
-                            <div>{column.canFilter ? column.render("Filter") : null}</div>
-                        </th>
-                    ))}
-                    </tr>
-                ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                {page.map((row, i) => {
-                    prepareRow(row);
-                    return (
-                    <tr {...row.getRowProps()}>
-                        {row.cells.map(cell => {
-                            return (
-                                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                            );
-                        })}
-                    </tr>
-                    );
-                })}
-                </tbody>
-            </table>
-            <div className="justify-content-center mb-3">
-                <select
-                    style={{
-                        padding: "7px",
-                        borderRadius: "3px",
-                        border: "1px solid #007bff"
-                    }}
-                    value={pageSize}
-                    onChange={e => {
-                        setPageSize(Number(e.target.value));
-                    }}
-                >
-                    {[10, 20, 30, 40, 50].map(pageSize => (
-                        <option key={pageSize} value={pageSize}>
-                        Zeige {pageSize}
-                        </option>
-                    ))}
-                </select>{" "}
-                <button
-                    className="btn btn-outline-primary"
-                    style={{ marginTop: "-4px" }}
-                    onClick={() => gotoPage(0)}
-                    disabled={!canPreviousPage}
-                >
-                {"<<"}
-                </button>{" "}
-                <button
-                    className="btn btn-outline-primary"
-                    style={{ marginTop: "-4px" }}
-                    onClick={() => previousPage()}
-                    disabled={!canPreviousPage}
-                >
-                {"<"}
-                </button>{" "}
-                <span>
-                    Seite{" "}
-                    <strong>
-                        {pageIndex + 1} von {pageOptions.length}
-                    </strong>{" "}
-                </span>
-                <button
-                    className="btn btn-outline-primary"
-                    style={{ marginTop: "-4px" }}
-                    onClick={() => nextPage()}
-                    disabled={!canNextPage}
-                >
-                {">"}
-                </button>{" "}
-                <button
-                    className="btn btn-outline-primary"
-                    style={{ marginTop: "-4px" }}
-                    onClick={() => gotoPage(pageCount - 1)}
-                    disabled={!canNextPage}
-                >
-                {">>"}
-                </button>
-            </div>
-        </React.Fragment>
-    )
-}
-
-
-export default function Table(props) {
-    const tableData = props.tableData
-    const columns = useMemo(() => tableData[0].map(( item ) => {
-        return(
-            {
-                Header: item,
-                accessor: item.replace(/[^a-zA-Z0-9 ]/g, "")
-            }
-        )
-    }))
-    
-    const [data, setData] = useState(() => tableData.slice(1))
-    const [skipPageReset, setSkipPageReset] = useState(false)
-
-    const updateMyData = (rowIndex, columnId, value) => {
-        setSkipPageReset(true)
-        setData(old =>
-            old.map((row, index) => {
-                if (index === rowIndex) {
-
-                    const pushData = row
-                    const table = props.table
-                    pushData[columnId] = value
-                    
-                    pushDataToDb(pushData, table)
-
-                    return {
-                        ...old[rowIndex],
-                        [columnId]: value,
-                    }
-                }
-                return row
-            })
-        )
+export default class Table extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            editType: 'fullRow',
+            defaultColDef: {
+                flex: 1,
+                sortable: true,
+                editable: true,
+                filter: true,
+                resizable: true,
+            },
+            table: this.props.table
+        }
+        this.onGridReady = this.onGridReady.bind(this);
+        this.dataChanged = this.dataChanged.bind(this);
     }
 
-    useEffect(() => {
-        setSkipPageReset(false)
-    }, [data])
-    
-    return(
-        <React.Fragment>
-            <TableRender 
-                columns={columns}
-                data={data}
-                updateMyData={updateMyData}
-                skipPageReset={skipPageReset} 
-            />
-        </React.Fragment>
-    )
-}
+    onGridReady = params => {
+        this.gridApi = params.api;
+        this.gridColumnApi = params.columnApi;
+    };
+
+    dataChanged(data) {
+        //console.log(JSON.stringify(data.data))
+        pushDataToDb(data.data, this.state.table)
+    }
+
+    render() {
+        const { tableData } = this.props
+        const columns = tableData[0].map(( item ) => {
+            return(
+                {
+                    headerName: item,
+                    field: item
+                }
+            )
+        })
+        
+        const data = tableData.slice(1)
+
+        return (
+            <div className="ag-theme-alpine" style={ {height: '600px', width: '100%'} }>
+                <AgGridReact
+                    //columnDefs={this.state.columnDefs}
+                    columnDefs={columns}
+                    defaultColDef={this.state.defaultColDef}
+                    //rowData={this.state.rowData}
+                    rowData={data}
+                    pagination={true}
+                    stopEditingWhenGridLosesFocus={true}
+                    editType={this.state.editType}
+                    onRowValueChanged={this.dataChanged}
+                    onGridReady={this.onGridReady}>
+                </AgGridReact>
+            </div>
+        );
+    }
+  }
