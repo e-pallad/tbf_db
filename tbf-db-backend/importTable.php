@@ -43,17 +43,21 @@
                     $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
                     $insert = $con->query($query);
                     if($insert) {
-                        $statusMsg = "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
+                        if($con->affected_rows > 0) {
+                            $statusMsg = "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
+                        } else {
+                            $statusMsg = "Upload erfolgreich. Keine neue Zeilen importiert" . PHP_EOL;
+                        } 
                     } else {
                         $statusMsg = "Fehlgeschlagen: " . $con->error . PHP_EOL;
                         $statusMsg .= $query . PHP_EOL;
                     }
                 } else {
                     $statusMsg = $con->error . PHP_EOL;
-                    $statusMsg .= "Leider konnten keine Tabellenfelder eingelesen werden";
+                    $statusMsg .= "Leider konnte die Datenbank nicht gelesen werden";
                 }
             } else {
-                $statusMsg = "Leider konnte die Datai nicht hochgeladen werden";
+                $statusMsg = "Leider konnte die Datei nicht hochgeladen werden";
             }
             echo json_encode($statusMsg);
             break;

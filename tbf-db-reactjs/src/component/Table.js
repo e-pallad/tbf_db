@@ -36,7 +36,6 @@ export default class Table extends Component {
         this.state = {
             editType: 'fullRow',
             defaultColDef: {
-                flex: 1,
                 sortable: true,
                 editable: true,
                 filter: true,
@@ -44,41 +43,71 @@ export default class Table extends Component {
             },
             table: this.props.table
         }
+        this.onGridReady = this.onGridReady.bind(this);
         this.dataChanged = this.dataChanged.bind(this);
     }
 
+    onGridReady = params => {
+        this.gridApi = params.api;
+        this.gridColumnApi = params.columnApi;
+
+        /*
+        var allColumnIds = [];
+        this.gridColumnApi.getAllColumns().forEach(function(column) {
+            allColumnIds.push(column.colId);
+        });
+        params.columnApi.autoSizeColumns(allColumnIds, true)
+        */
+        //params.api.sizeColumnsToFit();
+        //this.gridApi.autoSizeColumns(true)
+    };
+
     dataChanged(data) {
-        //console.log(JSON.stringify(data.data))
         pushDataToDb(data.data, this.state.table)
     }
 
     render() {
         const { tableData } = this.props
+        const { table } = this.state
         const columns = tableData[0].map(( item ) => {
-            return(
-                {
-                    headerName: item,
-                    field: item,
-                }
-            )
+            if (item === 'PnPID') {
+                return(
+                    {
+                        headerName: item,
+                        field: item,
+                        editable: false,
+                    }
+                )
+            } else {
+                return(
+                    {
+                        headerName: item,
+                        field: item,
+                    }
+                )
+            }
         })
         
         const data = tableData.slice(1)
 
         return (
-            <div className="ag-theme-alpine" style={ {height: '600px', width: '100%'} }>
-                <AgGridReact
-                    //columnDefs={this.state.columnDefs}
-                    columnDefs={columns}
-                    defaultColDef={this.state.defaultColDef}
-                    //rowData={this.state.rowData}
-                    rowData={data}
-                    pagination={true}
-                    stopEditingWhenGridLosesFocus={true}
-                    editType={this.state.editType}
-                    onRowValueChanged={this.dataChanged}
-                    suppressFieldDotNotation={true}>
-                </AgGridReact>
+            <div id="grid" className="container-fluid p-0 overflow-hidden">
+                <h2>{table}</h2>
+                <div className="ag-theme-alpine" style={ { height: '800px', width: '100%'} }>
+                    <AgGridReact
+                        columnDefs={columns}
+                        defaultColDef={this.state.defaultColDef}
+                        rowData={data}
+
+                        editType={this.state.editType}
+                        pagination={true}
+                        //stopEditingWhenGridLosesFocus={true}
+                        suppressFieldDotNotation={true}
+                        
+                        onRowValueChanged={this.dataChanged}
+                        onGridReady={this.onGridReady}>
+                    </AgGridReact>
+                </div>
             </div>
         );
     }

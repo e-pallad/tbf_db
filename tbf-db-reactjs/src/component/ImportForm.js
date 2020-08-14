@@ -62,7 +62,7 @@ export default class ImportForm extends Component {
                         <div className="col">
                             {file && 
                             <button type="submit" className="btn btn-primary">
-                                {responseReady === 'loading' && <span className="spinner-border spinner-border-sm" role="status" /> }
+                                {responseReady === 'loading' && <span className="pr-2 spinner-border spinner-border-sm" role="status" /> }
                                 Hochladen
                             </button>
                             }
