@@ -44,14 +44,8 @@ export default class Table extends Component {
             },
             table: this.props.table
         }
-        this.onGridReady = this.onGridReady.bind(this);
         this.dataChanged = this.dataChanged.bind(this);
     }
-
-    onGridReady = params => {
-        this.gridApi = params.api;
-        this.gridColumnApi = params.columnApi;
-    };
 
     dataChanged(data) {
         //console.log(JSON.stringify(data.data))
@@ -64,7 +58,7 @@ export default class Table extends Component {
             return(
                 {
                     headerName: item,
-                    field: item
+                    field: item,
                 }
             )
         })
@@ -83,7 +77,7 @@ export default class Table extends Component {
                     stopEditingWhenGridLosesFocus={true}
                     editType={this.state.editType}
                     onRowValueChanged={this.dataChanged}
-                    onGridReady={this.onGridReady}>
+                    suppressFieldDotNotation={true}>
                 </AgGridReact>
             </div>
         );
