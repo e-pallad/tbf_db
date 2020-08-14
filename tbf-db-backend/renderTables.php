@@ -15,7 +15,7 @@
     
     foreach ($data as $rowKey => $rowArray) {
         foreach ($rowArray as $cellKey => $cellContent) {
-            $newKey = preg_replace('/[^a-zA-Z0-9 ]/', '', $header[$cellKey]);
+            $newKey = $header[$cellKey];
             $newRow[$newKey] = $cellContent;
         }
         array_push($listTableContent, $newRow);
