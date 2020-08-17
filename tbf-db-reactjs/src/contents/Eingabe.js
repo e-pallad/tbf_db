@@ -11,8 +11,8 @@ export default class Eingabe extends Component {
     }
 
     componentDidMount() {
-        //fetch("https://tbf-db-backend.ep-webdesign.de/renderTables.php?table=" + this.state.table)
-        fetch("http://localhost/renderTables.php?table=" + this.state.table)
+        fetch("https://tbf-db-backend.ep-webdesign.de/renderTables.php?table=" + this.state.table)
+        //fetch("http://localhost/renderTables.php?table=" + this.state.table)
         .then(res => res.json())
         .then(
             (result) => {
