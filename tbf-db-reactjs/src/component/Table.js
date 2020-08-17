@@ -69,33 +69,27 @@ export default class Table extends Component {
     render() {
         const { tableData } = this.props
         const { table } = this.state
-        const columns = tableData[0].map(( item ) => {
-            if (item === 'PnPID') {
-                return(
-                    {
-                        headerName: item,
-                        field: item,
-                        editable: false,
-                    }
-                )
-            } else {
-                return(
-                    {
-                        headerName: item,
-                        field: item,
-                    }
-                )
-            }
-        })
+
+        const columns = tableData.slice(0,1).map(( header ) => {
+            return(
+                header.map(( column ) => {
+                    return({
+                        headerName: column.headerName,
+                        field: column.field,
+                        editable: column.editable,
+                    })
+                })
+            )
+        })  
         
         const data = tableData.slice(1)
-
+        
         return (
             <div id="grid" className="container-fluid p-0 overflow-hidden">
                 <h2>{table}</h2>
                 <div className="ag-theme-alpine" style={ { height: '800px', width: '100%'} }>
                     <AgGridReact
-                        columnDefs={columns}
+                        columnDefs={columns[0]}
                         defaultColDef={this.state.defaultColDef}
                         rowData={data}
 

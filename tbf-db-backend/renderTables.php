@@ -9,7 +9,19 @@
     $listTableContent = array();
 
     $header = array_column(mysqli_fetch_all($con->query($headerQuery)),0);
-    array_push($listTableContent, $header);
+
+    function headerConfig($array) {
+        foreach ($array as $key => $value) {
+            if ($key == 'PnPID') {
+                $returnArray[] = array('headerName' => $value, 'field' => $value, 'editable' => false);
+            } else {
+                $returnArray[] = array('headerName' => $value, 'field' => $value, 'editable' => true);
+            } 
+        }
+        return $returnArray;
+    }
+
+    array_push($listTableContent, headerConfig($header));
     
     $data = mysqli_fetch_all($con->query($query));
     
