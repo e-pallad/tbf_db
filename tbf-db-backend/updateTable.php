@@ -29,7 +29,6 @@
                     if (!empty($dataArrayKeyField)) {
                         $query = "UPDATE `$table` SET ";
                         $i = 0;
-                        
                         foreach ($dataArray as $key => $value) {
                             $query .= "`". $key . "`" . " = '" . $value . "'";
                             if ($i < count($dataArray) - 1) {
@@ -37,9 +36,7 @@
                             }
                             $i++;
                         }
-
                         $query .= " WHERE $keyField = $dataArrayKeyField";
-
                         $insert = $con->query($query);
                         if ($insert) {
                             $statusMsg = "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
@@ -48,7 +45,11 @@
                             $statusMsg .= $query . PHP_EOL;
                         }
                     }
+                } else {
+                    $statusMsg = "Kein PRIMARY-Keys in Tabelle " . $table;
                 }
+            } else {
+                $statusMsg = "Konnte keine Verbindung zur Datenbank herstellen, um PRIMARY-Keys zu lesen.";
             }
             echo json_encode($statusMsg);
             break;
