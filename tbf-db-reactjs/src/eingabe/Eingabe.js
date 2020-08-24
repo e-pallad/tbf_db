@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Table from '../component/Table';
+import Table from '../eingabe/Table';
 
 export default class Eingabe extends Component {
     constructor(props) {

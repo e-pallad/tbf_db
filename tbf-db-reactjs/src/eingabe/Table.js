@@ -85,7 +85,7 @@ export default class Table extends Component {
         const data = tableData.slice(1)
         
         return (
-            <div id="grid" className="container-fluid p-0 overflow-hidden">
+            <div id="grid" className="p-0 overflow-hidden">
                 <h2>{table}</h2>
                 <div className="ag-theme-alpine" style={ { height: '800px', width: '100%'} }>
                     <AgGridReact

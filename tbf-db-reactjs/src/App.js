@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import ImportCard from './component/ImportCard';
-import ExportCard from './component/ExportCard';
-import EingabeCard from './component/EingabeCard';
+import ImportCard from './cards/ImportCard';
+import EingabeCard from './cards/EingabeCard';
+import ErzeugenCard from './cards/ErzeugenCard';
+import AuswertenCard from './cards/AuswertenCard';
+import ExportCard from './cards/ExportCard';
+
 
 export default class App extends Component {
     constructor(props) {
@@ -44,21 +47,12 @@ export default class App extends Component {
         } else 
           return (
             <div className="condiv home">
-              <div className="row row-cols-2">
-
+              <div className="row justify-content-center">
                 <ImportCard items={items} />
-                <ExportCard items={items} />
                 <EingabeCard setRedirect={this.renderTable} items={items} />
-
-                <div className="col-sm-6">
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title">Platzhalter</h5>
-                      <p className="card-text">Platzhalter Text</p>
-                      <a href="https://www.reactjs.org" className="btn btn-primary">Hier könnte ihr Button stehen</a>
-                    </div>
-                  </div>
-                </div>
+                <ErzeugenCard items={items} />
+                <AuswertenCard items={items} />
+                <ExportCard items={items} />
               </div>
             </div>
           )
