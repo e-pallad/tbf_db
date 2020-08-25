@@ -38,9 +38,15 @@
                     $fieldNames = "";
                     foreach($fieldData as $var) {
                         $fieldNames .= "`".$var->name."`,";
+                        $fieldCompare[] = $var->name;
                     }
                     $fieldNames = substr($fieldNames, 0, -1);
-                    $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
+                    $firstRow = fgetcsv(fopen($targetFilePath, "r"), 1);
+                    if($fieldCompare == $firstRow) {
+                        $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($fieldNames)";
+                    } else {
+                        $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
+                    }
                     $insert = $con->query($query);
                     if($insert) {
                         if($con->affected_rows > 0) {

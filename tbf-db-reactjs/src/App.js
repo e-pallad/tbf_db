@@ -43,7 +43,7 @@ export default class App extends Component {
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div>Loading...</div>;
+            return <div>Lädt...</div>;
         } else 
           return (
             <div className="condiv home">
