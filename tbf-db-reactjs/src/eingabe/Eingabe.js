@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Table from '../eingabe/Table';
+import React, { lazy, Component, Suspense } from 'react';
+const Table = lazy(() => import('./Table'))
 
 export default class Eingabe extends Component {
     constructor(props) {
@@ -35,10 +35,12 @@ export default class Eingabe extends Component {
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div>Loading...</div>;
+            return <div>Lädt...</div>;
         } else 
         return (
-            <Table tableData={tableData} table={table} />
+            <Suspense fallback={<div>Lädt...</div>}>
+                <Table tableData={tableData} table={table} />
+            </Suspense>
         )
     }
 }
