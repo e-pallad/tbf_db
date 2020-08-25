@@ -10,8 +10,39 @@ export default class ImportForm extends Component {
             responseReady: false,
             data: null
         }
+        this.uploadFile = this.uploadFile.bind(this);
         document.getElementById('root').classList.remove('container-fluid');
+    }
 
+    uploadFile() {
+        const { table, file } = this.state;
+            const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';
+            //const url = 'http://localhost/importTable.php';    
+                
+            const formData = new FormData();  
+            formData.append('table', table)  
+            formData.append('file', file);    
+            const config = { 
+                method: 'POST',
+                body: formData
+            };
+
+            fetch(url, config)
+            .then( this.setState({ responseReady: 'loading' }) )
+            .then( result => result.json() )
+            .then(
+                (result) => {
+                    this.setState({ 
+                        responseReady: true,
+                        data: result
+                    })
+                },
+                (error) => {
+                    this.setState({ 
+                        data: error 
+                    })
+                } 
+            )
     }
 
     componentWillUnmount() {
@@ -36,47 +67,12 @@ export default class ImportForm extends Component {
             if (this.state.file) {
                 console.log(this.state.file)
                 fileUpload.classList.remove("drag");
-                fileUpload.classList.add("drop");
+                fileUpload.classList.add("drop");   
 
-                this.submit = () => {    
-                    const { table, file } = this.state;
-                    const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';
-                    //const url = 'http://localhost/importTable.php';    
-                    
-                    const formData = new FormData();  
-                    formData.append('table', table)  
-                    formData.append('file', file);    
-                    const config = { 
-                        method: 'POST',
-                        body: formData
-                    };
-
-                    console.log(table)
-                    console.log('------------')
-                    console.log(file)
-
-                    /*
-                    fetch(url, config)
-                    .then( this.setState({ responseReady: 'loading' }) )
-                    .then( result => result.json() )
-                    .then(
-                        (result) => {
-                            this.setState({ 
-                                responseReady: true,
-                                data: result
-                            })
-                        },
-                        (error) => {
-                            this.setState({ 
-                                data: error 
-                            })
-                        } 
-                    )
-                    */
-                }
+                this.uploadFile()         
+            }
 
                 //setTimeout(() => fileUpload.classList.add("done"), 3000);
-            }
         }
 
         fileUpload.addEventListener("drop", this.setFile.bind(this), false);
