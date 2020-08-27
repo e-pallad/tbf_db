@@ -8,7 +8,7 @@ import Import from './import/Import';
 import Eingabe from './eingabe/Eingabe';
 //import Erzeugen from './contents/Erzeugen';
 //import Auswerten from './contents/Auswerten';
-import ExportCard from './cards/ExportCard';
+import Export from './export/Export';
 
 const routing = (
   <Router>
@@ -17,7 +17,7 @@ const routing = (
     <Route path="/eingabe" component={Eingabe} />
     {/* <Route path="/erzeugen" component={Erzeugen} /> */}
     {/* <Route path="/auswerten" component={Auswerten} /> */}
-    <Route path="/export" component={ExportCard} />
+    <Route path="/export" component={Export} />
   </Router>
 )
 

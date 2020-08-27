@@ -12,7 +12,7 @@ export default class ImportCard extends Component {
     render() {
         const { items } = this.state;
         return(
-            <div className="col-sm-2">
+            <div className="col">
                 <div className="card p-0">
                     <div className="card-body">
                         <h5 className="card-title">Auswerten</h5>

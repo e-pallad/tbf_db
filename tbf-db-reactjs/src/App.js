@@ -46,8 +46,8 @@ export default class App extends Component {
             return <div>Lädt...</div>;
         } else 
           return (
-            <div className="condiv home">
-              <div className="row justify-content-center">
+            <div className="d-flex justify-content-center flex-column align-items-center">
+              <div className="row justify-content-around">
                 <ImportCard items={items} />
                 <EingabeCard setRedirect={this.renderTable} items={items} />
                 <ErzeugenCard items={items} />
