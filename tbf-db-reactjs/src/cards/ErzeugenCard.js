@@ -5,7 +5,12 @@ export default class ImportCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: this.props.items,
+            items: [
+                "SEF E-Verbraucherliste",
+                "SEF Messstellenliste",
+                "SEF Amaturenlsite",
+                "SEF Ausrüstungsliste"
+            ],
         };
     }
 

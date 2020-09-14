@@ -18,7 +18,17 @@ export default class ImportCard extends Component {
                         <h5 className="card-title">Importieren</h5>
                         {items.map((item) => (
                             <Link key={item} to={{ pathname: "/import", state: {table: item} }} className="btn btn-success btn-block my-2">
-                                {item.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')}
+                                {
+                                    ( 
+                                        item === "RI-TBF_SEF_Apparateliste" || 
+                                        item === "RI-TBF_SEF_Armaturenliste" || 
+                                        item === "RI-TBF_SEF_Elektroangaben"
+                                    ) ? (
+                                        item.replace('TBF_SEF_', '')
+                                    ) : (
+                                        item.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')
+                                    )
+                                }
                             </Link>     
                         ))}
                     </div>
