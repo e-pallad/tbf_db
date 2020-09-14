@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import Container from '@material-ui/core/Container';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Grid from '@material-ui/core/Grid';
+
 import ImportCard from './cards/ImportCard';
 import EingabeCard from './cards/EingabeCard';
 import ErzeugenCard from './cards/ErzeugenCard';
 import AuswertenCard from './cards/AuswertenCard';
 import ExportCard from './cards/ExportCard';
+
 
 
 export default class App extends Component {
@@ -46,15 +53,23 @@ export default class App extends Component {
             return <div>Lädt...</div>;
         } else 
           return (
-            <div className="d-flex justify-content-center flex-column align-items-center">
-              <div className="row justify-content-around">
-                <ImportCard items={items} />
-                <EingabeCard setRedirect={this.renderTable} items={items} />
-                <ErzeugenCard items={items} />
-                <AuswertenCard items={items} />
-                <ExportCard items={items} />
-              </div>
-            </div>
+            <Container>
+                <AppBar>
+                    <Tabs>
+                        <Tab label="Active" />
+                        <Tab label="Link" />
+                        <Tab label="Link" />
+                        <Tab label="Disabled" />
+                    </Tabs>
+                </AppBar>
+                <Grid container direction="row" justify="space-around">
+                    <ImportCard items={items} />
+                    <EingabeCard setRedirect={this.renderTable} items={items} />
+                    <ErzeugenCard />
+                    <AuswertenCard items={items} />
+                    <ExportCard items={items} />
+                </Grid>
+            </Container>
           )
   }
 }

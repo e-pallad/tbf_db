@@ -6,6 +6,7 @@ export default class Eingabe extends Component {
         super(props);
         this.state = {
             table: this.props.location.state.table,
+            /*table: this.props.param,*/
             tableData: []
         };
     }
