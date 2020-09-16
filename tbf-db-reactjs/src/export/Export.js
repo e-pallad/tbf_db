@@ -28,7 +28,17 @@ export default class Export extends Component {
         const { table } = this.state
         return (
             <button onClick={this.exportTable} className="btn btn-danger btn-block my-2">
-                {table.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')}
+                {
+                    ( 
+                        table === "RI-TBF_SEF_Apparateliste" || 
+                        table === "RI-TBF_SEF_Armaturenliste" || 
+                        table === "RI-TBF_SEF_Elektroangaben"
+                    ) ? (
+                        table.replace('TBF_SEF_', '')
+                    ) : (
+                        table.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')
+                        )
+                    }
             </button>
         )
     }

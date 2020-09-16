@@ -46,7 +46,7 @@ export default class App extends Component {
             return <div>Lädt...</div>;
         } else 
           return (
-            <div className="d-flex justify-content-center flex-column align-items-center">
+            <div className="d-flex justify-content-center flex-column align-items-stretch w-75">
               <div className="row justify-content-around">
                 <ImportCard items={items} />
                 <EingabeCard setRedirect={this.renderTable} items={items} />

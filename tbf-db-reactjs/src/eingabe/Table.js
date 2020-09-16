@@ -51,13 +51,12 @@ export default class Table extends Component {
         this.gridApi = params.api;
         this.gridColumnApi = params.columnApi;
 
-        /*
         var allColumnIds = [];
         this.gridColumnApi.getAllColumns().forEach(function(column) {
             allColumnIds.push(column.colId);
         });
         params.columnApi.autoSizeColumns(allColumnIds, true)
-        */
+        
         //params.api.sizeColumnsToFit();
         //this.gridApi.autoSizeColumns(true)
     };
@@ -85,9 +84,9 @@ export default class Table extends Component {
         const data = tableData.slice(1)
         
         return (
-            <div id="grid" className="p-0 overflow-hidden">
+            <div id="grid" className="p-0 overflow-hidden w-100 h-100">
                 <h2>{table}</h2>
-                <div className="ag-theme-alpine" style={ { height: '800px', width: '100%'} }>
+                <div className="ag-theme-alpine" style={ { height: 'calc(100% - 60px)', width: '100%'} }>
                     <AgGridReact
                         columnDefs={columns[0]}
                         defaultColDef={this.state.defaultColDef}
@@ -99,7 +98,8 @@ export default class Table extends Component {
                         suppressFieldDotNotation={true}
                         
                         onRowValueChanged={this.dataChanged}
-                        onGridReady={this.onGridReady}>
+                        onGridReady={this.onGridReady}
+                        >
                     </AgGridReact>
                 </div>
             </div>
