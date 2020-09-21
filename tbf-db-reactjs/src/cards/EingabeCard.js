@@ -14,6 +14,10 @@ const ClassicButton = withStyles({
         margin: '.5rem 0',
         fontWeight: 400,
         fontSize: '1rem',
+        '&:hover': {
+            background: '#e0a800',
+            borderColor: '#d39e00',
+        }
     },
     label: {
         textTransform: 'none',
@@ -31,14 +35,26 @@ export default class ExportCard extends Component {
     render() {
         const { items } = this.state;
         return(
-            <Grid item xs={3}>
-                <Card className="card p-0">
-                    <CardContent className="card-body">
+            <Grid item xs={2}>
+                <Card>
+                    <CardContent>
                         <Typography variant="h5">Bearbeiten</Typography>
                         {items.map((item) => (
-                            <ClassicButton key={item} to={{ pathname: "/eingabe", state: {table: item} }} variant="contained" disableElevation fullWidth>
-                                {item.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')}
-                            </ClassicButton>     
+                            <Link key={item} to={{ pathname: "/eingabe", state: {table: item} }}>
+                                <ClassicButton variant="contained" disableElevation fullWidth>
+                                    {
+                                        ( 
+                                            item === "RI-TBF_SEF_Apparateliste" || 
+                                            item === "RI-TBF_SEF_Armaturenliste" || 
+                                            item === "RI-TBF_SEF_Elektroangaben"
+                                        ) ? (
+                                            item.replace('TBF_SEF_', '')
+                                        ) : (
+                                            item.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')
+                                        )
+                                    }
+                                </ClassicButton>
+                            </Link>
                         ))}
                     </CardContent>
                 </Card>

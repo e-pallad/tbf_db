@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import Export from '../export/Export'
 
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+
 export default class ExportCard extends Component {
     constructor(props) {
         super(props);
@@ -12,16 +19,16 @@ export default class ExportCard extends Component {
     render() {
         const { items } = this.state;
         return(
-            <div className="col">
-                <div className="card p-0">
-                    <div className="card-body">
-                        <h5 className="card-title">Export</h5>
+            <Grid item xs={2}>
+                <Card>
+                    <CardContent>
+                        <Typography variant="h5">Export</Typography>
                         {items.map((item) => (
                             <Export key={item} table={item} /> 
-                        ))}
-                    </div>
-                </div>
-            </div>
+                        ))}  
+                    </CardContent>
+                </Card>
+            </Grid>
         )
     }
 }

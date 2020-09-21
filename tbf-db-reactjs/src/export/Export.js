@@ -1,5 +1,29 @@
 import React, { Component } from 'react';
 
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+
+const ClassicButton = withStyles({
+    root: {
+        color: '#fff',
+        background: '#dc3545',
+        margin: '.5rem 0',
+        fontWeight: 400,
+        fontSize: '1rem',
+        '&:hover': {
+            background: '#c82333',
+            borderColor: '#bd2130',
+        }
+    },
+    label: {
+        textTransform: 'none',
+    }
+})(Button);
+
 export default class Export extends Component {
     constructor(props) {
         super(props);
@@ -27,9 +51,19 @@ export default class Export extends Component {
     render() {
         const { table } = this.state
         return (
-            <button onClick={this.exportTable} className="btn btn-danger btn-block my-2">
-                {table.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')}
-            </button>
+            <ClassicButton variant="contained" disableElevation fullWidth onClick={this.exportTable}>
+                {
+                    ( 
+                        table === "RI-TBF_SEF_Apparateliste" || 
+                        table === "RI-TBF_SEF_Armaturenliste" || 
+                        table === "RI-TBF_SEF_Elektroangaben"
+                    ) ? (
+                        table.replace('TBF_SEF_', '')
+                    ) : (
+                        table.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')
+                    )
+                }
+            </ClassicButton>
         )
     }
 }

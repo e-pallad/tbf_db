@@ -53,7 +53,7 @@ export default class App extends Component {
             return <div>Lädt...</div>;
         } else 
           return (
-            <Container>
+            <Grid container spacing={5}>
                 <AppBar>
                     <Tabs>
                         <Tab label="Active" />
@@ -69,7 +69,7 @@ export default class App extends Component {
                     <AuswertenCard items={items} />
                     <ExportCard items={items} />
                 </Grid>
-            </Container>
+            </Grid>
           )
   }
 }
