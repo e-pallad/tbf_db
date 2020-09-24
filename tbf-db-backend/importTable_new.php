@@ -16,12 +16,14 @@
     $fileName = basename($_FILES["file"]["name"]);
     $targetFilePath = $targetDir . $fileName;
 
-    $result = "";
+    $result = array();
 
     $fieldquery = "SELECT * FROM `$table` LIMIT 0,2";
     $tempTableName = $_POST['table'] . "_temp";
+    $tableName = $_POST['table'];
     $tempTableQuery = "CREATE TABLE `".$tempTableName."` SELECT * FROM `" . $_POST['table'] . "` LIMIT 0";
     $rowKeysQuery = "SHOW KEYS FROM `$table` WHERE Key_name = 'PRIMARY'";
+    //$joinQuery = "SELECT * FROM `".$tempTableName."` TT LEFT JOIN `".$tableName."` OG ON TT.".$key." = OG.".$key."";
     
 
     switch ($_SERVER['REQUEST_METHOD']) {
@@ -31,7 +33,7 @@
             if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
                 $con->query($tempTableQuery);
 
-                $result .= $con->error . PHP_EOL;
+                $result["create temp table"] = $con->error . PHP_EOL;
 
                 $fields = $con->query($fieldquery);
                 if($fields) {
@@ -50,19 +52,24 @@
                     }
                     $insert = $con->query($query);
                     
-                    $result .= $con->error  . PHP_EOL;
+                    $result["LOAD DATA LOCAL INFILE"] = $con->error  . PHP_EOL;
 
                     $returnQueryKey = $con->query($rowKeysQuery);
                     $returnArrayKey = $returnQueryKey->fetch_array();
                     $key = $returnArrayKey['Column_name'];
-                    $returnQueryJoin = $con->query("SELECT * FROM `".$tempTableName."` LEFT JOIN `".$_POST['table']."` ON `".$tempTableName.".".$key."` = `".$_POST['table'].".".$key."`");
+                    //$returnQueryJoin = $con->query();
                     //$returnArrayJoin = $returnQueryJoin->fetch_array();
                     //$result = print_r($returnArrayJoin);
+                    
+                    $joinQuery = "SELECT * FROM `".$tempTableName."` TT LEFT JOIN `".$tableName."` OG ON TT.".$key." = OG.".$key."";
+                    $con->query($joinQuery);
 
-                    $result .= $con->error  . PHP_EOL;
+                    $result["JOIN Query"] = $joinQuery;
+                    $result["JOIN"] = $con->error  . PHP_EOL;
                 }
             }
             echo json_encode($result);
+            $con->close();
             break;
         default:
             echo http_response_code(403);

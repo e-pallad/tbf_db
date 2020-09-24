@@ -1,6 +1,40 @@
 import React, { Component } from 'react';
 import './ImportForm.scss';
 
+function uploadFile( table, file ) {
+    //const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';
+    const url = 'http://localhost/importTable_new.php';    
+            
+    const formData = new FormData();  
+    formData.append('table', table)  
+    formData.append('file', file);    
+    const config = { 
+        method: 'POST',
+        body: formData
+    };
+
+    fetch(url, config)
+    .then( result => result.json() )
+    .then(
+        (result) => {
+            this.setState({ 
+                data: result,
+                file: null
+            })
+            document.querySelector(".upload").classList.add("done");
+            document.querySelector(".upload").classList.remove("drop", "drag");
+            setTimeout(() => document.querySelector(".upload").classList.remove("done"), 3000);
+            console.log(this.state.file);
+        },
+        (error) => {
+            this.setState({ 
+                data: error,
+                file: null
+            })
+        } 
+    )
+}
+
 export default class ImportForm extends Component {
     constructor(props) {
         super(props);
@@ -9,43 +43,8 @@ export default class ImportForm extends Component {
             file: null,
             data: null
         }
-        this.uploadFile = this.uploadFile.bind(this);
+        uploadFile = uploadFile.bind(this);
         document.getElementById('root').classList.remove('container-fluid');
-    }
-
-    uploadFile() {
-        const { table, file } = this.state;
-        const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';
-        //const url = 'http://localhost/importTable.php';    
-                
-        const formData = new FormData();  
-        formData.append('table', table)  
-        formData.append('file', file);    
-        const config = { 
-            method: 'POST',
-            body: formData
-        };
-
-        fetch(url, config)
-        .then( result => result.json() )
-        .then(
-            (result) => {
-                this.setState({ 
-                    data: result,
-                    file: null
-                })
-                document.querySelector(".upload").classList.add("done");
-                document.querySelector(".upload").classList.remove("drop", "drag");
-                setTimeout(() => document.querySelector(".upload").classList.remove("done"), 3000);
-                console.log(this.state.file);
-            },
-            (error) => {
-                this.setState({ 
-                    data: error,
-                    file: null
-                })
-            } 
-        )
     }
 
     componentWillUnmount() {
@@ -70,7 +69,7 @@ export default class ImportForm extends Component {
             if (this.state.file) {
                 fileUpload.classList.remove("drag");
                 fileUpload.classList.add("drop");   
-                this.uploadFile();      
+                uploadFile(this.state.table, this.state.file);      
             }
         }
 
