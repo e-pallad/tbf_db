@@ -6,10 +6,10 @@ export default class ImportCard extends Component {
         super(props);
         this.state = {
             items: [
-                "SEF E-Verbraucherliste",
-                "SEF Messstellenliste",
-                "SEF Amaturenlsite",
-                "SEF Ausrüstungsliste"
+                "SEF_E-Verbraucherliste",
+                "SEF_Messstellenliste",
+                "SEF_Amaturenlsite",
+                "SEF_Ausrüstungsliste"
             ],
         };
     }
@@ -22,8 +22,8 @@ export default class ImportCard extends Component {
                     <div className="card-body">
                         <h5 className="card-title">Erzeugen</h5>
                         {items.map((item) => (
-                            <Link key={item} to={{ pathname: "/import", state: {table: item} }} className="btn btn-secondary btn-block my-2">
-                                {item.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')}
+                            <Link key={item} to={{ pathname: "/create", state: {table: item} }} className="btn btn-secondary btn-block my-2">
+                                {item.replace('_', ' ')}
                             </Link>     
                         ))}
                     </div>
