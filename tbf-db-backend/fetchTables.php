@@ -7,7 +7,7 @@
         case 'GET':
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
-            $listdbtables = array( "tables" => array_column(mysqli_fetch_all($con->query('SHOW TABLES')),0) );
+            $listdbtables = array( "tables" => array_column(mysqli_fetch_all($con->query('SHOW TABLES LIKE "RI-TBF_SEF_"')),0) );
             echo json_encode($listdbtables);
             break;
         default:
