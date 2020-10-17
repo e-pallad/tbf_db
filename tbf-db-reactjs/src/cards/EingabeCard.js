@@ -11,6 +11,7 @@ export default class ExportCard extends Component {
 
     render() {
         const { items } = this.state;
+        items.push('Verfahrenstechnikangaben');
         return(
             <div className="col">
                 <div className="card p-0">
