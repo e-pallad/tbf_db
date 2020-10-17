@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './ImportForm.scss';
 
 function uploadFile( table, file ) {
-    //const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';
-    const url = 'http://localhost/importTable_new.php';    
+    const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';
+    //const url = 'http://localhost/importTable_new.php';    
             
     const formData = new FormData();  
     formData.append('table', table)  
