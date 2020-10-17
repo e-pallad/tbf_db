@@ -80,8 +80,8 @@ export default class ImportForm extends Component {
     render() {
         return (
             <div className="upload">
-                <input type="file" title="" className="drop-here" />
-                <div className="text text-drop text-center">Datei hier <br />ablegen</div>
+                <input type="file" title="" accept=".csv" className="drop-here" />
+                <div className="text text-drop text-center">.csv Datei <br />hier ablegen <br />oder klicken <br />zum importieren</div>
                 <div className="text text-upload">uploading</div>
                 <svg className="progress-wrapper" width="300" height="300">
                     <circle className="progress" r="115" cx="150" cy="150"></circle>
