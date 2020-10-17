@@ -50,7 +50,7 @@ export default class App extends Component {
               <div className="row justify-content-around">
                 <ImportCard items={items} />
                 <EingabeCard setRedirect={this.renderTable} items={items} />
-                <ErzeugenCard setRedirect={this.renderTable} items={items} />
+                <ErzeugenCard />
                 <AuswertenCard items={items} />
                 <ExportCard items={items} />
               </div>

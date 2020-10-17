@@ -1,5 +1,5 @@
 import React, { lazy, Component, Suspense } from 'react';
-const Table = lazy(() => import('./Table'))
+const Table = lazy(() => import('../eingabe/Table'))
 
 export default class Eingabe extends Component {
     constructor(props) {
@@ -11,7 +11,7 @@ export default class Eingabe extends Component {
     }
 
     componentDidMount() {
-        fetch("https://tbf-db-backend.ep-webdesign.de/createTables.php?table=" + this.state.table)
+        fetch("https://tbf-db-backend.ep-webdesign.de/renderTables.php?table=" + this.state.table)
         //fetch("http://localhost/renderTables.php?table=" + this.state.table)
         .then(res => res.json())
         .then(
@@ -32,6 +32,7 @@ export default class Eingabe extends Component {
 
     render() {
         const { tableData, isLoaded, error, table } = this.state
+        console.log(table);
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {

@@ -22,7 +22,7 @@ export default class ImportCard extends Component {
                     <div className="card-body">
                         <h5 className="card-title">Erzeugen</h5>
                         {items.map((item) => (
-                            <Link key={item} to={{ pathname: "/create", state: {table: item} }} className="btn btn-secondary btn-block my-2">
+                            <Link key={item} to={{ pathname: "/erzeugen", state: {table: item} }} className="btn btn-secondary btn-block my-2">
                                 {item.replace('_', ' ')}
                             </Link>     
                         ))}
