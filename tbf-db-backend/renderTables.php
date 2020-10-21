@@ -8,6 +8,14 @@
     $query = "SELECT * FROM `$table`";
     $queryMessstellenliste = "
     SELECT 
+    CONCAT(
+        `AKZ_Gr1_Standort`,'.',
+        `AKZ_Gr2_Anlagenteil`,'.',
+        `AKZ_Gr3_Aggregat`,'.',
+        `AKZ_Gr4_Nummer`,'.',
+        `AKZ_Gr5_Nummer`,'.',
+        `AKZ_Gr6_Nummer`) 
+    AS `AKZ Kodierung` 
         `Funktion_Stoff`,
         `Funktion_Cod.`,
         `Schaltanlage`,
