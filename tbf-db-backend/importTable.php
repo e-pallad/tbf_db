@@ -41,7 +41,7 @@
             header('Access-Control-Allow-Origin: *');
             if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
                 $con->query("SET NAMES 'utf8'");
-                convertToUTF8($targetFilePath);
+                convertToUTF8($sourceFile);
                 $fields = $con->query($fieldquery);
                 if($fields) {
                     $fieldData = mysqli_fetch_fields($fields);
