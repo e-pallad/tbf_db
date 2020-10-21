@@ -36,7 +36,7 @@
                             }
                             $i++;
                         }
-                        $query .= " WHERE $keyField = '$dataArrayKeyField'";
+                        $query .= " WHERE '$keyField' = '$dataArrayKeyField'";
                         $insert = $con->query($query);
                         if ($insert) {
                             $statusMsg = "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
