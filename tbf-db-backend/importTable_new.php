@@ -3,13 +3,14 @@
 
     /* 
     
-        https://askubuntu.com/a/767534 */
+        https://askubuntu.com/a/767534
     
         error_reporting(-1);
         ini_set("display_errors", "1");
         ini_set("log_errors", 1);
         ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
 
+    */
     
     $table = $_POST['table'];
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";

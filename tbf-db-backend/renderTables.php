@@ -1,6 +1,11 @@
 <?php 
     require './connect.php';
 
+    error_reporting(-1);
+    ini_set("display_errors", "1");
+    ini_set("log_errors", 1);
+    ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
+
     $method = $_SERVER['REQUEST_METHOD'];
     $table = $_GET['table'];
     $headerQuery = "DESCRIBE `$table`";
