@@ -37,9 +37,7 @@
                             $i++;
                         }
 
-                        if ($table !== 'SEF_Messstellenliste') {
-                            $query .= " WHERE '$keyField' = '$dataArrayKeyField'";
-                        }
+                        $query .= " WHERE '$keyField' = '$dataArrayKeyField'";
 
                         $insert = $con->query($query);
                         if ($insert) {

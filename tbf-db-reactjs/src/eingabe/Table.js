@@ -55,9 +55,8 @@ export default class Table extends Component {
         this.gridColumnApi.getAllColumns().forEach(function(column) {
             allColumnIds.push(column.colId);
         });
-        params.columnApi.autoSizeColumns(allColumnIds, true)
-        
-        //params.api.sizeColumnsToFit();
+        //params.columnApi.autoSizeColumns(allColumnIds, true)
+        params.api.sizeColumnsToFit();
         //this.gridApi.autoSizeColumns(true)
     };
 

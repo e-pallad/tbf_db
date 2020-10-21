@@ -78,19 +78,29 @@ export default class ImportForm extends Component {
     }
 
     render() {
+        const data = this.state.data;
+        let message;
+        if (data) {
+            message = <p>{data}</p>
+        }
         return (
-            <div className="upload">
-                <input type="file" title="" accept=".csv" className="drop-here" />
-                <div className="text text-drop text-center">.csv Datei <br />hier ablegen <br />oder klicken <br />zum importieren</div>
-                <div className="text text-upload">uploading</div>
-                <svg className="progress-wrapper" width="300" height="300">
-                    <circle className="progress" r="115" cx="150" cy="150"></circle>
-                </svg>
-                <svg className="check-wrapper" width="130" height="130">
-                    <polyline className="check" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
-                </svg>
-                <div className="shadow"></div>
-            </div>
+            <section>
+                <div className="upload">
+                    <input type="file" title="" accept=".csv" className="drop-here" />
+                    <div className="text text-drop text-center">.csv Datei <br />hier ablegen <br />oder klicken <br />zum importieren</div>
+                    <div className="text text-upload">uploading</div>
+                    <svg className="progress-wrapper" width="300" height="300">
+                        <circle className="progress" r="115" cx="150" cy="150"></circle>
+                    </svg>
+                    <svg className="check-wrapper" width="130" height="130">
+                        <polyline className="check" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+                    </svg>
+                    <div className="shadow"></div>
+                </div>
+                <div className="message">
+                    {message}
+                </div>
+            </section>
         )   
     }
 }

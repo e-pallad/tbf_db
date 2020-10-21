@@ -27,11 +27,21 @@
 
     $fieldquery = "SELECT * FROM `$table` LIMIT 0,2";
 
+    function convertToUTF8($file) {
+        $fileData = file_get_contents($file);
+        $utf8_file_data = utf8_encode($fileData);
+        $fileName = $file + "_UTF8.csv";
+        file_put_contents($fileName, $utf8_file_data);
+        return $fileName;
+    };
+
     switch ($method) {
         case 'POST':
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
             if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
+                $con->query("SET NAMES 'utf8'");
+                convertToUTF8($targetFilePath);
                 $fields = $con->query($fieldquery);
                 if($fields) {
                     $fieldData = mysqli_fetch_fields($fields);

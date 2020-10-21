@@ -23,6 +23,10 @@
     AS `AKZ Kodierung`, 
         `Funktion_Stoff`,
         `Funktion_Cod.`,
+    CONCAT(
+        `Funktion_Signal_High`,', ',
+        `Funktion_Signal_Low`)
+    AS `Funktion_Signal`,
         `Schaltanlage`,
         `Messbereich`,
         `Ausgangssignal`,
