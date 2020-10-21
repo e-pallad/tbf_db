@@ -4,13 +4,13 @@
     /* 
     
         https://askubuntu.com/a/767534 
-    
+    */
         error_reporting(-1);
         ini_set("display_errors", "1");
         ini_set("log_errors", 1);
         ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
 
-    */
+    
 
     ini_set('mysql.allow_local_infile', 1);
 
