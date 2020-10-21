@@ -19,8 +19,6 @@ export default class Export extends Component {
 				a.download = this.state.table + '_' + Date.now() + '.csv';
 				a.click();
 			});
-                //window.location.href = response.url;
-            
         });
 	}
 

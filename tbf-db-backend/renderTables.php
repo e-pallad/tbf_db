@@ -4,7 +4,78 @@
     $method = $_SERVER['REQUEST_METHOD'];
     $table = $_GET['table'];
     $headerQuery = "DESCRIBE `$table`";
+    
     $query = "SELECT * FROM `$table`";
+    $queryMessstellenliste = "
+    SELECT 
+        `Funktion_Stoff`,
+        `Funktion_Cod.`,
+        `Schaltanlage`,
+        `Messbereich`,
+        `Ausgangssignal`,
+        `Spannungsversorgung`,
+        `Messverfahren`,
+        `Anzahl der Grenzkontakte`,
+        `Selbstüberwachung + Störmeldekontakt`,
+        `Sicherungsautomat`,
+        `NH-Trenner`,
+        `Überspannungsschutz`,
+        `FI-Schutzschalter`,
+        `Wartungsschalter`,
+        `Vor-Ort-Anzeige`,
+        `Anzeige Schaltschrank`,
+        `Anzeige Bedientafel`,
+        `Anzeige im PLS`,
+        `Erneuern VO`,
+        `Erneuern EMSR`,
+        `Schutzart`,
+        `Ex-Schutz`,
+        `zu Bearbeiten`,
+        `Zusatzgeräte/Bemerkungen`,
+        `Zustand/Bearbeitung_2` 
+    FROM 
+        `RI-TBF_SEF_Messstellenliste`
+    ";
+    $queryVerbraucherliste = "
+    SELECT 
+        CONCAT(
+            `AKZ_Gr1_Standort`,'.',
+            `AKZ_Gr2_Anlagenteil`,'.',
+            `AKZ_Gr3_Aggregat`,'.',
+            `AKZ_Gr4_Nummer`,'.',
+            `AKZ_Gr5_Nummer`,'.',
+            `AKZ_Gr6_Nummer`) 
+        AS `AKZ Kodierung` 
+    FROM 
+        `RI-TBF_SEF_Apparateliste` 
+    LEFT JOIN 
+        `RI-TBF_SEF_Elektroangaben` 
+    ON 
+    ";
+    $queryArmaturenliste =  "
+    SELECT 
+        CONCAT(
+            `AKZ_Gr1_Standort`,'.',
+            `AKZ_Gr2_Anlagenteil`,'.',
+            `AKZ_Gr3_Aggregat`,'.',
+            `AKZ_Gr4_Nummer`,'.',
+            `AKZ_Gr5_Nummer`,'.',
+            `AKZ_Gr6_Nummer`) 
+        AS `AKZ Kodierung`, 
+        `Benennung`,
+        `Benennung Zusatz`,
+        `NW`,
+        `PN`,
+        `TBV/ITD Nr.`,
+        `Einbauort bzw. Rohrleitungs Nr.`,
+        `R&I EB68-Nr.`,
+        `Feld-Nr.`,
+        `Bemerkung`,
+        `Zustand/Bearbeitung` 
+    FROM 
+        `RI-TBF_SEF_Armaturenliste`
+    ";
+
     $listTableContent = array();
 
     $header = array_column(mysqli_fetch_all($con->query($headerQuery)),0);
@@ -22,7 +93,12 @@
 
     array_push($listTableContent, headerConfig($header));
     
-    $data = mysqli_fetch_all($con->query($query));
+    if ($table == 'SEF_Messstellenliste' ) {
+        $data = mysqli_fetch_all($con->query($queryMessstellenliste));
+    } else {
+        $data = mysqli_fetch_all($con->query($query));
+    }
+    
     
     foreach ($data as $rowKey => $rowArray) {
         foreach ($rowArray as $cellKey => $cellContent) {
