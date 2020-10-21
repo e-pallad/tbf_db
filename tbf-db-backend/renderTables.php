@@ -20,7 +20,7 @@
         `AKZ_Gr4_Nummer`,'.',
         `AKZ_Gr5_Nummer`,'.',
         `AKZ_Gr6_Nummer`) 
-    AS `AKZ Kodierung` 
+    AS `AKZ Kodierung`, 
         `Funktion_Stoff`,
         `Funktion_Cod.`,
         `Schaltanlage`,
