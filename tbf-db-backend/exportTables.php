@@ -18,12 +18,14 @@
             $f = fopen('php://memory', 'w'); 
 
             foreach ($header as $line) { 
-                 $headerLine[] = $line[0];
+                mb_convert_encoding($line, 'UTF-16LE', 'UTF-8');
+                $headerLine[] = $line[0];
             }
 
             fputcsv($f, $headerLine, $delimiter);
 
             foreach ($data as $line) { 
+                mb_convert_encoding($line, 'UTF-16LE', 'UTF-8');
                 fputcsv($f, $line, $delimiter); 
             }
             fseek($f, 0);
@@ -32,7 +34,8 @@
             header('Access-Control-Allow-Origin: *');
             header('Content-Disposition: attachment; filename="'. $table .'.csv";');
 
-            fpassthru(mb_convert_encoding($f, 'UTF-16LE', 'UTF-8'));
+            fpassthru($f);
+            
             break;
         default:
             echo http_response_code(403);
