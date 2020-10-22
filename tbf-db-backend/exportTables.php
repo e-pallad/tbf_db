@@ -32,7 +32,7 @@
             header('Access-Control-Allow-Origin: *');
             header('Content-Disposition: attachment; filename="'. $table .'.csv";');
 
-            fpassthru($f);
+            fpassthru(mb_convert_encoding($f, 'UTF-16LE', 'UTF-8'));
             break;
         default:
             echo http_response_code(403);
