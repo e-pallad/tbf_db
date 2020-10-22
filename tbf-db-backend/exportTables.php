@@ -25,7 +25,9 @@
             fputcsv($f, $headerLine, $delimiter);
 
             foreach ($data as $line) { 
-                mb_convert_encoding($line, 'UTF-16LE', 'UTF-8');
+                $line = array_map(function($cell){
+                    mb_convert_encoding($cell, 'UTF-16LE', 'UTF-8');
+                }, $line);
                 fputcsv($f, $line, $delimiter); 
             }
             fseek($f, 0);
