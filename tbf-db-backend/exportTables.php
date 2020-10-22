@@ -16,23 +16,25 @@
         case 'GET':
             $delimiter=";";
             $f = fopen('php://memory', 'w'); 
+            fputs($f, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
 
             foreach ($header as $line) { 
-                mb_convert_encoding($line, 'UTF-16LE', 'UTF-8');
                 $headerLine[] = $line[0];
             }
 
             fputcsv($f, $headerLine, $delimiter);
 
             foreach ($data as $line) { 
+                /*
                 $line = array_map(function($cell){
                     mb_convert_encoding($cell, 'UTF-16LE', 'UTF-8');
                 }, $line);
+                */
                 fputcsv($f, $line, $delimiter); 
             }
             fseek($f, 0);
 
-            header('Content-Type: application/csv');
+            header('Content-Type: application/csv;charset=UTF-8');
             header('Access-Control-Allow-Origin: *');
             header('Content-Disposition: attachment; filename="'. $table .'.csv";');
 
