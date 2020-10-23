@@ -1,15 +1,17 @@
 <?php 
     require './connect.php';
-
+/*
     error_reporting(-1);
     ini_set("display_errors", "1");
     ini_set("log_errors", 1);
     ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
-
+*/
     $method = $_SERVER['REQUEST_METHOD'];
     $table = $_GET['table'];
     $headerQuery = "DESCRIBE `$table`";
     
+    $con->query("SET NAMES 'utf-8'");
+
     $query = "SELECT * FROM `$table`";
     $queryMessstellenliste = "
     SELECT 
@@ -99,7 +101,7 @@
 
     function headerConfig($array) {
         foreach ($array as $key => $value) {
-            if ($key == 'PnPID') {
+            if ($key == 'PnPID' || $key == 'TBF_ID') {
                 $returnArray[] = array('headerName' => $value, 'field' => $value, 'editable' => false);
             } else {
                 $returnArray[] = array('headerName' => $value, 'field' => $value, 'editable' => true);
@@ -120,7 +122,7 @@
     foreach ($data as $rowKey => $rowArray) {
         foreach ($rowArray as $cellKey => $cellContent) {
             $newKey = $header[$cellKey];
-            $newRow[$newKey] = htmlentities($cellContent);
+            $newRow[$newKey] = $cellContent;
         }
         array_push($listTableContent, $newRow);
         unset($newRow);
@@ -128,7 +130,7 @@
 
     switch ($method) {
         case 'GET':
-            header('Content-Type: application/json');
+            header('Content-Type: application/json; charset=utf-8');
             header('Access-Control-Allow-Origin: *');
             echo json_encode($listTableContent);
             break;

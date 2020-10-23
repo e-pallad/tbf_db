@@ -30,7 +30,8 @@ export default class Export extends Component {
                     ( 
                         table === "RI-TBF_SEF_Apparateliste" || 
                         table === "RI-TBF_SEF_Armaturenliste" || 
-                        table === "RI-TBF_SEF_Elektroangaben"
+                        table === "RI-TBF_SEF_Elektroangaben" ||
+                        table === "RI-TBF_SEF_Messstellenliste"
                     ) ? (
                         table.replace('TBF_SEF_', '')
                     ) : (

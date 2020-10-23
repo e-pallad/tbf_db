@@ -29,7 +29,11 @@
 
     function convertToUTF8($file) {
         $fileData = file_get_contents($file);
-        $utf8_file_data = utf8_encode($fileData);
+        if (!mb_detect_encoding($fileData, 'UTF-8', true)) {
+            $utf8_file_data = utf8_encode($fileData);
+        } else {
+            $utf8_file_data = $fileData;
+        }
         $fileName = "./uploads/_UTF8.csv";
         file_put_contents($fileName, $utf8_file_data);
         return $fileName;
@@ -51,11 +55,15 @@
                     }
                     $fieldNames = substr($fieldNames, 0, -1);
                     $firstRow = fgetcsv(fopen($targetFilePath, "r"), 1);
+
+                    $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($fieldNames)";
+                    /*
                     if($fieldCompare == $firstRow) {
                         $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($fieldNames)";
                     } else {
                         $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
                     }
+                    */
                     $insert = $con->query($query);
                     if($insert) {
                         if($con->affected_rows > 0) {

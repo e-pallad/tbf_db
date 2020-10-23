@@ -23,7 +23,8 @@ export default class ExportCard extends Component {
                                     ( 
                                         item === "RI-TBF_SEF_Apparateliste" || 
                                         item === "RI-TBF_SEF_Armaturenliste" || 
-                                        item === "RI-TBF_SEF_Elektroangaben"
+                                        item === "RI-TBF_SEF_Elektroangaben" ||
+                                        item === "RI-TBF_SEF_Messstellenliste"
                                     ) ? (
                                         item.replace('TBF_SEF_', '')
                                     ) : (
