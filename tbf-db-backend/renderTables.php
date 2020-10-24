@@ -13,86 +13,39 @@
     $con->query("SET NAMES 'utf-8'");
 
     $query = "SELECT * FROM `$table`";
-    $queryMessstellenliste = "
+    $queryVerfahrenstechnik = "
     SELECT 
-    CONCAT(
-        `AKZ_Gr1_Standort`,'.',
-        `AKZ_Gr2_Anlagenteil`,'.',
-        `AKZ_Gr3_Aggregat`,'.',
-        `AKZ_Gr4_Nummer`,'.',
-        `AKZ_Gr5_Nummer`,'.',
+        `PnPID`,
+    CONCAT_WS(
+        '.',
+        `AKZ_Gr1_Standort`,
+        `AKZ_Gr2_Anlagenteil`,
+        `AKZ_Gr3_Aggregat`,
+        `AKZ_Gr4_Nummer`,
+        `AKZ_Gr5_Aggregat`,
         `AKZ_Gr6_Nummer`) 
-    AS `AKZ Kodierung`, 
-        `Funktion_Stoff`,
-        `Funktion_Cod.`,
-    CONCAT(
-        `Funktion_Signal_High`,', ',
-        `Funktion_Signal_Low`)
-    AS `Funktion_Signal`,
-        `Schaltanlage`,
-        `Messbereich`,
-        `Ausgangssignal`,
-        `Spannungsversorgung`,
-        `Messverfahren`,
-        `Anzahl der Grenzkontakte`,
-        `Selbstüberwachung + Störmeldekontakt`,
-        `Sicherungsautomat`,
-        `NH-Trenner`,
-        `Überspannungsschutz`,
-        `FI-Schutzschalter`,
-        `Wartungsschalter`,
-        `Vor-Ort-Anzeige`,
-        `Anzeige Schaltschrank`,
-        `Anzeige Bedientafel`,
-        `Anzeige im PLS`,
-        `Erneuern VO`,
-        `Erneuern EMSR`,
-        `Schutzart`,
-        `Ex-Schutz`,
-        `zu Bearbeiten`,
-        `Zusatzgeräte/Bemerkungen`,
-        `Zustand/Bearbeitung_2` 
-    FROM 
-        `RI-TBF_SEF_Messstellenliste`
-    ";
-    $queryVerbraucherliste = "
-    SELECT 
-        CONCAT(
-            `AKZ_Gr1_Standort`,'.',
-            `AKZ_Gr2_Anlagenteil`,'.',
-            `AKZ_Gr3_Aggregat`,'.',
-            `AKZ_Gr4_Nummer`,'.',
-            `AKZ_Gr5_Nummer`,'.',
-            `AKZ_Gr6_Nummer`) 
-        AS `AKZ Kodierung` 
-    FROM 
-        `RI-TBF_SEF_Apparateliste` 
-    LEFT JOIN 
-        `RI-TBF_SEF_Elektroangaben` 
-    ON 
-    ";
-    $queryArmaturenliste =  "
-    SELECT 
-        CONCAT(
-            `AKZ_Gr1_Standort`,'.',
-            `AKZ_Gr2_Anlagenteil`,'.',
-            `AKZ_Gr3_Aggregat`,'.',
-            `AKZ_Gr4_Nummer`,'.',
-            `AKZ_Gr5_Nummer`,'.',
-            `AKZ_Gr6_Nummer`) 
-        AS `AKZ Kodierung`, 
+    AS `AKZ Kodierung`,
         `Benennung`,
         `Benennung Zusatz`,
-        `NW`,
-        `PN`,
-        `TBV/ITD Nr.`,
-        `Einbauort bzw. Rohrleitungs Nr.`,
-        `R&I EB68-Nr.`,
-        `Feld-Nr.`,
-        `Bemerkung`,
-        `Zustand/Bearbeitung` 
-    FROM 
-        `RI-TBF_SEF_Armaturenliste`
+        `Hersteller`,
+        `Typ`,
+        `Medium`,
+        `Nennleistung [kW]`,
+        `Nennspannung [V]`,
+        `Nennstrom`,
+        `Fördervolumen [m3/h]`,
+        `Drehzahl [U/min]`,
+        `max. zul. Druck [barü]`,
+        `max. zul. Temperatur [°C]`,
+        `Volumen [m3]`,
+        `Fläche [m2]`,
+        `Gewicht [kg]`,
+        `Werkstoff`,
+        `Bauart`,
+        `Zugehörige Sicherheitseinrichtung`,
+        `Zustand/Bearbeitung`
+    FROM
+        `RI-TBF_SEF_Apparateliste`
     ";
 
     $listTableContent = array();
@@ -114,8 +67,10 @@
 
     array_push($listTableContent, headerConfig($header));
     
-    if ($table == 'SEF_Messstellenliste' ) {
-        $data = mysqli_fetch_all($con->query($queryMessstellenliste));
+    if ($table == 'SEF_Messstellenliste') {
+       // $data = mysqli_fetch_all($con->query($queryMessstellenliste));
+    } elseif ($table == 'Verfahrenstechnikangaben') {
+        $data = mysqli_fetch_all($con->query($queryVerfahrenstechnik));
     } else {
         $data = mysqli_fetch_all($con->query($query));
     }

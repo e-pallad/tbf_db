@@ -1,47 +1,33 @@
-import React, { lazy, Component, Suspense } from 'react';
-const Table = lazy(() => import('../eingabe/Table'))
+import React, { Component } from 'react';
 
 export default class Eingabe extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            table: this.props.location.state.table,
-            tableData: []
+            table: this.props.table,
         };
     }
 
-    componentDidMount() {
-        fetch("https://tbf-db-backend.ep-webdesign.de/renderTables.php?table=" + this.state.table)
-        //fetch("http://localhost/renderTables.php?table=" + this.state.table)
-        .then(res => res.json())
-        .then(
-            (result) => {
-                this.setState({
-                    isLoaded: true,
-                    tableData: result
-                });
-            },
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }   
-        )
-    }
+    exportTable = () => {
+		fetch("https://tbf-db-backend.ep-webdesign.de/exportTables.php?table=" + this.state.table)
+        //fetch("http://localhost/exportTables.php?table=" + this.state.table)
+		.then(response => {
+			response.blob().then(blob => {
+				let url = window.URL.createObjectURL(blob);
+				let a = document.createElement('a');
+				a.href = url;
+				a.download = this.state.table + '_' + Date.now() + '.csv';
+				a.click();
+			});
+        });
+	}
 
     render() {
-        const { tableData, isLoaded, error, table } = this.state
-        console.log(table);
-        if (error) {
-            return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
-            return <div>Lädt...</div>;
-        } else 
+        const { table } = this.state
         return (
-            <Suspense fallback={<div>Lädt...</div>}>
-                <Table tableData={tableData} table={table} />
-            </Suspense>
+            <button onClick={this.exportTable} className="btn btn-secondary btn-block my-2">
+                {table.replace('_', ' ')}
+            </button> 
         )
     }
 }

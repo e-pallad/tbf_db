@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import Erzeugen from '../erzeugen/Erzeugen'
 
 export default class ImportCard extends Component {
     constructor(props) {
@@ -8,7 +8,7 @@ export default class ImportCard extends Component {
             items: [
                 "SEF_E-Verbraucherliste",
                 "SEF_Messstellenliste",
-                "SEF_Amaturenlsite",
+                "SEF_Armaturenliste",
                 "SEF_Ausrüstungsliste"
             ],
         };
@@ -22,9 +22,7 @@ export default class ImportCard extends Component {
                     <div className="card-body">
                         <h5 className="card-title">Erzeugen</h5>
                         {items.map((item) => (
-                            <Link key={item} to={{ pathname: "/erzeugen", state: {table: item} }} className="btn btn-secondary btn-block my-2">
-                                {item.replace('_', ' ')}
-                            </Link>     
+                            <Erzeugen key={item} table={item} />
                         ))}
                     </div>
                 </div>
