@@ -16,7 +16,7 @@
 
     $method = $_SERVER['REQUEST_METHOD'];
     $table = $_POST['table'];
-    $statusMsg = "";
+    $statusMsg = [];
     
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
     $fileName = basename($_FILES["file"]["name"]);
@@ -47,16 +47,22 @@
                 $targetFilePath = convertToUTF8($sourceFile);
                 $fields = $con->query($fieldquery);
                 if($fields) {
-                    $fieldData = mysqli_fetch_fields($fields);
-                    $fieldNames = "";
-                    foreach($fieldData as $var) {
-                        $fieldNames .= "`".$var->name."`,";
-                        $fieldCompare[] = $var->name;
+                    $firstRowNames = "";
+                    $firstRow = preg_replace('/\s+/', ' ', trim(fgets(fopen($targetFilePath, "r"))));
+                    $firstRow = explode(",",$firstRow);
+                    foreach($firstRow as $var) {
+                        $firstRowNames .= "`".$var."`,";
                     }
-                    $fieldNames = substr($fieldNames, 0, -1);
-                    $firstRow = fgetcsv(fopen($targetFilePath, "r"), 1);
+                    $firstRowNames = substr($firstRowNames, 0, -1);
 
-                    $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($fieldNames)";
+                    $con->query("CREATE TEMPORARY TABLE temporary_table SELECT * FROM `$table` WHERE 1=0");
+                    $con->query("LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE temporary_table FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($firstRowNames)");
+                    $tableKey = mysqli_fetch_assoc(mysqli_query($con, "SHOW KEYS FROM `$table` WHERE Key_name = 'PRIMARY'"));
+                    $con->query("INSERT INTO `$table` SELECT * FROM temporary_table ON DUPLICATE KEY UPDATE `".$tableKey["Column_name"]."` = VALUES(".$tableKey["Column_name"].")");
+                    $statusMsg[] = $con->info;
+                    $con->query("DROP TEMPORARY TABLE temporary_table;");
+
+                    //$query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($firstRowNames)";
                     /*
                     if($fieldCompare == $firstRow) {
                         $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($fieldNames)";
@@ -64,23 +70,23 @@
                         $query = "LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE `$table` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ($fieldNames)";
                     }
                     */
-                    $insert = $con->query($query);
-                    if($insert) {
+                    //$insert = $con->query($query);
+                    //if($insert) {
+                    if($con->error == "") {
                         if($con->affected_rows > 0) {
-                            $statusMsg = "Erfolgreich $con->affected_rows Zeilen importiert" . PHP_EOL;
+                            $statusMsg[] = "Erfolgreich $con->affected_rows Zeilen importiert";
                         } else {
-                            $statusMsg = "Upload erfolgreich. Keine neue Zeilen importiert" . PHP_EOL;
+                            $statusMsg[] = "Upload erfolgreich. Keine neue Zeilen importiert";
                         } 
                     } else {
-                        $statusMsg = "Fehlgeschlagen: " . $con->error . PHP_EOL;
-                        $statusMsg .= $query . PHP_EOL;
+                        $statusMsg[] = "Fehlgeschlagen: " . $con->error;
                     }
                 } else {
-                    $statusMsg = $con->error . PHP_EOL;
-                    $statusMsg .= "Leider konnte die Datenbank nicht gelesen werden";
+                    $statusMsg[] = $con->error;
+                    $statusMsg[] = "Leider konnte die Datenbank nicht gelesen werden";
                 }
             } else {
-                $statusMsg = "Leider konnte die Datei nicht hochgeladen werden";
+                $statusMsg[] = "Leider konnte die Datei nicht hochgeladen werden";
             }
             echo json_encode($statusMsg);
             break;
