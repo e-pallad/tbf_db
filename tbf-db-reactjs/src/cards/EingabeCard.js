@@ -10,14 +10,16 @@ export default class ExportCard extends Component {
     }
 
     render() {
-        const { items } = this.state;
-        items.push('Verfahrenstechnikangaben');
+        let cardsItems = Object.assign({}, this.state.items);
+        cardsItems = Object.values(cardsItems);
+        cardsItems.push('Verfahrenstechnikangaben');
+        cardsItems.push('Masterliste');
         return(
             <div className="col">
                 <div className="card p-0">
                     <div className="card-body">
                         <h5 className="card-title">Bearbeiten</h5>
-                        {items.map((item) => (
+                        {cardsItems.map((item) => (
                             <Link key={item} to={{ pathname: "/eingabe", state: {table: item} }} className="btn btn-warning btn-block my-2">
                                 {
                                     ( 
