@@ -54,13 +54,11 @@
 
     function headerConfig($array) {
         foreach ($array as $key => $value) {
-            if ($key == 'PnPID') {
-                $returnArray[] = array('headerName' => $value, 'field' => $value, 'editable' => false);
-            } elseif ($key == 'TBF_ID') {
+            if ($value == 'PnPID' || $value == 'TBF_ID') {
                 $returnArray[] = array('headerName' => $value, 'field' => $value, 'editable' => false);
             } else {
                 $returnArray[] = array('headerName' => $value, 'field' => $value, 'editable' => true);
-            } 
+            }
         }
         return $returnArray;
     }
