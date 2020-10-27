@@ -7,7 +7,25 @@
 
     $method = $_SERVER['REQUEST_METHOD'];
     $table = $_GET['table'];
-    if ($table == "SEF_Messstellenliste") {
+    if ($table == "SEF_E-Verbraucherliste") {
+        $query = "
+        SELECT 
+            CONCAT_WS(
+                '.',
+                `AKZ_Gr1_Standort`,
+                `AKZ_Gr2_Anlagenteil`,
+                `AKZ_Gr3_Aggregat`,
+                `AKZ_Gr4_Nummer`,
+                `AKZ_Gr5_Nummer`,
+                `AKZ_Gr6_Nummer`) 
+            AS `AKZ Kodierung` 
+        FROM 
+            `RI-TBF_SEF_Apparateliste` 
+        LEFT JOIN 
+            `RI-TBF_SEF_Elektroangaben` 
+        ON 
+        ";
+    } elseif ($table == "SEF_Messstellenliste") {
         $query = "
         SELECT 
         CONCAT_WS(
@@ -50,24 +68,6 @@
             `Zusatzgeräte/Bemerkungen`
         FROM 
             `RI-TBF_SEF_Messstellenliste`
-        ";
-    } elseif ($table == "SEF_E-Verbraucherliste") {
-        $query = "
-        SELECT 
-            CONCAT_WS(
-                '.',
-                `AKZ_Gr1_Standort`,
-                `AKZ_Gr2_Anlagenteil`,
-                `AKZ_Gr3_Aggregat`,
-                `AKZ_Gr4_Nummer`,
-                `AKZ_Gr5_Nummer`,
-                `AKZ_Gr6_Nummer`) 
-            AS `AKZ Kodierung` 
-        FROM 
-            `RI-TBF_SEF_Apparateliste` 
-        LEFT JOIN 
-            `RI-TBF_SEF_Elektroangaben` 
-        ON 
         ";
     } elseif ($table == "SEF_Armaturenliste") {
         $query =  "
