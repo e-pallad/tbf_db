@@ -69,36 +69,9 @@
         FROM 
             `RI-TBF_SEF_Messstellenliste`
         ";
-    } elseif ($table == "SEF_Armaturenliste") {
-        $query =  "
-        SELECT 
-            CONCAT_WS(
-                '.',
-                `AKZ_Gr1_Standort`,
-                `AKZ_Gr2_Anlagenteil`,
-                `AKZ_Gr3_Aggregat`,
-                `AKZ_Gr4_Nummer`,
-                `AKZ_Gr5_Aggregat`,
-                `AKZ_Gr6_Nummer`) 
-            AS `AKZ Kodierung`, 
-            `Benennung`,
-            `Benennung Zusatz`,
-            `NW`,
-            `PN`,
-            `TBV/ITD Nr.`,
-            `Einbauort bzw. Rohrleitungs Nr.`,
-            `R&I EB68-Nr.`,
-            `Feld-Nr.`,
-            `Bemerkung`,
-            `Zustand/Bearbeitung` 
-        FROM 
-            `RI-TBF_SEF_Armaturenliste`
-        ";
     } else {
         $query = "SELECT * FROM `$table`";
     }
-
-    $queryMessstellenliste = 
     
     $data = mysqli_fetch_all($con->query($query));
     $header = mysqli_fetch_all($con->query("DESCRIBE `$table`"));
@@ -116,11 +89,6 @@
             fputcsv($f, $headerLine, $delimiter);
 
             foreach ($data as $line) { 
-                /*
-                $line = array_map(function($cell){
-                    mb_convert_encoding($cell, 'UTF-16LE', 'UTF-8');
-                }, $line);
-                */
                 fputcsv($f, $line, $delimiter); 
             }
             fseek($f, 0);
