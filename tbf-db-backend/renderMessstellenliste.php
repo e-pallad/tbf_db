@@ -16,7 +16,7 @@
         $headerLine[] = $line[0];
     }
 
-    class PDF extends FPDF {
+    class PDF extends RPDF {
         // Page header
         function Header() {
             global $headerLine;
@@ -29,33 +29,142 @@
             $this->Ln();
 
             $this->SetFont('Arial','',6);
-            $this->Cell(5,20,'Lfd. Nr.',1,0,'L',1);
-            $this->Cell(22,20,utf8_decode('AKZ Messgröße'),1,0,'C',1);
-            $this->Cell(35,20,'Funktion',1,0,'C',1);
-            $this->Cell(6,20,'Schaltanlage',1,0,'L',1);
-            $this->Cell(41,20,'Bezeichnung',1,0,'C',1);
-            $this->Cell(20,20,'Messbereich',1,0,'C',1);
-            $this->Cell(10,20,'Ausgangssignal',1,0,'C',1);
-            $this->Cell(5,20,'Spannungsversorgung [V]',1,0,'L',1);
-            $this->Cell(30,20,'Messverfahren',1,0,'C',1);
-            $this->Cell(6,20,'Anzahl der Grenzkontakte',1,0,'L',1);
-            $this->Cell(6,20,'Selbstüberwachung + Störmeldekontakt',1,0,'L',1);
-            $this->Cell(3,20,'Sicherungsautomat',1,0,'L',1);
-            $this->Cell(3,20,'NH-Trenner',1,0,'L',1);
-            $this->Cell(3,20,'Überspannungsschutz',1,0,'L',1);
-            $this->Cell(3,20,'FI-Schutzschalter',1,0,'L',1);
-            $this->Cell(3,20,'Wartungsschalter',1,0,'L',1);
-            $this->Cell(3,20,'Vor-Ort-Anzeige',1,0,'L',1);
-            $this->Cell(3,20,'Anzeige Schaltschrank',1,0,'L',1);
-            $this->Cell(3,20,'Anzeige Bedientafel',1,0,'L',1);
-            $this->Cell(3,20,'Anzeige im PLS',1,0,'L',1);
-            $this->Cell(3,20,'Erneuern VO',1,0,'L',1);
-            $this->Cell(3,20,'Erneuern EMSR',1,0,'L',1);
-            $this->Cell(6,20,'Schutzart',1,0,'L',1);
-            $this->Cell(3,20,'EX-Schutz',1,0,'L',1);
-            $this->Cell(3,20,'zu Bearbeiten',1,0,'L',1);
-            $this->Cell(30,20,'Zusatzgeräte / Bemerkungen',1,0,'C',1);
-            $this->Cell(20,20,'Zustand / Bearbeitung',1,0,'L',1);
+            $this->SetTextColor(0,0,0);
+            $this->Cell(5,25,'Lfd. Nr.',1,0,'L',1);
+            $this->Cell(22,25,utf8_decode('AKZ Messgröße'),1,0,'C',1);
+            $this->Cell(35,25,'Funktion',1,0,'C',1);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 6, 25, 'DF');
+            $this->TextWithDirection($x+3.8,$y+23,'Schaltanlage','U');
+            $this->SetXY($x+6,$y);
+            
+            $this->Cell(41,25,'Bezeichnung',1,0,'C',1);
+            $this->Cell(20,25,'Messbereich',1,0,'C',1);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 10, 25, 'DF');
+            $this->TextWithDirection($x+5.5,$y+23,'Ausgangssignal','U');
+            $this->SetXY($x+10,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 5, 25, 'DF');
+            $this->TextWithDirection($x+2.3,$y+23,"Spannungs- ",'U');
+            $this->TextWithDirection($x+4.3,$y+23,"versorgung [V]",'U');
+            $this->SetXY($x+5,$y);
+
+            $this->Cell(30,25,'Messverfahren',1,0,'C',1);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 6, 25, 'DF');
+            $this->TextWithDirection($x+2.8,$y+23,"Anzahl der",'U');
+            $this->TextWithDirection($x+4.8,$y+23,"Grenzkontakte",'U');
+            $this->SetXY($x+6,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 6, 25, 'DF');
+            $this->TextWithDirection($x+2.8,$y+23,utf8_decode("Selbstüberwachung +"),'U');
+            $this->TextWithDirection($x+4.8,$y+23,utf8_decode("Störmeldekontakt"),'U');
+            $this->SetXY($x+6,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"Sicherungsautomat",'U');
+            $this->SetXY($x+3,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"NH-Trenner",'U');
+            $this->SetXY($x+3,$y);
+            
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,utf8_decode("Überspannungsschutz"),'U');
+            $this->SetXY($x+3,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"FI-Schutzschalter",'U');
+            $this->SetXY($x+3,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"Wartungsschalter",'U');
+            $this->SetXY($x+3,$y);
+            
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"Vor-Ort-Anzeige",'U');
+            $this->SetXY($x+3,$y);
+            
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"Anzeige Schaltschrank",'U');
+            $this->SetXY($x+3,$y);
+            
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"Anzeige Bedientafel",'U');
+            $this->SetXY($x+3,$y);
+            
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"Anzeige im PLS",'U');
+            $this->SetXY($x+3,$y);
+            
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"Erneuern VO",'U');
+            $this->SetXY($x+3,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"Erneuern EMSR",'U');
+            $this->SetXY($x+3,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 6, 25, 'DF');
+            $this->TextWithDirection($x+4,$y+23,"Schutzart",'U');
+            $this->SetXY($x+6,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"EX-Schutz",'U');
+            $this->SetXY($x+3,$y);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 25, 'DF');
+            $this->TextWithDirection($x+2,$y+23,"zu Bearbeiten",'U');
+            $this->SetXY($x+3,$y);
+            
+            $this->Cell(30,25,utf8_decode("Zusatzgeräte / Bemerkungen"),1,0,'C',1);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 20, 25, 'DF');
+            $this->TextWithDirection($x+8.5,$y+19,"Zustand /",'U');
+            $this->TextWithDirection($x+10.5,$y+19,"Bearbeitung",'U');
+            $this->SetXY($x+20,$y);
+
             $this->Ln();
 
             $this->SetTextColor(75,135,190);
@@ -127,36 +236,53 @@
             foreach($data as $row) {
 
                 $this->SetFont('Arial','',6);
-
-                $this->Cell(5,3,$count,1,0,'C');
-                $this->Cell(22,3,$row[0],1,0,'C');
-                $this->Cell(11,3,utf8_decode($row[1]),1,0,'C');
-                $this->Cell(11,3,$row[2],1,0,'C');
-                $this->Cell(13,3,$row[3],1,0,'C');
-                $this->Cell(6,3,$row[4],1,0,'C');
-                $this->Cell(41,3,$row[27],1,0,'C');
-                $this->Cell(20,3,$row[5],1,0,'C');
-                $this->Cell(10,3,$row[6],1,0,'C');
-                $this->Cell(5,3,$row[7],1,0,'C');
-                $this->Cell(30,3,$row[8],1,0,'C');
-                $this->Cell(6,3,$row[9],1,0,'C');
-                $this->Cell(6,3,$row[10],1,0,'C');
-                $this->Cell(3,3,$row[11],1,0,'C');
-                $this->Cell(3,3,$row[12],1,0,'C');
-                $this->Cell(3,3,$row[13],1,0,'C');
-                $this->Cell(3,3,$row[14],1,0,'C');
-                $this->Cell(3,3,$row[15],1,0,'C');
-                $this->Cell(3,3,$row[16],1,0,'C');
-                $this->Cell(3,3,$row[17],1,0,'C');
-                $this->Cell(3,3,$row[18],1,0,'C');
-                $this->Cell(3,3,$row[19],1,0,'C');
-                $this->Cell(3,3,$row[20],1,0,'C');
-                $this->Cell(3,3,$row[21],1,0,'C');
-                $this->Cell(6,3,$row[22],1,0,'C');
-                $this->Cell(3,3,$row[23],1,0,'C');
-                $this->Cell(3,3,$row[24],1,0,'C');
-                $this->Cell(30,3,$row[25],1,0,'C');
-                $this->Cell(20,3,$row[26],1,0,'C');
+                $this->SetTextColor(75,135,190);
+                $this->Cell(5,6,$count,1,0,'C');
+                $this->SetTextColor(0,0,0);
+                $this->Cell(22,6,$row[0],1,0,'C');
+                if (strlen($row[1]) > 10) {
+                    $x=$this->GetX();
+                    $y=$this->GetY();
+                    $this->Rect($x, $y, 11, 6);
+                    $this->MultiCell(11,2.8,utf8_decode($row[1]),0,'L');
+                    $this->SetXY($x+11,$y);
+                } else {
+                    $this->Cell(11,6,utf8_decode($row[1]),1,0,'C');
+                }
+                $this->Cell(11,6,$row[2],1,0,'C');
+                $this->Cell(13,6,$row[3],1,0,'C');
+                $this->Cell(6,6,$row[4],1,0,'C');
+                if (strlen($row[27]) > 40) {
+                    $x=$this->GetX();
+                    $y=$this->GetY();
+                    $this->Rect($x, $y, 41, 6);
+                    $this->MultiCell(41,2.8,utf8_decode($row[27]),0,'L');
+                    $this->SetXY($x+41,$y);
+                } else {
+                    $this->Cell(41,6,$row[27],1,0,'C');
+                }
+                $this->Cell(20,6,$row[5],1,0,'C');
+                $this->Cell(10,6,$row[6],1,0,'C');
+                $this->Cell(5,6,$row[7],1,0,'C');
+                $this->Cell(30,6,$row[8],1,0,'C');
+                $this->Cell(6,6,$row[9],1,0,'C');
+                $this->Cell(6,6,$row[10],1,0,'C');
+                $this->Cell(3,6,$row[11],1,0,'C');
+                $this->Cell(3,6,$row[12],1,0,'C');
+                $this->Cell(3,6,$row[13],1,0,'C');
+                $this->Cell(3,6,$row[14],1,0,'C');
+                $this->Cell(3,6,$row[15],1,0,'C');
+                $this->Cell(3,6,$row[16],1,0,'C');
+                $this->Cell(3,6,$row[17],1,0,'C');
+                $this->Cell(3,6,$row[18],1,0,'C');
+                $this->Cell(3,6,$row[19],1,0,'C');
+                $this->Cell(3,6,$row[20],1,0,'C');
+                $this->Cell(3,6,$row[21],1,0,'C');
+                $this->Cell(6,6,$row[22],1,0,'C');
+                $this->Cell(3,6,$row[23],1,0,'C');
+                $this->Cell(3,6,$row[24],1,0,'C');
+                $this->Cell(30,6,$row[25],1,0,'C');
+                $this->Cell(20,6,$row[26],1,0,'C');
               
                 $count++;
                 $this->Ln();
@@ -166,6 +292,7 @@
         function Footer() {
             $this->SetY(-20);
             $this->SetFont('Arial','',7.5);
+            $this->SetTextColor(0,0,0);
             $this->Cell(8,10,'Datei: ',0,0,'L');
             $this->Cell(30,10,'Dateiname?',0,0,'L');
             $this->Cell(78,10,'',0,0);
@@ -196,9 +323,9 @@
     }
     
     $pdf = new PDF('L');
-    $pdf->SetFont('Arial','',8);
+    $pdf->AliasNbPages('{nb}');
     $pdf->AddPage();
     $pdf->BasicTable($data);
-    $pdf->AliasNbPages('{nb}');
+
     $pdf->Output();
 ?>

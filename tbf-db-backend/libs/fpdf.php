@@ -7,8 +7,6 @@
 * Author:  Olivier PLATHEY                                                     *
 *******************************************************************************/
 
-include("transform.php");
-
 define('FPDF_VERSION','1.82');
 
 class FPDF
