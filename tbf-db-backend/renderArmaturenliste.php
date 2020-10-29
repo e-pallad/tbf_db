@@ -94,9 +94,34 @@
         }
     
         function Footer() {
-            $this->SetY(-15);
-            $this->SetFont('Arial','I',8);
-            $this->Cell(0,10,'Seite '.$this->PageNo().' von {nb}',0,0,'C');
+            $this->SetY(-20);
+            $this->SetFont('Arial','',7.5);
+            $this->Cell(8,10,'Datei: ',0,0,'L');
+            $this->Cell(30,10,'Dateiname?',0,0,'L');
+            $this->Cell(78,10,'',0,0);
+            $this->SetFont('Arial','',10.7);
+            $this->Cell(101,10);
+            $this->Ln(3);
+
+            $this->SetFont('Arial','',7.5);
+            $this->Cell(18,10,utf8_decode('geändert:'),0,0,'L');
+            $this->Cell(18,10,date("d.m.Y"),0,0,'L');
+            $this->Cell(80,10,'',0,0);
+            $this->SetFont('Arial','',10.7);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->MultiCell(30,5,'Armaturenliste Gewerk SEVA',0,'C');
+            $this->SetXY($x+30,$y);
+            $this->Ln(3);
+
+            $this->SetFont('Arial','',7.5);
+            $this->Cell(18,10,'Druckdatum:',0,0,'L');
+            $this->Cell(18,10,date("d.m.Y"),0,0,'L');
+            $this->Cell(80,10,'',0,0);
+            $this->Cell(25,15,'',0,0,'C');
+            $this->Cell(101,10);
+            $this->Cell(15,10,'Seite '.$this->PageNo().' von {nb}',0,0,'C');
         }
     }
     

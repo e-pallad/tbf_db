@@ -1,13 +1,13 @@
 <?php
     include('connect.php');
-    require('libs/fpdf.php');
+    require('libs/rpdf.php');
 
     error_reporting(-1);
     ini_set("display_errors", "1");
     ini_set("log_errors", 1);
     ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
 
-    $query = "SELECT CONCAT_WS(' . ', `AKZ_Gr1_Standort`, `AKZ_Gr2_Anlagenteil`, `AKZ_Gr3_Aggregat`, `AKZ_Gr4_Nummer`) AS `AKZ Kodierung`, `Funktion_Stoff`, `Funktion_Cod.`, CONCAT(`Funktion_Signal_High`, ', ', `Funktion_Signal_Low`) AS `Funktion_Signal`, `Schaltanlage`, `Messbereich`, `Ausgangssignal`, `Spannungsversorgung`, `Messverfahren`, `Anzahl der Grenzkontakte`, `Selbstüberwachung + Störmeldekontakt`, `Sicherungsautomat`, `NH-Trenner`, `Überspannungsschutz`, `FI-Schutzschalter`, `Wartungsschalter`, `Vor-Ort-Anzeige`, `Anzeige Schaltschrank`, `Anzeige Bedientafel`, `Anzeige im PLS`, `Erneuern VO`, `Erneuern EMSR`, `Schutzart`, `Ex-Schutz`, `zu Bearbeiten`, `Zusatzgeräte/Bemerkungen`, `Zustand/Bearbeitung` FROM `RI-TBF_SEF_Messstellenliste` WHERE `AKZ_Gr4_Nummer` > 0";
+    $query = "SELECT CONCAT_WS(' . ', `AKZ_Gr1_Standort`, `AKZ_Gr2_Anlagenteil`, `AKZ_Gr3_Aggregat`, `AKZ_Gr4_Nummer`) AS `AKZ Kodierung`, `Funktion_Stoff`, `Funktion_Cod.`, CONCAT(`Funktion_Signal_High`, ', ', `Funktion_Signal_Low`) AS `Funktion_Signal`, `Schaltanlage`, `Messbereich`, `Ausgangssignal`, `Spannungsversorgung`, `Messverfahren`, `Anzahl der Grenzkontakte`, `Selbstüberwachung + Störmeldekontakt`, `Sicherungsautomat`, `NH-Trenner`, `Überspannungsschutz`, `FI-Schutzschalter`, `Wartungsschalter`, `Vor-Ort-Anzeige`, `Anzeige Schaltschrank`, `Anzeige Bedientafel`, `Anzeige im PLS`, `Erneuern VO`, `Erneuern EMSR`, `Schutzart`, `Ex-Schutz`, `zu Bearbeiten`, `Zusatzgeräte/Bemerkungen`, `Zustand/Bearbeitung`, `Benennung` FROM `RI-TBF_SEF_Messstellenliste` WHERE `AKZ_Gr4_Nummer` > 0";
     
     $header = mysqli_fetch_all($con->query("DESCRIBE `SEF_Armaturenliste`"));
     $data = mysqli_fetch_all($con->query($query));
@@ -34,18 +34,7 @@
             $this->Cell(35,20,'Funktion',1,0,'C',1);
             $this->Cell(6,20,'Schaltanlage',1,0,'L',1);
             $this->Cell(41,20,'Bezeichnung',1,0,'C',1);
-
-            $x=$this->GetX();
-            $y=$this->GetY();
-
-            $this->StartTransform();
-            $this->Rotate(180, 20, 20);
-            $this->Rect($x, $y, 20, 20, 'DF');
-            $this->Text(0, 0, 'Messbereich');
-            $this->StopTransform();
-           
-            //$this->Cell(20,20,'Messbereich',1,0,'C',1);
-            
+            $this->Cell(20,20,'Messbereich',1,0,'C',1);
             $this->Cell(10,20,'Ausgangssignal',1,0,'C',1);
             $this->Cell(5,20,'Spannungsversorgung [V]',1,0,'L',1);
             $this->Cell(30,20,'Messverfahren',1,0,'C',1);
@@ -136,15 +125,16 @@
         function BasicTable($data) {
             $count = 1;
             foreach($data as $row) {
+
                 $this->SetFont('Arial','',6);
 
                 $this->Cell(5,3,$count,1,0,'C');
                 $this->Cell(22,3,$row[0],1,0,'C');
-                $this->Cell(11,3,$row[1],1,0,'C');
+                $this->Cell(11,3,utf8_decode($row[1]),1,0,'C');
                 $this->Cell(11,3,$row[2],1,0,'C');
                 $this->Cell(13,3,$row[3],1,0,'C');
                 $this->Cell(6,3,$row[4],1,0,'C');
-                $this->Cell(41,3,'fehlt in Abfrage',1,0,'C');
+                $this->Cell(41,3,$row[27],1,0,'C');
                 $this->Cell(20,3,$row[5],1,0,'C');
                 $this->Cell(10,3,$row[6],1,0,'C');
                 $this->Cell(5,3,$row[7],1,0,'C');
@@ -174,9 +164,34 @@
         }
     
         function Footer() {
-            $this->SetY(-15);
-            $this->SetFont('Arial','I',8);
-            $this->Cell(0,10,'Seite '.$this->PageNo().' von {nb}',0,0,'C');
+            $this->SetY(-20);
+            $this->SetFont('Arial','',7.5);
+            $this->Cell(8,10,'Datei: ',0,0,'L');
+            $this->Cell(30,10,'Dateiname?',0,0,'L');
+            $this->Cell(78,10,'',0,0);
+            $this->SetFont('Arial','',10.7);
+            $this->Cell(101,10);
+            $this->Ln(3);
+
+            $this->SetFont('Arial','',7.5);
+            $this->Cell(18,10,utf8_decode('geändert:'),0,0,'L');
+            $this->Cell(18,10,date("d.m.Y"),0,0,'L');
+            $this->Cell(80,10,'',0,0);
+            $this->SetFont('Arial','',10.7);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->MultiCell(30,5,'Messstellenliste Gewerk SEVA',0,'C');
+            $this->SetXY($x+30,$y);
+            $this->Ln(3);
+
+            $this->SetFont('Arial','',7.5);
+            $this->Cell(18,10,'Druckdatum:',0,0,'L');
+            $this->Cell(18,10,date("d.m.Y"),0,0,'L');
+            $this->Cell(80,10,'',0,0);
+            $this->Cell(25,15,'',0,0,'C');
+            $this->Cell(101,10);
+            $this->Cell(15,10,'Seite '.$this->PageNo().' von {nb}',0,0,'C');
         }
     }
     
