@@ -7,6 +7,8 @@
     ini_set("log_errors", 1);
     ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
 
+    $method = $_SERVER['REQUEST_METHOD'];
+
     $query = "SELECT CONCAT_WS( '.', `RI-TBF_SEF_Apparateliste`.`AKZ_Gr1_Standort`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr2_Anlagenteil`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr3_Aggregat`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr4_Nummer`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr5_Aggregat`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr6_Nummer`) AS `AKZ Kodierung`, `RI-TBF_SEF_Elektroangaben`.`Schaltfeld`, `RI-TBF_SEF_Elektrokomponentenliste`.`Einschub Nr.`, `RI-TBF_SEF_Apparateliste`.`Benennung`, `RI-TBF_SEF_Apparateliste`.`Benennung Zusatz`, `RI-TBF_SEF_Elektrokomponentenliste`.`Leistung`, `RI-TBF_SEF_Elektrokomponentenliste`.`Gleichzeitigkeitsfaktor`, `RI-TBF_SEF_Elektrokomponentenliste`.`Wirkungsgrad`, `RI-TBF_SEF_Elektrokomponentenliste`.`cos phi`, `RI-TBF_SEF_Elektrokomponentenliste`.`Leistung` * `RI-TBF_SEF_Elektrokomponentenliste`.`Gleichzeitigkeitsfaktor` AS `Leistung mit Gleichzeitigkeitsfaktor`, `RI-TBF_SEF_Apparateliste`.`Strom`, `RI-TBF_SEF_Apparateliste`.`Spannung`, `RI-TBF_SEF_Elektrokomponentenliste`.`Direktanlauf`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stern-Dreieck-Anlauf`, `RI-TBF_SEF_Elektrokomponentenliste`.`Sanftanlauf`, `RI-TBF_SEF_Elektrokomponentenliste`.`Drehzahlverstellung`, `RI-TBF_SEF_Elektrokomponentenliste`.`Bypass für FU`, `RI-TBF_SEF_Elektrokomponentenliste`.`Polumschalter`,`RI-TBF_SEF_Elektrokomponentenliste`.`Wendeschaltung`,`RI-TBF_SEF_Elektrokomponentenliste`.`Motorschutz`, `RI-TBF_SEF_Elektrokomponentenliste`.`NH-Trenner`, `RI-TBF_SEF_Elektrokomponentenliste`.`SI.-Überwachung`, `RI-TBF_SEF_Elektrokomponentenliste`.`FI-Schutzschalter`, `RI-TBF_SEF_Elektrokomponentenliste`.`Reparaturschalter`,`RI-TBF_SEF_Elektrokomponentenliste`.`Thermokontakt`, `RI-TBF_SEF_Elektrokomponentenliste`.`Dichte-Schutz`, `RI-TBF_SEF_Elektrokomponentenliste`.`Strömungswächter`, `RI-TBF_SEF_Elektrokomponentenliste`.`Druckwächter`, `RI-TBF_SEF_Elektrokomponentenliste`.`Not-Aus`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stromwandler`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stromanzeige Schaltschrank`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stromanzeige Bedienfeld`, `RI-TBF_SEF_Elektrokomponentenliste`.`Schieberheizung`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stellungsgeber`, `RI-TBF_SEF_Elektroangaben`.`Vor-Ort-Bedienung`, `RI-TBF_SEF_Elektroangaben`.`Bedienung am Schaltschrank`, `RI-TBF_SEF_Elektroangaben`.`Bedienung an Bedientafel`, `RI-TBF_SEF_Elektroangaben`.`Bedienung am Prozeßleitsystem`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Betrieb/Störung`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Schaltzustände`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Automatik`, `RI-TBF_SEF_Elektroangaben`.`PLS Betrieb/Störung`, `RI-TBF_SEF_Elektroangaben`.`PLS Schaltzustände`, `RI-TBF_SEF_Elektroangaben`.`PLS Automatik`, `RI-TBF_SEF_Elektroangaben`.`Ex-Schutz`, `RI-TBF_SEF_Elektroangaben`.`Schutzart`, `RI-TBF_SEF_Elektroangaben`.`Abschaltung im Ex-Fall`, `RI-TBF_SEF_Elektroangaben`.`Blitzschutz`, `RI-TBF_SEF_Elektroangaben`.`Ausführung Vor-Ort-Steuerstelle`, `RI-TBF_SEF_Elektroangaben`.`Schaltschrank für Einschub`, `RI-TBF_SEF_Elektroangaben`.`Typical Nr. MSK`, `RI-TBF_SEF_Elektroangaben`.`Motorsteuerkarte Nr.`, `RI-TBF_SEF_Elektroangaben`.`Zusatzgeräte/Bemerkungen`, `RI-TBF_SEF_Elektrokomponentenliste`.`Zustand/Bearbeitung` FROM `RI-TBF_SEF_Apparateliste` LEFT JOIN `Masterliste` ON `RI-TBF_SEF_Apparateliste`.`TBF_ID` = `Masterliste`.`TBF_ID` LEFT JOIN `RI-TBF_SEF_Elektroangaben` ON `RI-TBF_SEF_Apparateliste`.`TBF_ID` = `RI-TBF_SEF_Elektroangaben`.`TBF_ID` LEFT JOIN `RI-TBF_SEF_Elektrokomponentenliste` ON `RI-TBF_SEF_Apparateliste`.`PnPID` = `RI-TBF_SEF_Elektrokomponentenliste`.`PnPID` WHERE `RI-TBF_SEF_Apparateliste`.`AKZ_Gr4_Nummer` > 0";
     
     $data = mysqli_fetch_all($con->query($query));
@@ -617,5 +619,33 @@
     $pdf->AddPage();
     $pdf->BasicTable($data);
 
-    $pdf->Output();
+    switch ($method) {
+        case 'GET':
+            $delimiter=",";
+            $f = fopen('php://memory', 'w'); 
+            fputs($f, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+
+            foreach ($header as $line) { 
+                $headerLine[] = $line[0];
+            }
+
+            fputcsv($f, $headerLine, $delimiter);
+
+            foreach ($data as $line) { 
+                fputcsv($f, $line, $delimiter); 
+            }
+            fseek($f, 0);
+
+            header("Content-type: application/pdf");
+            header('Access-Control-Allow-Origin: *');
+            header('Content-Disposition: attachment; filename="SEF-EVerbraucherliste.pdf";');
+
+            readfile($pdf->Output());
+            
+            break;
+        default:
+            echo http_response_code(403);
+            break;
+    }
+?>
 ?>
