@@ -24,13 +24,14 @@ function uploadFile( table, file ) {
             document.querySelector(".upload").classList.add("done");
             document.querySelector(".upload").classList.remove("drop", "drag");
             setTimeout(() => document.querySelector(".upload").classList.remove("done"), 3000);
-            console.log(this.state.file);
+            console.log(data);
         },
         (error) => {
             this.setState({ 
                 data: error,
                 file: null
             })
+            console.log(data);
         } 
     )
 }
