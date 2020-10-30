@@ -7,34 +7,15 @@
 
     $method = $_SERVER['REQUEST_METHOD'];
     $table = $_GET['table'];
-    if ($table == "SEF_E-Verbraucherliste") {
-        $query = "
-        SELECT 
-            CONCAT_WS(
-                '.',
-                `AKZ_Gr1_Standort`,
-                `AKZ_Gr2_Anlagenteil`,
-                `AKZ_Gr3_Aggregat`,
-                `AKZ_Gr4_Nummer`,
-                `AKZ_Gr5_Aggregat`,
-                `AKZ_Gr6_Nummer`) 
-            AS `AKZ Kodierung` 
-        FROM 
-            `RI-TBF_SEF_Apparateliste` 
-        LEFT JOIN 
-            `RI-TBF_SEF_Elektroangaben` 
-        ON 
-        ";
-    } else {
-        $query = "SELECT * FROM `$table`";
-    }
     
+    $query = "SELECT * FROM `$table`";
+
     $data = mysqli_fetch_all($con->query($query));
     $header = mysqli_fetch_all($con->query("DESCRIBE `$table`"));
 
     switch ($method) {
         case 'GET':
-            $delimiter=";";
+            $delimiter=",";
             $f = fopen('php://memory', 'w'); 
             fputs($f, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
 

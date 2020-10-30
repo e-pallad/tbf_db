@@ -9,29 +9,28 @@
 
     $query = "SELECT CONCAT_WS(' . ', `AKZ_Gr1_Standort`, `AKZ_Gr2_Anlagenteil`, `AKZ_Gr3_Aggregat`, `AKZ_Gr4_Nummer`) AS `AKZ Kodierung`, `Funktion_Stoff`, `Funktion_Cod.`, CONCAT(`Funktion_Signal_High`, ', ', `Funktion_Signal_Low`) AS `Funktion_Signal`, `Schaltanlage`, `Messbereich`, `Ausgangssignal`, `Spannungsversorgung`, `Messverfahren`, `Anzahl der Grenzkontakte`, `Selbstüberwachung + Störmeldekontakt`, `Sicherungsautomat`, `NH-Trenner`, `Überspannungsschutz`, `FI-Schutzschalter`, `Wartungsschalter`, `Vor-Ort-Anzeige`, `Anzeige Schaltschrank`, `Anzeige Bedientafel`, `Anzeige im PLS`, `Erneuern VO`, `Erneuern EMSR`, `Schutzart`, `Ex-Schutz`, `zu Bearbeiten`, `Zusatzgeräte/Bemerkungen`, `Zustand/Bearbeitung`, `Benennung` FROM `RI-TBF_SEF_Messstellenliste` WHERE `AKZ_Gr4_Nummer` > 0";
     
-    $header = mysqli_fetch_all($con->query("DESCRIBE `SEF_Armaturenliste`"));
     $data = mysqli_fetch_all($con->query($query));
-
-    foreach ($header as $line) { 
-        $headerLine[] = $line[0];
-    }
 
     class PDF extends RPDF {
         // Page header
         function Header() {
-            global $headerLine;
-
             $this->SetFillColor(75,135,190);
             $this->Image("./img/logo.png",245,5,50);
             $this->Ln(10);
             $this->SetFont('Arial','',10);
-            $this->Cell(281,5.5,'ARA Niederrad',1,0,'L');
+            $this->Cell(279,5.5,'ARA Niederrad',1,0,'L');
             $this->Ln();
 
             $this->SetFont('Arial','',6);
             $this->SetTextColor(0,0,0);
-            $this->Cell(5,25,'Lfd. Nr.',1,0,'L',1);
-            $this->Cell(22,25,utf8_decode('AKZ Messgröße'),1,0,'C',1);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 4, 25, 'DF');
+            $this->TextWithDirection($x+2.5,$y+23,'Lfd. Nr.','U');
+            $this->SetXY($x+4,$y);
+
+            $this->Cell(20,25,utf8_decode('AKZ Messgröße'),1,0,'C',1);
             $this->Cell(35,25,'Funktion',1,0,'C',1);
 
             $x=$this->GetX();
@@ -51,10 +50,10 @@
 
             $x=$this->GetX();
             $y=$this->GetY();
-            $this->Rect($x, $y, 5, 25, 'DF');
-            $this->TextWithDirection($x+2.3,$y+23,"Spannungs- ",'U');
-            $this->TextWithDirection($x+4.3,$y+23,"versorgung [V]",'U');
-            $this->SetXY($x+5,$y);
+            $this->Rect($x, $y, 6, 25, 'DF');
+            $this->TextWithDirection($x+2.8,$y+23,"Spannungs- ",'U');
+            $this->TextWithDirection($x+4.8,$y+23,"versorgung [V]",'U');
+            $this->SetXY($x+6,$y);
 
             $this->Cell(30,25,'Messverfahren',1,0,'C',1);
 
@@ -168,14 +167,14 @@
             $this->Ln();
 
             $this->SetTextColor(75,135,190);
-            $this->Cell(5,3,'','LR',0,'C');
-            $this->Cell(22,3,'','LR',0,'C');
+            $this->Cell(4,3,'','LR',0,'C');
+            $this->Cell(20,3,'','LR',0,'C');
             $this->Cell(35,3,'1','LR',0,'C');
             $this->Cell(6,3,'2','LR',0,'C');
             $this->Cell(41,3,'3','LR',0,'C');
             $this->Cell(20,3,'4','LR',0,'C');
             $this->Cell(10,3,'5','LR',0,'C');
-            $this->Cell(5,3,'6','LR',0,'C');
+            $this->Cell(6,3,'6','LR',0,'C');
             $this->Cell(30,3,'7','LR',0,'C');
             $this->Cell(6,3,'8','LR',0,'C');
             $this->Cell(6,3,'9','LR',0,'C');
@@ -197,8 +196,8 @@
             $this->Cell(20,3,'25','LR',0,'C');
             $this->Ln();
 
-            $this->Cell(5,3,'','LR',0,'C');
-            $this->Cell(22,3,'','LR',0,'C');
+            $this->Cell(4,3,'','LR',0,'C');
+            $this->Cell(20,3,'','LR',0,'C');
             $this->Cell(11,3,'Stoff',0,0,'C');
             $this->Cell(11,3,'Cod.',0,0,'C');
             $this->Cell(13,3,'Signal',0,0,'C');
@@ -206,7 +205,7 @@
             $this->Cell(41,3,'','LR',0,'C');
             $this->Cell(20,3,'','LR',0,'C');
             $this->Cell(10,3,'','LR',0,'C');
-            $this->Cell(5,3,'','LR',0,'C');
+            $this->Cell(6,3,'','LR',0,'C');
             $this->Cell(30,3,'','LR',0,'C');
             $this->Cell(6,3,'','LR',0,'C');
             $this->Cell(6,3,'','LR',0,'C');
@@ -237,9 +236,9 @@
 
                 $this->SetFont('Arial','',6);
                 $this->SetTextColor(75,135,190);
-                $this->Cell(5,6,$count,1,0,'C');
+                $this->Cell(4,6,$count,1,0,'C');
                 $this->SetTextColor(0,0,0);
-                $this->Cell(22,6,$row[0],1,0,'C');
+                $this->Cell(20,6,$row[0],1,0,'C');
                 if (strlen($row[1]) > 10) {
                     $x=$this->GetX();
                     $y=$this->GetY();
@@ -263,7 +262,7 @@
                 }
                 $this->Cell(20,6,$row[5],1,0,'C');
                 $this->Cell(10,6,$row[6],1,0,'C');
-                $this->Cell(5,6,$row[7],1,0,'C');
+                $this->Cell(6,6,$row[7],1,0,'C');
                 $this->Cell(30,6,$row[8],1,0,'C');
                 $this->Cell(6,6,$row[9],1,0,'C');
                 $this->Cell(6,6,$row[10],1,0,'C');
