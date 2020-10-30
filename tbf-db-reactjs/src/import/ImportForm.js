@@ -10,7 +10,8 @@ function uploadFile( table, file ) {
     formData.append('file', file);    
     const config = { 
         method: 'POST',
-        body: formData
+        body: formData,
+        data: [],
     };
 
     fetch(url, config)
@@ -82,8 +83,8 @@ export default class ImportForm extends Component {
         const data = this.state.data;
         let message;
         if (data) {
-            message.map((news) => (
-                <p>{news}</p>   
+            data.map((message) => (
+                <p>{message}</p>   
             ))
         }
         return (
