@@ -7,6 +7,8 @@
     ini_set("log_errors", 1);
     ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
 
+    $method = $_SERVER['REQUEST_METHOD'];
+
     $query = "SELECT CONCAT_WS(' . ', `AKZ_Gr1_Standort`, `AKZ_Gr2_Anlagenteil`, `AKZ_Gr3_Aggregat`, `AKZ_Gr4_Nummer`) AS `AKZ Kodierung`, `Funktion_Stoff`, `Funktion_Cod.`, CONCAT(`Funktion_Signal_High`, ', ', `Funktion_Signal_Low`) AS `Funktion_Signal`, `Schaltanlage`, `Messbereich`, `Ausgangssignal`, `Spannungsversorgung`, `Messverfahren`, `Anzahl der Grenzkontakte`, `Selbstüberwachung + Störmeldekontakt`, `Sicherungsautomat`, `NH-Trenner`, `Überspannungsschutz`, `FI-Schutzschalter`, `Wartungsschalter`, `Vor-Ort-Anzeige`, `Anzeige Schaltschrank`, `Anzeige Bedientafel`, `Anzeige im PLS`, `Erneuern VO`, `Erneuern EMSR`, `Schutzart`, `Ex-Schutz`, `zu Bearbeiten`, `Zusatzgeräte/Bemerkungen`, `Zustand/Bearbeitung`, `Benennung` FROM `RI-TBF_SEF_Messstellenliste` WHERE `AKZ_Gr4_Nummer` > 0";
     
     $data = mysqli_fetch_all($con->query($query));
@@ -326,5 +328,32 @@
     $pdf->AddPage();
     $pdf->BasicTable($data);
 
-    $pdf->Output();
+    switch ($method) {
+        case 'GET':
+            $delimiter=",";
+            $f = fopen('php://memory', 'w'); 
+            fputs($f, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+
+            foreach ($header as $line) { 
+                $headerLine[] = $line[0];
+            }
+
+            fputcsv($f, $headerLine, $delimiter);
+
+            foreach ($data as $line) { 
+                fputcsv($f, $line, $delimiter); 
+            }
+            fseek($f, 0);
+
+            header("Content-type: application/pdf");
+            header('Access-Control-Allow-Origin: *');
+            header('Content-Disposition: attachment; filename="SEF-Messstellenliste.pdf";');
+
+            readfile($pdf->Output());
+            
+            break;
+        default:
+            echo http_response_code(403);
+            break;
+    }
 ?>
