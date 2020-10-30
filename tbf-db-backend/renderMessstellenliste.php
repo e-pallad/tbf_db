@@ -330,21 +330,6 @@
 
     switch ($method) {
         case 'GET':
-            $delimiter=",";
-            $f = fopen('php://memory', 'w'); 
-            fputs($f, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
-
-            foreach ($header as $line) { 
-                $headerLine[] = $line[0];
-            }
-
-            fputcsv($f, $headerLine, $delimiter);
-
-            foreach ($data as $line) { 
-                fputcsv($f, $line, $delimiter); 
-            }
-            fseek($f, 0);
-
             header("Content-type: application/pdf");
             header('Access-Control-Allow-Origin: *');
             header('Content-Disposition: attachment; filename="SEF-Messstellenliste.pdf";');
