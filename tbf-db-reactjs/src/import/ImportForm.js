@@ -81,8 +81,7 @@ export default class ImportForm extends Component {
         const data = this.state.data;
         let message;
         if (data) {
-            message = <p>{data[0]}</p>
-            message = <p>{data[1]}</p>
+            message = <p>{data}</p>
         }
         return (
             <section>
