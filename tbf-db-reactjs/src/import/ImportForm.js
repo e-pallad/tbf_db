@@ -23,15 +23,13 @@ function uploadFile( table, file ) {
             })
             document.querySelector(".upload").classList.add("done");
             document.querySelector(".upload").classList.remove("drop", "drag");
-            setTimeout(() => document.querySelector(".upload").classList.remove("done"), 3000);
-            console.log(this.state.data);
+            setTimeout(() => document.querySelector(".upload").classList.remove("done"), 1000);
         },
         (error) => {
             this.setState({ 
                 data: error,
                 file: null
             })
-            console.log(this.state.data);
         } 
     )
 }
@@ -50,6 +48,7 @@ export default class ImportForm extends Component {
 
     componentWillUnmount() {
         document.getElementById('root').classList.add('container-fluid');
+        this.setState({ data: null });
     }
 
     componentDidMount() {
@@ -83,11 +82,12 @@ export default class ImportForm extends Component {
         let message;
         if (data) {
             message = <div className="message"><p>{data[0]}</p><p>{data[1]}</p><p>{data[2]}</p><p>{data[3]}</p><p>{data[4]}</p></div>
+            console.log(message);
         }
         return (
             <section>
                 <div className="upload">
-                    <input type="file" title="" accept=".csv" className="drop-here" />
+                    <input type="file" title="" accept=".xlsx" className="drop-here" />
                     <div className="text text-drop text-center">.csv Datei <br />hier ablegen <br />oder klicken <br />zum importieren</div>
                     <div className="text text-upload">uploading</div>
                     <svg className="progress-wrapper" width="300" height="300">
