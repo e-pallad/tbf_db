@@ -1,17 +1,16 @@
 <?php 
     require './connect.php';
-    include './libs/SimpleXLSX.php';
 
     /* 
     
-        https://askubuntu.com/a/767534
-    
+        https://askubuntu.com/a/767534 
+    */
         error_reporting(-1);
         ini_set("display_errors", "1");
         ini_set("log_errors", 1);
         ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
 
-    */
+    
 
     ini_set('mysql.allow_local_infile', 1);
 
@@ -25,7 +24,21 @@
     $sourceFile = "./uploads/" . $fileName;
 
     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-    
+
+    $fieldquery = "SELECT * FROM `$table` LIMIT 0,2";
+
+    function convertToUTF8($file) {
+        $fileData = file_get_contents($file);
+        if (!mb_detect_encoding($fileData, 'UTF-8', true)) {
+            $utf8_file_data = utf8_encode($fileData);
+        } else {
+            $utf8_file_data = $fileData;
+        }
+        $fileName = "./uploads/_UTF8.csv";
+        file_put_contents($fileName, $utf8_file_data);
+        return $fileName;
+    };
+
     if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
         $targetFilePath = convertToUTF8($sourceFile);
         $fields = $con->query($fieldquery);
@@ -38,13 +51,13 @@
             }
             $firstRowNames = substr($firstRowNames, 0, -1);
 
-            $con->query("CREATE TEMPORARY TABLE temporary_table SELECT * FROM `Gesamtdatenbank` WHERE 1=0");
+            $con->query("CREATE TEMPORARY TABLE temporary_table SELECT * FROM `$table` WHERE 1=0");
             $statusMsg[] = $con->error;
             
             $con->query("LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE temporary_table FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($firstRowNames)");
             $statusMsg[] = $con->error;
 
-            $tableKey = mysqli_fetch_assoc(mysqli_query($con, "SHOW KEYS FROM `Gesamtdatenbank` WHERE Key_name = 'PRIMARY'"));
+            $tableKey = mysqli_fetch_assoc(mysqli_query($con, "SHOW KEYS FROM `$table` WHERE Key_name = 'PRIMARY'"));
             $statusMsg[] = $con->error;
 
             $con->query("INSERT INTO `$table` SELECT * FROM temporary_table");
@@ -67,13 +80,11 @@
         $statusMsg[] = "Leider konnte die Datei nicht hochgeladen werden";
     }
 
-    switch ($_SERVER['REQUEST_METHOD']) {
+    switch ($method) {
         case 'POST':
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
-            
-            echo json_encode($result);
-            $con->close();
+            echo json_encode($statusMsg);
             break;
         default:
             echo http_response_code(403);

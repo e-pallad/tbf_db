@@ -10,6 +10,7 @@
 
 # production
 # /build
+*_old.php
 
 # Dev
 # /public

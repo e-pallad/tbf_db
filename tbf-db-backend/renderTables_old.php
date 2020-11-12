@@ -8,16 +8,49 @@
 */
     $method = $_SERVER['REQUEST_METHOD'];
     $table = $_GET['table'];
+    $headerQuery = "DESCRIBE `$table`";
     
     $con->query("SET NAMES 'utf-8'");
 
+    $query = "SELECT * FROM `$table`";
+    $queryVerfahrenstechnik = "
+    SELECT 
+        `PnPID`,
+    CONCAT_WS(
+        '.',
+        `AKZ_Gr1_Standort`,
+        `AKZ_Gr2_Anlagenteil`,
+        `AKZ_Gr3_Aggregat`,
+        `AKZ_Gr4_Nummer`,
+        `AKZ_Gr5_Aggregat`,
+        `AKZ_Gr6_Nummer`) 
+    AS `AKZ Kodierung`,
+        `Benennung`,
+        `Benennung Zusatz`,
+        `Hersteller`,
+        `Typ`,
+        `Medium`,
+        `Nennleistung`,
+        `Nennspannung`,
+        `Nennstrom`,
+        `Fördervolumen`,
+        `Drehzahl`,
+        `max. zul. Druck`,
+        `max. zul. Temperatur`,
+        `Volumen`,
+        `Fläche`,
+        `Gewicht`,
+        `Werkstoff`,
+        `Bauart`,
+        `Zugehörige Sicherheitseinrichtung`,
+        `Zustand/Bearbeitung`
+    FROM
+        `RI-TBF_SEF_Apparateliste`
+    ";
+
     $listTableContent = array();
 
-    if ($table == 'RI-TBF_SEF_Apparateliste') {
-        $query = "SELECT `PnPID`,`TBF_ID`,`R&I EB68-Nr.`,`Feld-Nr.`,`Zchn. Rev. Nr.`,`Bemerkung`,`AKZ_Gr1_Standort`,`AKZ_Gr2_Anlagenteil`,`AKZ_Gr3_Aggregat`,`AKZ_Gr4_Nummer`,`AKZ_Gr5_Nummer`,`AKZ_Gr6_Nummer`,`Benennung`,`Benennung Zusatz`,`Hersteller`,`Typ`,`Medium`,`Nennleistung [kW]`,`Nennspannung [V]`,`Nennstrom [A]`,`Fördervolumen [m3/h]`,`Drehzahl [U/min]`,`max. zul. Druck [barü]`,`max. zul. Temperatur [°C]`,`Volumen [m3]`,`Fläche [m2]`,`Gewicht [kg]`,`Werkstoff`,`Bauart`,`Zugehörige Sicherheitseinrichtung` FROM `Gesamtdatenbank`"
-    }
-
-    $header = array_column(mysqli_fetch_fields($con->query($query)));
+    $header = array_column(mysqli_fetch_all($con->query($headerQuery)),0);
 
     function headerConfig($array) {
         foreach ($array as $key => $value) {
@@ -32,7 +65,9 @@
 
     array_push($listTableContent, headerConfig($header));
     
-    if ($table == 'Verfahrenstechnikangaben') {
+    if ($table == 'SEF_Messstellenliste') {
+       // $data = mysqli_fetch_all($con->query($queryMessstellenliste));
+    } elseif ($table == 'Verfahrenstechnikangaben') {
         $data = mysqli_fetch_all($con->query($queryVerfahrenstechnik));
     } else {
         $data = mysqli_fetch_all($con->query($query));

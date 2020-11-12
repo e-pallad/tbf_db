@@ -1,9 +1,10 @@
 <?php 
     require './connect.php';
+    include './libs/SimpleXLSX.php';
 
     /* 
     
-        https://askubuntu.com/a/767534 
+        https://askubuntu.com/a/767534
     */
         error_reporting(-1);
         ini_set("display_errors", "1");
@@ -15,52 +16,45 @@
     ini_set('mysql.allow_local_infile', 1);
 
     $method = $_SERVER['REQUEST_METHOD'];
-    $table = $_POST['table'];
-    $statusMsg = [];
     
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
     $fileName = basename($_FILES["file"]["name"]);
     $targetFilePath = $targetDir . $fileName;
     $sourceFile = "./uploads/" . $fileName;
 
-    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-
-    $fieldquery = "SELECT * FROM `$table` LIMIT 0,2";
-
-    function convertToUTF8($file) {
-        $fileData = file_get_contents($file);
-        if (!mb_detect_encoding($fileData, 'UTF-8', true)) {
-            $utf8_file_data = utf8_encode($fileData);
-        } else {
-            $utf8_file_data = $fileData;
-        }
-        $fileName = "./uploads/_UTF8.csv";
-        file_put_contents($fileName, $utf8_file_data);
-        return $fileName;
-    };
-
+    function duplicateValues(&$item, $value) {
+        $item = $item . "=VALUES(" . $item . ")";
+    }
+    
     if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
-        $targetFilePath = convertToUTF8($sourceFile);
-        $fields = $con->query($fieldquery);
-        if($fields) {
-            $firstRowNames = "";
-            $firstRow = preg_replace('/\s+/', ' ', trim(fgets(fopen($targetFilePath, "r"))));
-            $firstRow = explode(",",$firstRow);
-            foreach($firstRow as $var) {
-                $firstRowNames .= "`".$var."`,";
+        if ($xlsx = SimpleXLSX::parse($sourceFile)) {
+            $colNames = $rows = [];
+
+            foreach ($xlsx->rows() as $k => $r) {
+                if ( $k === 0 ) {
+                    $colNames = $r;
+                    continue;
+                }
+                $rows[] = array_combine( $colNames, $r );
             }
-            $firstRowNames = substr($firstRowNames, 0, -1);
-
-            $con->query("CREATE TEMPORARY TABLE temporary_table SELECT * FROM `$table` WHERE 1=0");
-            $statusMsg[] = $con->error;
             
-            $con->query("LOAD DATA LOCAL INFILE '$targetFilePath' INTO TABLE temporary_table FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES ($firstRowNames)");
-            $statusMsg[] = $con->error;
+            foreach ($rows as $row) {
+                $cols = "`" . implode("`,`", array_keys($row)) . "`";
+                $values = "'" . implode("','", array_values($row)) . "'";
+                $values = str_replace("''", "NULL", $values);
 
-            $tableKey = mysqli_fetch_assoc(mysqli_query($con, "SHOW KEYS FROM `$table` WHERE Key_name = 'PRIMARY'"));
-            $statusMsg[] = $con->error;
+                $duplicates = explode(",", $cols);
+                array_walk($duplicates, "duplicateValues");
 
-            $con->query("INSERT INTO `$table` SELECT * FROM temporary_table");
+                if ($con->query("INSERT INTO `Gesamtdatenbank` ($cols) VALUES($values) ON DUPLICATE KEY UPDATE " . implode(",", $duplicates))) {
+                    continue;
+                } else {
+                    $statusMsg[] = $con->info;
+                    $statusMsg[] = $con->error;
+                    break;
+                }
+            }
+
             $statusMsg[] = $con->info;
             if (mysqli_warning_count($con)) {
                 $e = mysqli_get_warnings($con);
@@ -69,24 +63,24 @@
                 } while ($e->next());
             }
             $statusMsg[] = $con->affected_rows . " Zeilen importiert";
-            $con->query("DROP TEMPORARY TABLE temporary_table;");
-            $statusMsg[] = $con->error;
-
         } else {
-            $statusMsg[] = $con->error;
-            $statusMsg[] = "Leider konnte die Datenbank nicht gelesen werden";
+            $statusMsg[] = "Datei konnte nicht gelesen werden";
+            $statusMsg[] = SimpleXLSX::parseError();
         }
     } else {
         $statusMsg[] = "Leider konnte die Datei nicht hochgeladen werden";
     }
 
-    switch ($method) {
+    switch ($_SERVER['REQUEST_METHOD']) {
         case 'POST':
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
+            
             echo json_encode($statusMsg);
+            $con->close();
             break;
         default:
             echo http_response_code(403);
+            break;
     }
 ?>
