@@ -99,8 +99,7 @@ export default class Table extends Component {
                         
                         onRowValueChanged={this.dataChanged}
                         onGridReady={this.onGridReady}
-                        >
-                    </AgGridReact>
+                        />
                 </div>
             </div>
         );
