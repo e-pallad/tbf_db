@@ -16,7 +16,7 @@ export default class Export extends Component {
 				let url = window.URL.createObjectURL(blob);
 				let a = document.createElement('a');
 				a.href = url;
-				a.download = this.state.table + '_' + Date.now() + '.csv';
+				a.download = this.state.table + '_' + Date.now() + '.xlsx';
 				a.click();
 			});
         });
