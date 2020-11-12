@@ -9,7 +9,7 @@
 
     $method = $_SERVER['REQUEST_METHOD'];
 
-    $query = "SELECT CONCAT_WS( '.', `RI-TBF_SEF_Apparateliste`.`AKZ_Gr1_Standort`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr2_Anlagenteil`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr3_Aggregat`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr4_Nummer`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr5_Aggregat`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr6_Nummer`) AS `AKZ Kodierung`, `RI-TBF_SEF_Elektroangaben`.`Schaltfeld`, `RI-TBF_SEF_Elektrokomponentenliste`.`Einschub Nr.`, `RI-TBF_SEF_Apparateliste`.`Benennung`, `RI-TBF_SEF_Apparateliste`.`Benennung Zusatz`, `RI-TBF_SEF_Elektrokomponentenliste`.`Leistung`, `RI-TBF_SEF_Elektrokomponentenliste`.`Gleichzeitigkeitsfaktor`, `RI-TBF_SEF_Elektrokomponentenliste`.`Wirkungsgrad`, `RI-TBF_SEF_Elektrokomponentenliste`.`cos phi`, `RI-TBF_SEF_Elektrokomponentenliste`.`Leistung` * `RI-TBF_SEF_Elektrokomponentenliste`.`Gleichzeitigkeitsfaktor` AS `Leistung mit Gleichzeitigkeitsfaktor`, `RI-TBF_SEF_Apparateliste`.`Strom`, `RI-TBF_SEF_Apparateliste`.`Spannung`, `RI-TBF_SEF_Elektrokomponentenliste`.`Direktanlauf`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stern-Dreieck-Anlauf`, `RI-TBF_SEF_Elektrokomponentenliste`.`Sanftanlauf`, `RI-TBF_SEF_Elektrokomponentenliste`.`Drehzahlverstellung`, `RI-TBF_SEF_Elektrokomponentenliste`.`Bypass für FU`, `RI-TBF_SEF_Elektrokomponentenliste`.`Polumschalter`,`RI-TBF_SEF_Elektrokomponentenliste`.`Wendeschaltung`,`RI-TBF_SEF_Elektrokomponentenliste`.`Motorschutz`, `RI-TBF_SEF_Elektrokomponentenliste`.`NH-Trenner`, `RI-TBF_SEF_Elektrokomponentenliste`.`SI.-Überwachung`, `RI-TBF_SEF_Elektrokomponentenliste`.`FI-Schutzschalter`, `RI-TBF_SEF_Elektrokomponentenliste`.`Reparaturschalter`,`RI-TBF_SEF_Elektrokomponentenliste`.`Thermokontakt`, `RI-TBF_SEF_Elektrokomponentenliste`.`Dichte-Schutz`, `RI-TBF_SEF_Elektrokomponentenliste`.`Strömungswächter`, `RI-TBF_SEF_Elektrokomponentenliste`.`Druckwächter`, `RI-TBF_SEF_Elektrokomponentenliste`.`Not-Aus`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stromwandler`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stromanzeige Schaltschrank`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stromanzeige Bedienfeld`, `RI-TBF_SEF_Elektrokomponentenliste`.`Schieberheizung`, `RI-TBF_SEF_Elektrokomponentenliste`.`Stellungsgeber`, `RI-TBF_SEF_Elektroangaben`.`Vor-Ort-Bedienung`, `RI-TBF_SEF_Elektroangaben`.`Bedienung am Schaltschrank`, `RI-TBF_SEF_Elektroangaben`.`Bedienung an Bedientafel`, `RI-TBF_SEF_Elektroangaben`.`Bedienung am Prozeßleitsystem`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Betrieb/Störung`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Schaltzustände`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Automatik`, `RI-TBF_SEF_Elektroangaben`.`PLS Betrieb/Störung`, `RI-TBF_SEF_Elektroangaben`.`PLS Schaltzustände`, `RI-TBF_SEF_Elektroangaben`.`PLS Automatik`, `RI-TBF_SEF_Elektroangaben`.`Ex-Schutz`, `RI-TBF_SEF_Elektroangaben`.`Schutzart`, `RI-TBF_SEF_Elektroangaben`.`Abschaltung im Ex-Fall`, `RI-TBF_SEF_Elektroangaben`.`Blitzschutz`, `RI-TBF_SEF_Elektroangaben`.`Ausführung Vor-Ort-Steuerstelle`, `RI-TBF_SEF_Elektroangaben`.`Schaltschrank für Einschub`, `RI-TBF_SEF_Elektroangaben`.`Typical Nr. MSK`, `RI-TBF_SEF_Elektroangaben`.`Motorsteuerkarte Nr.`, `RI-TBF_SEF_Elektroangaben`.`Zusatzgeräte/Bemerkungen`, `RI-TBF_SEF_Elektrokomponentenliste`.`Zustand/Bearbeitung` FROM `RI-TBF_SEF_Apparateliste` LEFT JOIN `Masterliste` ON `RI-TBF_SEF_Apparateliste`.`TBF_ID` = `Masterliste`.`TBF_ID` LEFT JOIN `RI-TBF_SEF_Elektroangaben` ON `RI-TBF_SEF_Apparateliste`.`TBF_ID` = `RI-TBF_SEF_Elektroangaben`.`TBF_ID` LEFT JOIN `RI-TBF_SEF_Elektrokomponentenliste` ON `RI-TBF_SEF_Apparateliste`.`PnPID` = `RI-TBF_SEF_Elektrokomponentenliste`.`PnPID` WHERE `RI-TBF_SEF_Apparateliste`.`AKZ_Gr4_Nummer` > 0 /* AND `RI-TBF_SEF_Elektrokomponentenliste`.`Leistung` > 0 */";
+    $query = "SELECT CONCAT_WS( '.', `RI-TBF_SEF_Apparateliste`.`AKZ_Gr1_Standort`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr2_Anlagenteil`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr3_Aggregat`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr4_Nummer`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr5_Aggregat`, `RI-TBF_SEF_Apparateliste`.`AKZ_Gr6_Nummer`) AS `AKZ Kodierung`, `RI-TBF_SEF_Elektroangaben`.`Schaltfeld`, `RI-TBF_SEF_Elektroangaben`.`Einschub Nr.`, `RI-TBF_SEF_Apparateliste`.`Benennung`, `RI-TBF_SEF_Apparateliste`.`Benennung Zusatz`, `RI-TBF_SEF_Apparateliste`.`Nennleistung`, `RI-TBF_SEF_Elektroangaben`.`Gleichzeitigkeitsfaktor`, `RI-TBF_SEF_Elektroangaben`.`Wirkungsgrad`, `RI-TBF_SEF_Elektroangaben`.`cos phi`, `RI-TBF_SEF_Apparateliste`.`Nennleistung` * `RI-TBF_SEF_Elektroangaben`.`Gleichzeitigkeitsfaktor` AS `Leistung mit Gleichzeitigkeitsfaktor`, `RI-TBF_SEF_Apparateliste`.`Strom`, `RI-TBF_SEF_Apparateliste`.`Spannung`, `RI-TBF_SEF_Elektroangaben`.`Direktanlauf`, `RI-TBF_SEF_Elektroangaben`.`Stern-Dreieck-Anlauf`, `RI-TBF_SEF_Elektroangaben`.`Sanftanlauf`, `RI-TBF_SEF_Elektroangaben`.`Drehzahlverstellung`, `RI-TBF_SEF_Elektroangaben`.`Bypass für FU`, `RI-TBF_SEF_Elektroangaben`.`Polumschaltbar`,`RI-TBF_SEF_Elektroangaben`.`Wendeschaltung`,`RI-TBF_SEF_Elektroangaben`.`Motorschutz`, `RI-TBF_SEF_Elektroangaben`.`NH-Trenner`, `RI-TBF_SEF_Elektroangaben`.`SI.-Überwachung`, `RI-TBF_SEF_Elektroangaben`.`FI-Schutzschalter`, `RI-TBF_SEF_Elektroangaben`.`Reparaturschalter`,`RI-TBF_SEF_Elektroangaben`.`Thermokontakt`, `RI-TBF_SEF_Elektroangaben`.`Dichte-Schutz`, `RI-TBF_SEF_Elektroangaben`.`Strömungswächter`, `RI-TBF_SEF_Elektroangaben`.`Druckwächter`, `RI-TBF_SEF_Elektroangaben`.`Not-Aus`, `RI-TBF_SEF_Elektroangaben`.`Stromwandler`, `RI-TBF_SEF_Elektroangaben`.`Stromanzeige Schaltschrank`, `RI-TBF_SEF_Elektroangaben`.`Stromanzeige Bedientafel`, `RI-TBF_SEF_Elektroangaben`.`Schieberheizung`, `RI-TBF_SEF_Elektroangaben`.`Stellungsgeber`, `RI-TBF_SEF_Elektroangaben`.`Vor-Ort-Bedienung`, `RI-TBF_SEF_Elektroangaben`.`Bedienung am Schaltschrank`, `RI-TBF_SEF_Elektroangaben`.`Bedienung an Bedientafel`, `RI-TBF_SEF_Elektroangaben`.`Bedienung am Prozeßleitsystem`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Betrieb/Störung`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Schaltzustände`, `RI-TBF_SEF_Elektroangaben`.`Bedientafeln Automatik`, `RI-TBF_SEF_Elektroangaben`.`PLS Betrieb/Störung`, `RI-TBF_SEF_Elektroangaben`.`PLS Schaltzustände`, `RI-TBF_SEF_Elektroangaben`.`PLS Automatik`, `RI-TBF_SEF_Elektroangaben`.`Ex-Schutz`, `RI-TBF_SEF_Elektroangaben`.`Schutzart`, `RI-TBF_SEF_Elektroangaben`.`Abschaltung im Ex-Fall`, `RI-TBF_SEF_Elektroangaben`.`Blitzschutz`, `RI-TBF_SEF_Elektroangaben`.`Ausführung Vor-Ort-Steuerstelle`, `RI-TBF_SEF_Elektroangaben`.`Schaltschrank für Einschub`, `RI-TBF_SEF_Elektroangaben`.`Typical Nr. MSK`, `RI-TBF_SEF_Elektroangaben`.`Motorsteuerkarte Nr.`, `RI-TBF_SEF_Elektroangaben`.`Zusatzgeräte/Bemerkungen`, `RI-TBF_SEF_Elektrokomponentenliste`.`Zustand/Bearbeitung` FROM `RI-TBF_SEF_Apparateliste` LEFT JOIN `Masterliste` ON `RI-TBF_SEF_Apparateliste`.`TBF_ID` = `Masterliste`.`TBF_ID` LEFT JOIN `RI-TBF_SEF_Elektroangaben` ON `RI-TBF_SEF_Apparateliste`.`TBF_ID` = `RI-TBF_SEF_Elektroangaben`.`TBF_ID` LEFT JOIN `RI-TBF_SEF_Elektrokomponentenliste` ON `RI-TBF_SEF_Apparateliste`.`PnPID` = `RI-TBF_SEF_Elektrokomponentenliste`.`PnPID` WHERE `RI-TBF_SEF_Apparateliste`.`AKZ_Gr4_Nummer` > 0 AND `RI-TBF_SEF_Apparateliste`.`Nennleistung` > 0";
     
     $data = mysqli_fetch_all($con->query($query));
 
@@ -262,41 +262,55 @@
             $this->TextWithDirection($x+2,$y+23,'Bedienung Prozeßleitsystem','U');
             $this->SetXY($x+3,$y);
 
+            $resety=$this->GetY();
+
             $x=$this->GetX();
             $y=$this->GetY();
-            $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,utf8_decode('Betrieb/Störung'),'U');
+            $this->Rect($x, $y, 9, 6, 'D');
+            $this->Text($x+1,$y+3,'Bedientafel',1,0,'C');
+            $this->SetXY($x,$y+6);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 19, 'DF');
+            $this->TextWithDirection($x+2,$y+17,utf8_decode('Betrieb/Störung'),'U');
             $this->SetXY($x+3,$y);
 
             $x=$this->GetX();
             $y=$this->GetY();
-            $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,utf8_decode('Schaltzustände'),'U');
+            $this->Rect($x, $y, 3, 19, 'DF');
+            $this->TextWithDirection($x+2,$y+17,utf8_decode('Schaltzustände'),'U');
             $this->SetXY($x+3,$y);
 
             $x=$this->GetX();
             $y=$this->GetY();
-            $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,'Automatik','U');
+            $this->Rect($x, $y, 3, 19, 'DF');
+            $this->TextWithDirection($x+2,$y+17,'Automatik','U');
+            $this->SetXY($x+3,$resety);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 9, 6, 'D');
+            $this->Text($x+3,$y+3,'PLS',1,0,'C');
+            $this->SetXY($x,$y+6);
+
+            $x=$this->GetX();
+            $y=$this->GetY();
+            $this->Rect($x, $y, 3, 19, 'DF');
+            $this->TextWithDirection($x+2,$y+17,utf8_decode('Betrieb/Störung'),'U');
             $this->SetXY($x+3,$y);
 
             $x=$this->GetX();
             $y=$this->GetY();
-            $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,utf8_decode('Betrieb/Störung'),'U');
+            $this->Rect($x, $y, 3, 19, 'DF');
+            $this->TextWithDirection($x+2,$y+17,utf8_decode('Schaltzustände'),'U');
             $this->SetXY($x+3,$y);
 
             $x=$this->GetX();
             $y=$this->GetY();
-            $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,utf8_decode('Schaltzustände'),'U');
-            $this->SetXY($x+3,$y);
-
-            $x=$this->GetX();
-            $y=$this->GetY();
-            $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,'Automatik','U');
-            $this->SetXY($x+3,$y);
+            $this->Rect($x, $y, 3, 19, 'DF');
+            $this->TextWithDirection($x+2,$y+17,'Automatik','U');
+            $this->SetXY($x+3,$resety);
 
             $x=$this->GetX();
             $y=$this->GetY();
@@ -524,12 +538,13 @@
                 } else {
                     $this->Cell(25,6,utf8_decode($row[4]),1,0,'L');
                 }
-                $this->Cell(6,6,$row[6],1,0,'C');
+                $this->Cell(6,6,$row[5],1,0,'C');
+                $this->Cell(3,6,$row[6],1,0,'C');
                 $this->Cell(3,6,$row[7],1,0,'C');
                 $this->Cell(3,6,$row[8],1,0,'C');
-                $this->Cell(3,6,$row[9],1,0,'C');
-                $this->Cell(12,6,$row[10],1,0,'C');
-                $this->Cell(6,6,$row[11],1,0,'C');
+                $this->Cell(12,6,$row[9],1,0,'C');
+                $this->Cell(6,6,$row[10],1,0,'C');
+                $this->Cell(3,6,$row[11],1,0,'C');
                 $this->Cell(3,6,$row[12],1,0,'C');
                 $this->Cell(3,6,$row[13],1,0,'C');
                 $this->Cell(3,6,$row[14],1,0,'C');
@@ -564,14 +579,13 @@
                 $this->Cell(3,6,$row[43],1,0,'C');
                 $this->Cell(3,6,$row[44],1,0,'C');
                 $this->Cell(3,6,$row[45],1,0,'C');
-                $this->Cell(3,6,$row[46],1,0,'C');
-                $this->Cell(6,6,$row[47],1,0,'C');
+                $this->Cell(6,6,$row[46],1,0,'C');
+                $this->Cell(3,6,$row[47],1,0,'C');
                 $this->Cell(3,6,$row[48],1,0,'C');
                 $this->Cell(3,6,$row[49],1,0,'C');
                 $this->Cell(3,6,$row[50],1,0,'C');
-                $this->Cell(3,6,$row[51],1,0,'C');
-                $this->Cell(12,6,$row[52],1,0,'C');
-                $this->Cell(6,6,$row[53],1,0,'C');
+                $this->Cell(12,6,$row[51],1,0,'C');
+                $this->Cell(6,6,$row[52],1,0,'C');
                 $this->Cell(3,6,$row[53],1,0,'C');
                 $this->Cell(10,6,$row[53],1,0,'C');
                 $this->Cell(13,6,$row[53],1,0,'C');
