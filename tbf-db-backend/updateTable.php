@@ -7,6 +7,8 @@
         ini_set("display_errors", "1");
         ini_set("log_errors", 1);
         ini_set("error_log", $_SERVER['DOCUMENT_ROOT'] . "/php-error.log");
+    
+    $method = $_SERVER['REQUEST_METHOD'];
 
     switch ($method) {
         case 'POST':
@@ -17,17 +19,28 @@
             $dataArray = json_decode($_POST['data'], 1);
             $query = "UPDATE `Gesamtdatenbank` SET ";
 
+            $i = 0;
             foreach ($dataArray as $key => $value) {
+                if ($key == "PnPID") {
+                    $where = " WHERE `PnPID`=$value";
+                    continue;
+                }
                 
                 $query .= "`". $key . "`" . " = '" . $value . "'";
                 
-                if ($i < count($dataArray) - 1) {
-                    $query.= " , ";
+                if ($i < count($dataArray) - 2) {
+                    $query.= ",";
                 }
                 $i++;
             }
 
-            $query .= " WHERE 1"
+            if ($where) {
+                $query .= $where;
+            } else {
+                $query .= " WHERE 1";
+            }
+
+            
 
             $insert = $con->query($query);
             if ($insert) {
