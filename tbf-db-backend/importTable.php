@@ -16,6 +16,7 @@
     ini_set('mysql.allow_local_infile', 1);
 
     $method = $_SERVER['REQUEST_METHOD'];
+    $table = $_POST['table'];
     
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
     $fileName = basename($_FILES["file"]["name"]);
@@ -25,6 +26,21 @@
     function duplicateValues(&$item, $value) {
         $item = $item . "=VALUES(" . $item . ")";
     }
+
+    if ($table == 'RI-TBF_SEF_Apparateliste') {
+        $tableID = 1;
+    } elseif ($table == 'RI-TBF_SEF_Armaturenliste') {
+        $tableID = 2;
+    } elseif ($table == 'RI-TBF_SEF_Messstellenliste') {
+        $tableID = 3;
+    } elseif ($table == 'RI-TBF_SEF_Elektrokomponentenliste') {
+        $tableID = 4;
+    } elseif ($table == 'RI-TBF_SEF_Elektroangaben') {
+        $tableID = 5;
+    } elseif ($table == 'RI-TBF_SEF_Stoffstromliste') {
+        $tableID = 6;
+    }
+    
     
     if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
         if ($xlsx = SimpleXLSX::parse($sourceFile)) {
@@ -33,14 +49,19 @@
             foreach ($xlsx->rows() as $k => $r) {
                 if ( $k === 0 ) {
                     $colNames = $r;
+                    array_unshift($colNames,"TableID");
                     continue;
-                }
+                } 
+
+                array_unshift($r, $tableID); 
+
                 $rows[] = array_combine( $colNames, $r );
             }
             
             foreach ($rows as $row) {
                 $cols = "`" . implode("`,`", array_keys($row)) . "`";
                 $values = "'" . implode("','", array_values($row)) . "'";
+                (array_values($row) == "True") ? 1 : 2 ;
                 $values = str_replace("''", "NULL", $values);
 
                 $duplicates = explode(",", $cols);
