@@ -46,12 +46,14 @@ export default class App extends Component {
             return <div>Lädt...</div>;
         } else 
           return (
-              <div className="row justify-content-around">
+              <div className="d-flex justify-content-around">
+              <div className="row">
                 <ImportCard items={items} />
                 <EingabeCard setRedirect={this.renderTable} items={items} />
                 <AuswertenCard items={items} />
                 <ExportCard items={items} />
                 <ErzeugenCard />
+              </div>
               </div>
           )
   }
