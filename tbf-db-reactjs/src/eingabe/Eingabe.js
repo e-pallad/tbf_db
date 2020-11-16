@@ -35,7 +35,11 @@ export default class Eingabe extends Component {
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div>Lädt...</div>;
+            return <div class="d-flex justify-content-center">
+                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>;
         } else 
         return (
             <Suspense fallback={<div>Lädt...</div>}>
