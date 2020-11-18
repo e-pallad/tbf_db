@@ -88,7 +88,7 @@ export default class ImportForm extends Component {
             <section>
                 <div className="upload">
                     <input type="file" title="" accept=".xlsx" className="drop-here" />
-                    <div className="text text-drop text-center">.csv Datei <br />hier ablegen <br />oder klicken <br />zum importieren</div>
+                    <div className="text text-drop text-center">.xlsx Datei <br />hier ablegen <br />oder klicken <br />zum importieren</div>
                     <div className="text text-upload">uploading</div>
                     <svg className="progress-wrapper" width="300" height="300">
                         <circle className="progress" r="115" cx="150" cy="150"></circle>
