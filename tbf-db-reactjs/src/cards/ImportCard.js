@@ -10,13 +10,18 @@ export default class ImportCard extends Component {
     }
 
     render() {
-        const { items } = this.state;
+        let cardsItems = Object.assign({}, this.state.items);
+        cardsItems = Object.values(cardsItems);
+        cardsItems.push('SEF_E-Verbraucherliste');
+        cardsItems.push('SEF_Messstellenliste');
+        cardsItems.push('SEF_Armaturenliste');
+        cardsItems.push('SEF_Ausrüstungsliste');
         return(
             <div className="col">
                 <div className="card p-0">
                     <div className="card-body">
                         <h5 className="card-title">Importieren</h5>
-                        {items.map((item) => (
+                        {cardsItems.map((item) => (
                             <Link key={item} to={{ pathname: "/import", state: {table: item} }} className="btn btn-success btn-block my-2">
                                 {
                                     ( 

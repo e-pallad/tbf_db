@@ -13,6 +13,10 @@ export default class ExportCard extends Component {
         let cardsItems = Object.assign({}, this.state.items);
         cardsItems = Object.values(cardsItems);
         cardsItems.push('Gesamtdatenbank');
+        cardsItems.push('SEF_E-Verbraucherliste');
+        cardsItems.push('SEF_Messstellenliste');
+        cardsItems.push('SEF_Armaturenliste');
+        cardsItems.push('SEF_Ausrüstungsliste');
         return(
             <div className="col">
                 <div className="card p-0">
