@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { AgGridReact } from 'ag-grid-react';
+import './table.css';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -40,7 +41,6 @@ export default class Table extends Component {
                 editable: true,
                 filter: true,
                 resizable: true,
-                cellStyle: {border: 'solid #000000'},
             },
             table: this.props.table
         }
