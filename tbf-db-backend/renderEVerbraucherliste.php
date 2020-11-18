@@ -259,7 +259,7 @@
             $x=$this->GetX();
             $y=$this->GetY();
             $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,'Bedienung Prozeßleitsystem','U');
+            $this->TextWithDirection($x+2,$y+23,utf8_decode('Bedienung Prozeßleitsystem'),'U');
             $this->SetXY($x+3,$y);
 
             $resety=$this->GetY();
@@ -333,7 +333,7 @@
             $x=$this->GetX();
             $y=$this->GetY();
             $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,'Blitzschutz (ÜS)','U');
+            $this->TextWithDirection($x+2,$y+23,utf8_decode('Blitzschutz (ÜS)'),'U');
             $this->SetXY($x+3,$y);
 
             $x=$this->GetX();
@@ -345,7 +345,7 @@
             $x=$this->GetX();
             $y=$this->GetY();
             $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,'Schaltschrank für Einschub','U');
+            $this->TextWithDirection($x+2,$y+23,utf8_decode('Schaltschrank für Einschub'),'U');
             $this->SetXY($x+3,$y);
 
             $x=$this->GetX();
