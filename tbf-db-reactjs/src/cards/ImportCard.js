@@ -12,6 +12,7 @@ export default class ImportCard extends Component {
     render() {
         let cardsItems = Object.assign({}, this.state.items);
         cardsItems = Object.values(cardsItems);
+        cardsItems.push('Masterliste');
         cardsItems.push('SEF_E-Verbraucherliste');
         cardsItems.push('SEF_Messstellenliste');
         cardsItems.push('SEF_Armaturenliste');
