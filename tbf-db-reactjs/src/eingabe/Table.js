@@ -40,6 +40,7 @@ export default class Table extends Component {
                 editable: true,
                 filter: true,
                 resizable: true,
+                cellStyle: {border: 'solid #000000'},
             },
             table: this.props.table
         }
