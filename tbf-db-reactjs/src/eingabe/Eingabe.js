@@ -35,9 +35,9 @@ export default class Eingabe extends Component {
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div class="d-flex justify-content-center">
-                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
+            return <div className="d-flex justify-content-center">
+                <div className="spinner-border" style={{Width: 3 +'rem', Height: 3 + 'rem'}} role="status">
+                    <span className="sr-only">Loading...</span>
                 </div>
             </div>;
         } else 
