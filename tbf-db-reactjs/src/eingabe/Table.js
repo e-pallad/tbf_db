@@ -8,7 +8,6 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 async function pushDataToDb(pushData, table) {
 
     const url = 'https://tbf-db-backend.ep-webdesign.de/updateTable.php';
-    //const url = 'http://localhost/updateTable.php';
 
     const formData = new FormData();  
     formData.append('table', table); 
@@ -23,12 +22,12 @@ async function pushDataToDb(pushData, table) {
         if (!result.ok) {
             throw Error(result.statusText);
         } else {
-            //console.log(result)
+            return result
         }
     } catch (error) {
         console.log(error)
     }
-    
+
 }
 
 export default class Table extends Component {
@@ -46,6 +45,40 @@ export default class Table extends Component {
         }
         this.onGridReady = this.onGridReady.bind(this);
         this.dataChanged = this.dataChanged.bind(this);
+        this.getMaxTBFID = this.getMaxTBFID.bind(this);
+        this.onAddRow = this.onAddRow.bind(this);
+    }
+
+    async getMaxTBFID() {
+        return fetch('https://tbf-db-backend.ep-webdesign.de/getMaxTBFID.php')
+        .then(res => res.json())
+        .then(
+            (result) => {
+                this.setState({
+                    maxTBFID: parseInt(result),
+                });
+            },
+            (error) => {
+                this.setState({
+                    error
+                });
+            }   
+        )
+    }
+
+    async onAddRow() {
+        if (!this.state.maxTBFID) {
+            await this.getMaxTBFID()
+            console.log('If got fired')
+        } 
+        
+        this.setState({ maxTBFID: this.state.maxTBFID + 1}, () => {
+            console.log(this.state.maxTBFID)
+            this.gridApi.applyTransaction({
+                add: [{TBF_ID: this.state.maxTBFID}],
+            })
+        })
+        
     }
 
     onGridReady = params => {
@@ -69,6 +102,7 @@ export default class Table extends Component {
     render() {
         const { tableData } = this.props
         const { table } = this.state
+        let button;
 
         const columns = tableData.slice(0,1).map(( header ) => {
             return(
@@ -83,10 +117,19 @@ export default class Table extends Component {
         })  
         
         const data = tableData.slice(1)
+
+        if (table == 'RI-TBF_SEF_Elektrokomponentenliste') {
+            button = <button className="btn btn-outline-success mb-2" onClick={this.onAddRow}>Zeile hinzufügen</button>
+        } else {
+            button = null
+        }
         
         return (
             <div id="grid" className="p-0 overflow-hidden w-100 h-100">
-                <h2>{table}</h2>
+                <nav className="navbar navbar-light bg-light">
+                    <h2 className="navbar-brand">{table}</h2>
+                    {button}
+                </nav>
                 <div className="ag-theme-alpine" style={ { height: 'calc(100% - 60px)', width: '100%'} }>
                     <AgGridReact
                         columnDefs={columns[0]}
