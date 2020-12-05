@@ -118,7 +118,7 @@ export default class Table extends Component {
         
         const data = tableData.slice(1)
 
-        if (table == 'RI-TBF_SEF_Elektrokomponentenliste') {
+        if (table === 'RI-TBF_SEF_Elektrokomponentenliste') {
             button = <button className="btn btn-outline-success mb-2" onClick={this.onAddRow}>Zeile hinzufügen</button>
         } else {
             button = null
