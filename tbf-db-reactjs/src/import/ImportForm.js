@@ -42,7 +42,7 @@ export default class ImportForm extends Component {
             file: null,
             data: null
         }
-        this.uploadFile = this.uploadFile.bind(this);
+        uploadFile = uploadFile.bind(this);
         document.getElementById('root').classList.remove('container-fluid');
     }
 

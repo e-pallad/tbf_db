@@ -41,6 +41,15 @@ export default class Table extends Component {
                 filter: true,
                 resizable: true,
             },
+            columnDefs: [
+                {
+                    field: 'Typical Nr. MSK',
+                    cellEditor: 'agPopupSelectCellEditor',
+                    cellEditorParams: {
+                        values: ['Test', 'Test123']
+                    } 
+                }
+            ],
             table: this.props.table
         }
         this.onGridReady = this.onGridReady.bind(this);
@@ -69,7 +78,6 @@ export default class Table extends Component {
     async onAddRow() {
         if (!this.state.maxTBFID) {
             await this.getMaxTBFID()
-            console.log('If got fired')
         } 
         
         this.setState({ maxTBFID: this.state.maxTBFID + 1}, () => {
@@ -133,6 +141,8 @@ export default class Table extends Component {
                 <div className="ag-theme-alpine" style={ { height: 'calc(100% - 60px)', width: '100%'} }>
                     <AgGridReact
                         columnDefs={columns[0]}
+                        
+                        //columnDefs={this.state.columnDefs}
                         defaultColDef={this.state.defaultColDef}
                         rowData={data}
 
