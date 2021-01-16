@@ -47,7 +47,7 @@
                     'headerName' => $value->name,
                     'field' => $value->name,
                     'editable' => true, 
-                    'cellEditor' => 'select', 
+                    'cellEditor' => 'agSelectCellEditor', 
                     'cellEditorParams' => array(
                         'values' => array_keys($dropDownValues)
                     ),
@@ -78,7 +78,7 @@
         case 'GET':
             header('Content-Type: application/json;');
             header('Access-Control-Allow-Origin: *');
-            
+
             echo json_encode($listTableContent);
             break;
         default:

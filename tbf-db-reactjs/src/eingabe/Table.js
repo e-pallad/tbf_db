@@ -95,7 +95,26 @@ export default class Table extends Component {
     };
 
     dataChanged(data) {
-        pushDataToDb(data.data, this.state.table)
+        if (this.state.table === "RI-TBF_SEF_Elektroangaben") {
+            async function fetchMskValues() {
+                const response = await fetch('https://tbf-db-backend.ep-webdesign.de/getTypicalMskValues.php')
+                const result = await response.json()
+                return result
+            }
+
+            fetchMskValues().then(result => {
+                    var match = result.find(msk => msk[0] === data.data["Typical Nr. MSK"])
+                    data.data["Anzahl AI"] = parseInt(match[4])
+                    data.data["Anzahl AO"] = parseInt(match[5])
+                    data.data["Anzahl DI"] = parseInt(match[2])
+                    data.data["Anzahl DO"] = parseInt(match[3])
+                    
+                    pushDataToDb(data.data, this.state.table)
+                }
+            )
+        } else {
+            pushDataToDb(data.data, this.state.table)
+        }
     }
 
     render() {
