@@ -41,15 +41,6 @@ export default class Table extends Component {
                 filter: true,
                 resizable: true,
             },
-            columnDefs: [
-                {
-                    field: 'Typical Nr. MSK',
-                    cellEditor: 'agPopupSelectCellEditor',
-                    cellEditorParams: {
-                        values: ['Test', 'Test123']
-                    } 
-                }
-            ],
             table: this.props.table
         }
         this.onGridReady = this.onGridReady.bind(this);
@@ -115,11 +106,22 @@ export default class Table extends Component {
         const columns = tableData.slice(0,1).map(( header ) => {
             return(
                 header.map(( column ) => {
-                    return({
-                        headerName: column.headerName,
-                        field: column.field,
-                        editable: column.editable,
-                    })
+                    if (column.cellEditor && column.cellEditorParams) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            cellEditor: column.cellEditor,
+                            cellEditorParams: column.cellEditorParams,
+                            refData: column.refData,
+                        })
+                    } else {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                        })
+                    }
                 })
             )
         })  
@@ -142,7 +144,6 @@ export default class Table extends Component {
                     <AgGridReact
                         columnDefs={columns[0]}
                         
-                        //columnDefs={this.state.columnDefs}
                         defaultColDef={this.state.defaultColDef}
                         rowData={data}
 
