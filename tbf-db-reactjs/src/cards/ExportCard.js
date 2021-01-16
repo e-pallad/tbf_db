@@ -5,18 +5,28 @@ export default class ExportCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: this.props.items,
+            items: [
+                "RI-TBF_SEF_Allplan_Liste", 
+                "RI-TBF_SEF_Apparateliste", 
+                "RI-TBF_SEF_Armaturenliste", 
+                "RI-TBF_SEF_Elektroangaben", 
+                "RI-TBF_SEF_Elektrokomponentenliste", 
+                "RI-TBF_SEF_Messstellenliste", 
+                "RI-TBF_SEF_PlancalNova_Liste", 
+                "RI-TBF_SEF_Revit_Liste", 
+                "RI-TBF_SEF_Rohrleitungsliste", 
+                "RI-TBF_SEF_Stoffstromliste", 
+                "Gesamtdatenbank", 
+                "SEF_E-Verbraucherliste", 
+                "SEF_Messstellenliste", 
+                "SEF_Armaturenliste", 
+                "SEF_Ausrüstungsliste"
+            ],
         };
     }
 
     render() {
-        let cardsItems = Object.assign({}, this.state.items);
-        cardsItems = Object.values(cardsItems);
-        cardsItems.push('Gesamtdatenbank');
-        cardsItems.push('SEF_E-Verbraucherliste');
-        cardsItems.push('SEF_Messstellenliste');
-        cardsItems.push('SEF_Armaturenliste');
-        cardsItems.push('SEF_Ausrüstungsliste');
+        let cardsItems = this.state.items;
         return(
             <div className="col">
                 <div className="card p-0">
