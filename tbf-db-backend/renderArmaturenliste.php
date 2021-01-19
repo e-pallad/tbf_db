@@ -10,13 +10,33 @@
     $method = $_SERVER['REQUEST_METHOD'];
 
     $query = "SELECT CONCAT_WS(' . ',`AKZ_Gr1_Standort`,`AKZ_Gr2_Anlagenteil`,`AKZ_Gr3_Aggregat`,`AKZ_Gr4_Nummer`) AS `AKZ Kodierung`, `Benennung`, `Benennung Zusatz`, `NW`, `PN`, `TBV/ITD Nr.`, `Einbauort bzw. Rohrleitungs Nr.`, `R&I EB68-Nr.`, `Feld-Nr.`, `Zchn. Rev. Nr.`, `Bemerkung`, `Zustand/Bearbeitung` FROM `Gesamtdatenbank` WHERE `AKZ_Gr4_Nummer` > 0";
+    /*
+    $headerMultiQuery = "CREATE VIEW myview AS " . $query . "; DESCRIBE myview;";
+    $header = mysqli_fetch_all($con->query("DESCRIBE ($query) AS `SEF_Armaturenliste`"));
+    */
     
-    $header = mysqli_fetch_all($con->query("DESCRIBE `SEF_Armaturenliste`"));
     $data = mysqli_fetch_all($con->query($query));
 
+    /*
     foreach ($header as $line) { 
         $headerLine[] = $line[0];
     }
+    */
+
+    $headerLine = array(
+        "AKZ Kodierung",
+        "Benennung",
+        "Benennung Zusatz",
+        "NW",
+        "PN",
+        "TBV/ITD Nr.",
+        "Einbauort bzw. Rohrleitungs Nr.",
+        "R&I EB68-Nr.",
+        "Feld-Nr.",
+        "Zchn. Rev. Nr.",
+        "Bemerkung",
+        "Zustand/Bearbeitung"
+    );
 
     class PDF extends FPDF {
         // Page header
@@ -63,7 +83,7 @@
             foreach($data as $row) {
                 $this->SetFont('Arial','',8);
                 $this->Cell(35,5,utf8_decode($row[0]),1);
-                if (strlen($row[1]) > 30) {
+                if (strlen($row[1]) > 27) {
                     $x=$this->GetX();
                     $y=$this->GetY();
                     $this->Rect($x, $y, 35, 5);
@@ -88,8 +108,16 @@
                 $this->Cell(25.5,5,utf8_decode($row[7]),1);
                 $this->Cell(12,5,utf8_decode($row[8]),1);
                 $this->Cell(25.5,5,utf8_decode($row[9]),1);
-                $this->Cell(25.5,5,utf8_decode($row[10]),1);
-                $this->Cell(14,5,utf8_decode($row[10]),1);
+                if (strlen($row[10]) > 25) {
+                    $x=$this->GetX();
+                    $y=$this->GetY();
+                    $this->Rect($x, $y, 25.5, 5);
+                    $this->MultiCell(25.5,2.5,utf8_decode($row[10]),0,'L');
+                    $this->SetXY($x+25.5,$y);
+                } else {
+                    $this->Cell(25.5,5,utf8_decode($row[10]),1);
+                }
+                $this->Cell(14,5,utf8_decode($row[11]),1);
                 
                 $this->Ln();
             }
@@ -135,12 +163,7 @@
 
     switch ($method) {
         case 'GET':
-
-            foreach ($header as $line) { 
-                $headerLine[] = $line[0];
-            }
-
-            header("Content-type: application/pdf");
+            header('Content-type: application/pdf');
             header('Access-Control-Allow-Origin: *');
             header('Content-Disposition: attachment; filename="SEF-Armaturenliste.pdf";');
 

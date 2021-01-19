@@ -79,7 +79,7 @@
             header('Content-Type: application/json;');
             header('Access-Control-Allow-Origin: *');
 
-            echo json_encode($listTableContent);
+            echo json_encode($listTableContent, JSON_NUMERIC_CHECK);
             break;
         default:
             echo http_response_code(403);
