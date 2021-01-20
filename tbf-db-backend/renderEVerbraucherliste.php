@@ -22,7 +22,7 @@
             $this->Image("./img/logo.png",245,5,50);
             $this->Ln(10);
             $this->SetFont('Arial','',10);
-            $this->Cell(281,5.5,'ARA Niederrad',1,0,'L');
+            $this->Cell(281,5.5,'ARA Sindlingen',1,0,'L');
             $this->Ln();
 
             $this->SetFont('Arial','',4);
