@@ -29,9 +29,9 @@
 
     if ($table == 'RI-TBF_SEF_Apparateliste') {
         $tableID = 1;
-    } elseif ($table == 'RI-TBF_SEF_Armaturenliste') {
+    } elseif ($table == 'RI-TBF_SEF_Armaturenliste' || $table == "SEF_Armaturenliste") {
         $tableID = 2;
-    } elseif ($table == 'RI-TBF_SEF_Messstellenliste') {
+    } elseif ($table == 'RI-TBF_SEF_Messstellenliste' || $table == "SEF_Messstellenliste") {
         $tableID = 3;
     } elseif ($table == 'RI-TBF_SEF_Elektrokomponentenliste') {
         $tableID = 4;
@@ -39,8 +39,11 @@
         $tableID = 5;
     } elseif ($table == 'RI-TBF_SEF_Stoffstromliste') {
         $tableID = 6;
+    } elseif ($table == "SEF_E-Verbraucherliste") {
+        $tableID = 7;
+    } elseif ($table == "SEF_Ausrüstungsliste") {
+        $tableID = 8;
     }
-    
     
     if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
         if ($xlsx = SimpleXLSX::parse($sourceFile)) {
@@ -59,23 +62,81 @@
             }
             
             foreach ($rows as $row) {
-                $cols = "`" . implode("`,`", array_keys($row)) . "`";
-                $values = "'" . implode("','", array_values($row)) . "'";
-                (array_values($row) == "True") ? 1 : 2 ;
-                $values = str_replace("''", "NULL", $values);
+                if (isset($row["PnPID"])) {
+                    if (isset($row["TBF_ID"])) {
+                        unset($row["TBF_ID"]);
+                    }
+                    $row["TableID"] = $tableID;
+                    // Check if PnPID already exist
+                    $check = $con->query("SELECT `PnPID` FROM `Gesamtdatenbank` WHERE `PnPID` = '" . $row['PnPID'] . "'");
+                    // If so build UPDATE query
+                    if ($check->num_rows > 0) {
+                        $query = "UPDATE `Gesamtdatenbank` SET ";
 
-                $duplicates = explode(",", $cols);
-                array_walk($duplicates, "duplicateValues");
+                        $i = 0;
+                        foreach ($row as $key => $value) {
+                            if ($key == "PnPID") {
+                                $where = " WHERE `PnPID`=$value";
+                                continue;
+                            } 
+                            
+                            $query .= "`". $key . "`" . " = '" . str_replace("''", "NULL", $value) . "'";
+                            
+                            if ($i < count($row) - 2) {
+                                $query.= ",";
+                            }
+                            $i++;
+                        }
 
-                if ($con->query("INSERT INTO `Gesamtdatenbank` ($cols) VALUES($values) ON DUPLICATE KEY UPDATE " . implode(",", $duplicates))) {
-                    continue;
+                        if ($where) {
+                            $query .= $where;
+                        } else {
+                            $query .= " WHERE 1";
+                        }
+                        // Do UPDATE and check response
+                        if ($con->query($query)) {
+                            continue;
+                        } else {
+                            $statusMsg[] = $con->info;
+                            $statusMsg[] = $con->error;
+                            break;
+                        }
+                    } else {
+                        // If PnPID doesnt exist perform default INSERT
+                        $cols = "`" . implode("`,`", array_keys($row)) . "`";
+                        $values = "'" . implode("','", array_values($row)) . "'";
+                        (array_values($row) == "True") ? 1 : 2 ;
+                        $values = str_replace("''", "NULL", $values);
+
+                        $duplicates = explode(",", $cols);
+                        array_walk($duplicates, "duplicateValues");
+
+                        if ($con->query("INSERT INTO `Gesamtdatenbank` ($cols) VALUES($values) ON DUPLICATE KEY UPDATE " . implode(",", $duplicates))) {
+                            continue;
+                        } else {
+                            $statusMsg[] = $con->info;
+                            $statusMsg[] = $con->error;
+                            break;
+                        }
+                    }
                 } else {
-                    $statusMsg[] = $con->info;
-                    $statusMsg[] = $con->error;
-                    break;
+                    $cols = "`" . implode("`,`", array_keys($row)) . "`";
+                    $values = "'" . implode("','", array_values($row)) . "'";
+                    (array_values($row) == "True") ? 1 : 2 ;
+                    $values = str_replace("''", "NULL", $values);
+
+                    $duplicates = explode(",", $cols);
+                    array_walk($duplicates, "duplicateValues");
+
+                    if ($con->query("INSERT INTO `Gesamtdatenbank` ($cols) VALUES($values) ON DUPLICATE KEY UPDATE " . implode(",", $duplicates))) {
+                        continue;
+                    } else {
+                        $statusMsg[] = $con->info;
+                        $statusMsg[] = $con->error;
+                        break;
+                    }
                 }
             }
-
             $statusMsg[] = $con->info;
             if (mysqli_warning_count($con)) {
                 $e = mysqli_get_warnings($con);

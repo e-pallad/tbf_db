@@ -9,7 +9,7 @@
 
     $method = $_SERVER['REQUEST_METHOD'];
 
-    $query = "SELECT CONCAT_WS( '.', `AKZ_Gr1_Standort`, `AKZ_Gr2_Anlagenteil`, `AKZ_Gr3_Aggregat`, `AKZ_Gr4_Nummer`, `AKZ_Gr5_Aggregat`, `AKZ_Gr6_Nummer`) AS `AKZ Kodierung`, `Schaltanlage`, `Einschub Nr.`, `Benennung`, `Benennung Zusatz`, `Nennleistung`, `Gleichzeitigkeitsfaktor`, `Wirkungsgrad`, `cos phi`, `Nennleistung` * `Gleichzeitigkeitsfaktor` AS `Leistung mit Gleichzeitigkeitsfaktor`, `Nennstrom`, `Nennspannung`, `Direktanlauf`, `Stern-Dreieck-Anlauf`, `Sanftanlauf`, `Drehzahlverstellung (FU)`, `Bypass für FU`, `Polumschaltbar`,`Wendeschaltung`,`Motorschutz`, `NH-Trenner`, `SI.-Überwachung`, `FI-Schutzschalter`, `Reparaturschalter`,`Thermokontakt`, `Dichte-Schutz`, `Strömungswächter`, `Druckwächter`, `Not-Aus`, `Stromwandler`, `Stromanzeige Schaltschrank`, `Stromanzeige Bedientafel`, `Schieberheizung`, `Stellungsgeber`, `Vor-Ort-Bedienung`, `Bedienung am Schaltschrank`, `Bedienung an Bedientafel`, `Bedienung Prozeßleitsystem`, `Bedientafeln_Betrieb/Störung`, `Bedientafeln_Schaltzustände`, `Bedientafeln_Automatik`, `PLS_Betrieb/Störung`, `PLS_Schaltzustände`, `PLS_Automatik`, `Ex-Schutz`, `Schutzart`, `Abschaltung im Ex-Fall`, `Blitzschutz`, `Ausführung Vor-Ort-Steuerstelle`, `Schaltschrank für Einschub`, `Typical Nr. MSK`, `Motorsteuerkarte Nr.`, `Zusatzgeräte/Bemerkungen`, `Zustand/Bearbeitung` FROM `Gesamtdatenbank` WHERE `Nennleistung` > 0 AND `elektrischer Verbraucher` = 'Ja'";
+    $query = "SELECT CONCAT_WS( '.', `AKZ_Gr1_Standort`, `AKZ_Gr2_Anlagenteil`, `AKZ_Gr3_Aggregat`, `AKZ_Gr4_Nummer`, `AKZ_Gr5_Aggregat`, `AKZ_Gr6_Nummer`) AS `AKZ Kodierung`, `Schaltanlage`, `Einschub Nr.`, `Benennung`, `Benennung Zusatz`, `Nennleistung`, `Gleichzeitigkeitsfaktor`, `Wirkungsgrad`, `cos phi`, `Nennleistung` * `Gleichzeitigkeitsfaktor` AS `Leistung mit Gleichzeitigkeitsfaktor`, `Nennstrom`, `Nennspannung`, `Direktanlauf`, `Stern-Dreieck-Anlauf`, `Sanftanlauf`, `Drehzahlverstellung (FU)`, `Bypass für FU`, `Polumschaltbar`,`Wendeschaltung`,`Motorschutz`, `NH-Trenner`, `SI.-Überwachung`, `FI-Schutzschalter`, `Reparaturschalter`, `Thermokontakt`, `Kaltleiter`, `Dichte-Schutz`, `Strömungswächter`, `Druckwächter`, `Not-Aus`, `Stromwandler`, `Stromanzeige Schaltschrank`, `Stromanzeige Bedientafel`, `Schieberheizung`, `Stellungsgeber`, `Vor-Ort-Bedienung`, `Bedienung am Schaltschrank`, `Bedienung an Bedientafel`, `Bedienung Prozeßleitsystem`, `Bedientafeln_Betrieb/Störung`, `Bedientafeln_Schaltzustände`, `Bedientafeln_Automatik`, `PLS_Betrieb/Störung`, `PLS_Schaltzustände`, `PLS_Automatik`, `Ex-Schutz`, `Schutzart`, `Abschaltung im Ex-Fall`, `Blitzschutz`, `Ausführung Vor-Ort-Steuerstelle`, `Schaltschrank für Einschub`, `Typical Nr. MSK`, `Motorsteuerkarte Nr.`, `Zusatzgeräte/Bemerkungen`, `Zustand/Bearbeitung` FROM `Gesamtdatenbank` WHERE `Nennleistung` > 0 AND `elektrischer Verbraucher` = 'Ja'";
     
     $data = mysqli_fetch_all($con->query($query));
 
@@ -54,8 +54,8 @@
             $this->TextWithDirection($x+2,$y+23,'Res.-Spalte','U');
             $this->SetXY($x+3,$y);
 
-            $this->Cell(25,25,'Bennenung',1,0,'C',1);
-            $this->Cell(25,25,'Bennenung Zusatz',1,0,'C',1);
+            $this->Cell(25,25,'Benennung',1,0,'C',1);
+            $this->Cell(25,25,'Benennung Zusatz',1,0,'C',1);
 
             $x=$this->GetX();
             $y=$this->GetY();
@@ -587,8 +587,8 @@
                 $this->Cell(12,6,$row[51],1,0,'C');
                 $this->Cell(6,6,$row[52],1,0,'C');
                 $this->Cell(3,6,$row[53],1,0,'C');
-                $this->Cell(10,6,$row[53],1,0,'C');
-                $this->Cell(13,6,$row[53],1,0,'C');
+                $this->Cell(10,6,$row[54],1,0,'C');
+                $this->Cell(13,6,$row[54],1,0,'C');
               
                 $count++;
                 $this->Ln();
