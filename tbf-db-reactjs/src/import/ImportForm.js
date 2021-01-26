@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
 import './ImportForm.scss';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function uploadFile(table, file) {
     const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php';
@@ -63,18 +65,64 @@ export default class ImportForm extends Component {
             
         });
 
-        this.setFile = (e) => {    
+        this.submit = (e) => {
             this.setState({ file: e.target.files[0] }); 
             this.setState({ data: null });
-            if (this.state.file) {
-                fileUpload.classList.remove("drag");
-                fileUpload.classList.add("drop");   
-                uploadFile(this.state.table, this.state.file);      
-            }
+
+            let filename = this.state.file.name
+            let importTable = this.state.table
+
+            confirmAlert({
+                customUI: ({ onClose }) => {
+                    return (
+                        <div className='custom-ui'>
+                            <div className='modal-dialog'>
+                                <div className='modal-content'>
+                                    <div className='modal-header'>
+                                        <h5 className='modal-title'>Tabelle importieren</h5>
+                                    </div>
+                                    <div className='modal-body'>
+                                        <p>
+                                            Soll die Datei: <br />
+                                            <span className='text-danger'>
+                                                {filename}
+                                            </span> <br />
+                                            wirklich in die Tabelle:&nbsp;
+                                            <span className='text-danger'>
+                                                {importTable.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')}
+                                            </span> importiert werden?
+                                        </p>
+                                    </div>
+                                    <div className='modal-footer'>
+                                        <button className='btn btn-primary'
+                                            onClick={() => {
+                                                if (this.state.file) {
+                                                    fileUpload.classList.remove("drag");
+                                                    fileUpload.classList.add("drop");  
+                                                    uploadFile(this.state.table, this.state.file);      
+                                                }
+                                                onClose();
+                                            }}>
+                                            Ja
+                                        </button>
+                                        <button className='btn btn-secondary'
+                                            onClick={() => {
+                                                this.setState({ file: null });
+                                                onClose();
+                                            }}>
+                                            Nein
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                }
+            });
         }
 
-        fileUpload.addEventListener("drop", this.setFile.bind(this), false);
-        fileUpload.addEventListener("change", this.setFile.bind(this), false);
+        fileUpload.addEventListener("drop", this.submit.bind(this), false);
+        fileUpload.addEventListener("change", this.submit.bind(this), false);
     }
 
     render() {
