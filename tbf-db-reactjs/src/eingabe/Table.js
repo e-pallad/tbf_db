@@ -114,10 +114,7 @@ export default class Table extends Component {
                         data.data["Anzahl DO"] = parseInt(match[3])
                     } else {
                         if (data.data["Anzahl AI"] || data.data["Anzahl AO"] || data.data["Anzahl DI"] || data.data["Anzahl DO"]) {
-                            data.data["Anzahl AI"] = data.data["Anzahl AI"]
-                            data.data["Anzahl AO"] = data.data["Anzahl AO"]
-                            data.data["Anzahl DI"] = data.data["Anzahl DI"]
-                            data.data["Anzahl DO"] = data.data["Anzahl DO"]
+                            ;
                         } else {
                             data.data["Anzahl AI"] = null
                             data.data["Anzahl AO"] = null
