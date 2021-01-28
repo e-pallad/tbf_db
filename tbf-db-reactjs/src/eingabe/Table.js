@@ -108,13 +108,21 @@ export default class Table extends Component {
             fetchMskValues().then(result => {
                     var match = result.find(msk => msk[0] === data.data["Typical Nr. MSK"])
                     if (match) {
-                        data.data["Anzahl AI"] = parseInt(match[4])
-                        data.data["Anzahl AO"] = parseInt(match[5])
-                        data.data["Anzahl DI"] = parseInt(match[2])
-                        data.data["Anzahl DO"] = parseInt(match[3])
+                        if (!data.data["Anzahl AI"]) {
+                            data.data["Anzahl AI"] = parseInt(match[4])
+                        }
+                        if (!data.data["Anzahl AO"]) {
+                            data.data["Anzahl AO"] = parseInt(match[5])
+                        }
+                        if (!data.data["Anzahl DI"]) {
+                            data.data["Anzahl DI"] = parseInt(match[2])
+                        }
+                        if (!data.data["Anzahl DO"]) {
+                            data.data["Anzahl DO"] = parseInt(match[3])
+                        }
                     } else {
                         if (data.data["Anzahl AI"] || data.data["Anzahl AO"] || data.data["Anzahl DI"] || data.data["Anzahl DO"]) {
-                            ;
+                            ; // Dont do anything
                         } else {
                             data.data["Anzahl AI"] = null
                             data.data["Anzahl AO"] = null
