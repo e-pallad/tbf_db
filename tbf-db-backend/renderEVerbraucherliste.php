@@ -9,7 +9,7 @@
 
     $method = $_SERVER['REQUEST_METHOD'];
 
-    $query = "SELECT CONCAT_WS( '.', `AKZ_Gr1_Standort`, `AKZ_Gr2_Anlagenteil`, `AKZ_Gr3_Aggregat`, `AKZ_Gr4_Nummer`, `AKZ_Gr5_Aggregat`, `AKZ_Gr6_Nummer`) AS `AKZ Kodierung`, `Schaltanlage`, `Einschub Nr.`, `Benennung`, `Benennung Zusatz`, `Nennleistung`, `Gleichzeitigkeitsfaktor`, `Wirkungsgrad`, `cos phi`, `Nennleistung` * `Gleichzeitigkeitsfaktor` AS `Leistung mit Gleichzeitigkeitsfaktor`, `Nennstrom`, `Nennspannung`, `Direktanlauf`, `Stern-Dreieck-Anlauf`, `Sanftanlauf`, `Drehzahlverstellung (FU)`, `Bypass für FU`, `Polumschaltbar`,`Wendeschaltung`,`Motorschutz`, `NH-Trenner`, `SI.-Überwachung`, `FI-Schutzschalter`, `Reparaturschalter`, `Thermokontakt`, `Kaltleiter`, `Dichte-Schutz`, `Strömungswächter`, `Druckwächter`, `Not-Aus`, `Stromwandler`, `Stromanzeige Schaltschrank`, `Stromanzeige Bedientafel`, `Schieberheizung`, `Stellungsgeber`, `Vor-Ort-Bedienung`, `Bedienung am Schaltschrank`, `Bedienung an Bedientafel`, `Bedienung Prozeßleitsystem`, `Bedientafeln_Betrieb/Störung`, `Bedientafeln_Schaltzustände`, `Bedientafeln_Automatik`, `PLS_Betrieb/Störung`, `PLS_Schaltzustände`, `PLS_Automatik`, `Ex-Schutz`, `Schutzart`, `Abschaltung im Ex-Fall`, `Blitzschutz`, `Ausführung Vor-Ort-Steuerstelle`, `Schaltschrank für Einschub`, `TypicalNr. Einschub/Stromlaufplan`, `Typical Nr. MSK`, `Motorsteuerkarte Nr.`, `Zusatzgeräte/Bemerkungen`, `Zustand/Bearbeitung` FROM `Gesamtdatenbank` WHERE `Nennleistung` > 0 AND `elektrischer Verbraucher` = 'Ja'";
+    $query = "SELECT CONCAT_WS( '.', `AKZ_Gr1_Standort`, `AKZ_Gr2_Anlagenteil`, `AKZ_Gr3_Aggregat`, `AKZ_Gr4_Nummer`, `AKZ_Gr5_Aggregat`, `AKZ_Gr6_Nummer`) AS `AKZ Kodierung`, `Schaltanlage`, `Einschub Nr.`, `Res.-Spalte`, `Benennung`, `Benennung Zusatz`, `Nennleistung`, `Gleichzeitigkeitsfaktor`, `Wirkungsgrad`, `cos phi`, `Nennleistung` * `Gleichzeitigkeitsfaktor` AS `Leistung mit Gleichzeitigkeitsfaktor`, `Nennstrom`, `Nennspannung`, `Direktanlauf`, `Stern-Dreieck-Anlauf`, `Sanftanlauf`, `Drehzahlverstellung (FU)`, `Bypass für FU`, `Polumschaltbar`,`Wendeschaltung`,`Motorschutz`, `NH-Trenner`, `SI.-Überwachung`, `FI-Schutzschalter`, `Reparaturschalter`, `Thermokontakt`, `Kaltleiter`, `Dichte-Schutz`, `Strömungswächter`, `Druckwächter`, `Not-Aus`, `Stromwandler`, `Stromanzeige Schaltschrank`, `Stromanzeige Bedientafel`, `Schieberheizung`, `Stellungsgeber`, `Vor-Ort-Bedienung`, `Bedienung am Schaltschrank`, `Bedienung an Bedientafel`, `Bedienung Prozeßleitsystem`, `Bedientafeln_Betrieb/Störung`, `Bedientafeln_Schaltzustände`, `Bedientafeln_Automatik`, `PLS_Betrieb/Störung`, `PLS_Schaltzustände`, `PLS_Automatik`, `Ex-Schutz`, `Schutzart`, `Abschaltung im Ex-Fall`, `Blitzschutz`, `Ausführung Vor-Ort-Steuerstelle`, `Schaltschrank für Einschub`, `TypicalNr. Einschub/Stromlaufplan`, `Typical Nr. MSK`, `Motorsteuerkarte Nr.`, `Zusatzgeräte/Bemerkungen`, `Zustand/Bearbeitung` FROM `Gesamtdatenbank` WHERE `Nennleistung` > 0 AND `elektrischer Verbraucher` = 'Ja'";
     
     $data = mysqli_fetch_all($con->query($query));
 
@@ -518,17 +518,8 @@
                 $this->Cell(3,6,$row[1],1,0,'C');
                 $this->Cell(3,6,$row[2],1,0,'C');
                 $this->SetTextColor(232,160,132);
-                $this->Cell(3,6,$count,1,0,'C');
+                $this->Cell(3,6,$row[3],1,0,'C');
                 $this->SetTextColor(0,0,0);
-                if (strlen($row[3]) > 22) {
-                    $x=$this->GetX();
-                    $y=$this->GetY();
-                    $this->Rect($x, $y, 25, 6);
-                    $this->MultiCell(25,2.8,utf8_decode($row[3]),0,'L');
-                    $this->SetXY($x+25,$y);
-                } else {
-                    $this->Cell(25,6,utf8_decode($row[3]),1,0,'L');
-                }
                 if (strlen($row[4]) > 22) {
                     $x=$this->GetX();
                     $y=$this->GetY();
@@ -538,13 +529,21 @@
                 } else {
                     $this->Cell(25,6,utf8_decode($row[4]),1,0,'L');
                 }
-                $this->Cell(6,6,$row[5],1,0,'C');
-                $this->Cell(3,6,$row[6],1,0,'C');
+                if (strlen($row[5]) > 22) {
+                    $x=$this->GetX();
+                    $y=$this->GetY();
+                    $this->Rect($x, $y, 25, 6);
+                    $this->MultiCell(25,2.8,utf8_decode($row[5]),0,'L');
+                    $this->SetXY($x+25,$y);
+                } else {
+                    $this->Cell(25,6,utf8_decode($row[5]),1,0,'L');
+                }
+                $this->Cell(6,6,$row[6],1,0,'C');
                 $this->Cell(3,6,$row[7],1,0,'C');
                 $this->Cell(3,6,$row[8],1,0,'C');
-                $this->Cell(12,6,$row[9],1,0,'C');
-                $this->Cell(6,6,$row[10],1,0,'C');
-                $this->Cell(3,6,$row[11],1,0,'C');
+                $this->Cell(3,6,$row[9],1,0,'C');
+                $this->Cell(12,6,$row[10],1,0,'C');
+                $this->Cell(6,6,$row[11],1,0,'C');
                 $this->Cell(3,6,$row[12],1,0,'C');
                 $this->Cell(3,6,$row[13],1,0,'C');
                 $this->Cell(3,6,$row[14],1,0,'C');
@@ -579,16 +578,17 @@
                 $this->Cell(3,6,$row[43],1,0,'C');
                 $this->Cell(3,6,$row[44],1,0,'C');
                 $this->Cell(3,6,$row[45],1,0,'C');
-                $this->Cell(6,6,$row[46],1,0,'C');
-                $this->Cell(3,6,$row[47],1,0,'C');
+                $this->Cell(3,6,$row[46],1,0,'C');
+                $this->Cell(6,6,$row[47],1,0,'C');
                 $this->Cell(3,6,$row[48],1,0,'C');
                 $this->Cell(3,6,$row[49],1,0,'C');
                 $this->Cell(3,6,$row[50],1,0,'C');
-                $this->Cell(12,6,$row[51],1,0,'C');
-                $this->Cell(6,6,$row[52],1,0,'C');
-                $this->Cell(3,6,$row[53],1,0,'C');
-                $this->Cell(10,6,$row[54],1,0,'C');
-                $this->Cell(13,6,$row[55],1,0,'C');
+                $this->Cell(3,6,$row[51],1,0,'C');
+                $this->Cell(12,6,$row[52],1,0,'C');
+                $this->Cell(6,6,$row[53],1,0,'C');
+                $this->Cell(3,6,$row[54],1,0,'C');
+                $this->Cell(10,6,$row[55],1,0,'C');
+                $this->Cell(13,6,$row[56],1,0,'C');
               
                 $count++;
                 $this->Ln();
@@ -614,7 +614,7 @@
 
             $x=$this->GetX();
             $y=$this->GetY();
-            $this->MultiCell(30,5,'Messstellenliste Gewerk SEVA',0,'C');
+            $this->MultiCell(30,5,'E-Verbraucherliste Gewerk SEVA',0,'C');
             $this->SetXY($x+30,$y);
             $this->Ln(3);
 
