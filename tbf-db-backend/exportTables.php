@@ -42,7 +42,7 @@
     }
 
     $data[] = $headerRow;
-    $data = $data + mysqli_fetch_all($con->query($query));
+    $data = array_merge($data, mysqli_fetch_all($con->query($query)));
 
     switch ($method) {
         case 'GET':
