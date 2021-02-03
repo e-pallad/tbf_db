@@ -148,7 +148,7 @@
             $x=$this->GetX();
             $y=$this->GetY();
             $this->Rect($x, $y, 3, 25, 'DF');
-            $this->TextWithDirection($x+2,$y+23,"EX-Schutz",'U');
+            $this->TextWithDirection($x+2,$y+23,"Ex-Schutz",'U');
             $this->SetXY($x+3,$y);
 
             $x=$this->GetX();
