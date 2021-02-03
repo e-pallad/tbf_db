@@ -30,6 +30,79 @@ async function pushDataToDb(pushData, table) {
 
 }
 
+function temps(params) {
+    return params.value + ' °C';
+}
+
+function pressure(params) {
+    return params.value + ' mbar';
+}
+
+function overpressure(params) {
+    return params.value + ' barü';
+}
+
+function density(params) {
+    return params.value + ' kg/Nm³/h';
+}
+
+function millimeters(params) {
+    return params.value + ' mm';
+}
+
+function meters(params) {
+    return params.value + ' m';
+}
+
+function volumeFlow(params) {
+    return params.value + ' Nm³/h';
+}
+
+function weight(params) {
+    return params.value + ' kg';
+}
+
+function massFlow(params) {
+    return params.value + ' kg/h';
+}
+
+function rpm(params) {
+    return params.value + ' U/min';
+}
+
+function space(params) {
+    return params.value + ' m²';
+}
+
+function solidsContent(params) {
+    return params.value + ' g/kg';
+}
+
+function conveyingVolume(params) {
+    return params.value + ' m³/h';
+}
+
+function protectionClass(params) {
+    return 'IP' + params.value;
+}
+
+function power(params) {
+    return params.value + ' kW';
+}
+
+function voltage(params) {
+    return params.value + ' V';
+}
+
+function current(params) {
+    return params.value + ' A';
+}
+
+function volume(params) {
+    return params.value + ' m³';
+}
+
+
 export default class Table extends Component {
     constructor(props) {
         super(props);
@@ -154,6 +227,203 @@ export default class Table extends Component {
                             cellEditor: column.cellEditor,
                             cellEditorParams: column.cellEditorParams,
                             refData: column.refData,
+                        })
+                    } else if (
+                        column.headerName === 'Berechnungstemperatur' || 
+                        column.headerName === 'Betriebstemperatur' || 
+                        column.headerName === 'max. zul. Temperatur' || 
+                        column.headerName === 'Temperatur max' || 
+                        column.headerName === 'Temperatur min' || 
+                        column.headerName === 'Temperatur nom' 
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: temps,
+                        })
+                    } else if (
+                        column.headerName === 'Druck max hPa_a' || 
+                        column.headerName === 'Druck max Mpa_a' || 
+                        column.headerName === 'Druck min hPa_a' || 
+                        column.headerName === 'Druck min Mpa_a' || 
+                        column.headerName === 'Druck nom hPa_a' || 
+                        column.headerName === 'Druck nom Mpa_a' 
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: pressure,
+                        })
+                    } else if (
+                        column.headerName === 'Berechnungsüberdruck' || 
+                        column.headerName === 'Betriebsüberdruck' || 
+                        column.headerName === 'max. zul. Druck'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: overpressure,
+                        })
+                    } else if (
+                        column.headerName === 'Dichte max' || 
+                        column.headerName === 'Dichte min' || 
+                        column.headerName === 'Dichte nom'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: density,
+                        })
+                    } else if (
+                        column.headerName === 'Durchmesser' || 
+                        column.headerName === 'Höhe' || 
+                        column.headerName === 'Länge [mm]' || 
+                        column.headerName === 'Radius' || 
+                        column.headerName === 'Wanddicke' || 
+                        column.headerName === 'Breite' 
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: millimeters,
+                        })
+                    } else if (
+                        column.headerName === 'Kabel 1 Länge' || 
+                        column.headerName === 'Kabel 2 Länge' || 
+                        column.headerName === 'Kabel 3 Länge' || 
+                        column.headerName === 'Kabel 4 Länge' || 
+                        column.headerName === 'Kabel 5 Länge' || 
+                        column.headerName === 'Länge [m]' ||
+                        column.headerName === 'Raumlänge' || 
+                        column.headerName === 'Raumbreite' || 
+                        column.headerName === 'Raumhöhe' 
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: meters,
+                        })
+                    } else if (
+                        column.headerName === 'Volumenstrom max' || 
+                        column.headerName === 'Volumenstrom min' || 
+                        column.headerName === 'Volumenstrom nom' 
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: volumeFlow,
+                        })
+                    } else if (
+                        column.headerName === 'Massenstrom max' || 
+                        column.headerName === 'Massenstrom min' || 
+                        column.headerName === 'Massenstrom nom' 
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: massFlow,
+                        })
+                    } else if (
+                        column.headerName === 'Drehzahl'  
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: rpm,
+                        })
+                    } else if (
+                        column.headerName === 'Raumfläche' ||
+                        column.headerName === 'Fläche'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: space,
+                        })
+                    } else if (
+                        column.headerName === 'Feststoffgehalt max' || 
+                        column.headerName === 'Feststoffgehalt min' || 
+                        column.headerName === 'Feststoffgehalt nom' 
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: solidsContent,
+                        })
+                    } else if (
+                        column.headerName === 'Fördervolumen' 
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: conveyingVolume,
+                        })
+                    } else if (
+                        column.headerName === 'Gewicht'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: weight,
+                        })
+                    } else if (
+                        column.headerName === 'IP-Schutzart'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: protectionClass,
+                        })
+                    } else if (
+                        column.headerName === 'Nennleistung'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: power,
+                        })
+                    } else if (
+                        column.headerName === 'Nennspannung'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: voltage,
+                        })
+                    } else if (
+                        column.headerName === 'Nennstrom'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: current,
+                        })
+                    } else if (
+                        column.headerName === 'Raumvolumen' ||
+                        column.headerName === 'Volumen'
+                    ) {
+                        return({
+                            headerName: column.headerName,
+                            field: column.field,
+                            editable: column.editable,
+                            valueFormatter: volume,
                         })
                     } else {
                         return({
