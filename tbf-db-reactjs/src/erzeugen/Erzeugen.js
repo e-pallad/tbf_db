@@ -5,6 +5,7 @@ export default class Eingabe extends Component {
         super(props);
         this.state = {
             table: this.props.table,
+            alias: this.props.alias,
         };
     }
 
@@ -36,10 +37,10 @@ export default class Eingabe extends Component {
 	}
 
     render() {
-        const { table } = this.state
+        const { alias } = this.state
         return (
             <button onClick={this.exportTable} className="btn btn-secondary btn-block my-2">
-                {table.replace('_', ' ')}
+                {alias}
             </button> 
         )
     }

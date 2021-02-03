@@ -5,12 +5,12 @@ export default class Export extends Component {
         super(props);
         this.state = {
             table: this.props.table,
+            alias: this.props.alias,
         };
     }
 
     exportTable = () => {
 		fetch("https://tbf-db-backend.ep-webdesign.de/exportTables.php?table=" + this.state.table)
-        //fetch("http://localhost/exportTables.php?table=" + this.state.table)
 		.then(response => {
 			response.blob().then(blob => {
 				let url = window.URL.createObjectURL(blob);
@@ -23,21 +23,10 @@ export default class Export extends Component {
 	}
 
     render() {
-        const { table } = this.state
+        const { alias } = this.state
         return (
             <button onClick={this.exportTable} className="btn btn-danger btn-block my-2">
-                {
-                    ( 
-                        table === "RI-TBF_SEF_Apparateliste" || 
-                        table === "RI-TBF_SEF_Armaturenliste" || 
-                        table === "RI-TBF_SEF_Elektroangaben" ||
-                        table === "RI-TBF_SEF_Messstellenliste"
-                    ) ? (
-                        table.replace('TBF_SEF_', '')
-                    ) : (
-                        table.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')
-                        )
-                    }
+                {alias}
             </button>
         )
     }
