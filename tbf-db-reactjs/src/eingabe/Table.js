@@ -7,7 +7,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 async function pushDataToDb(pushData, table) {
 
-    const url = 'https://tbf-db.ep-projekte.de/updateTable.php';
+    const url = 'https://tbf-db-backend.ep-projekte.de/updateTable.php';
 
     const formData = new FormData();  
     formData.append('table', table); 
