@@ -7,7 +7,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 async function pushDataToDb(pushData, table) {
 
-    const url = 'https://tbf-db-backend.ep-webdesign.de/updateTable.php';
+    const url = 'https://tbf-db.ep-projekte.de/updateTable.php';
 
     const formData = new FormData();  
     formData.append('table', table); 
@@ -123,7 +123,7 @@ export default class Table extends Component {
     }
 
     async getMaxTBFID() {
-        return fetch('https://tbf-db-backend.ep-webdesign.de/getMaxTBFID.php')
+        return fetch('https://tbf-db-backend.ep-projekte.de/getMaxTBFID.php')
         .then(res => res.json())
         .then(
             (result) => {
@@ -173,7 +173,7 @@ export default class Table extends Component {
             console.log(data.data);
 
             async function fetchMskValues() {
-                const response = await fetch('https://tbf-db-backend.ep-webdesign.de/getTypicalMskValues.php')
+                const response = await fetch('https://tbf-db-backend.ep-projekte.de/getTypicalMskValues.php')
                 const result = await response.json()
                 return result
             }

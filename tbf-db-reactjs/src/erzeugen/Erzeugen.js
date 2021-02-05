@@ -12,16 +12,16 @@ export default class Eingabe extends Component {
     exportTable = () => {
         let $url = ""
         if (this.state.table === 'SEF_E-Verbraucherliste') {
-            $url = "https://tbf-db-backend.ep-webdesign.de/renderEVerbraucherliste.php"
+            $url = "https://tbf-db-backend.ep-projekte.de/renderEVerbraucherliste.php"
         } 
         if (this.state.table === 'SEF_Messstellenliste') {
-            $url = "https://tbf-db-backend.ep-webdesign.de/renderMessstellenliste.php"
+            $url = "https://tbf-db-backend.ep-projekte.de/renderMessstellenliste.php"
         }
         if (this.state.table === 'SEF_Armaturenliste') {
-            $url = "https://tbf-db-backend.ep-webdesign.de/renderArmaturenliste.php"
+            $url = "https://tbf-db-backend.ep-projekte.de/renderArmaturenliste.php"
         }
         if (this.state.table === 'SEF_Ausrüstungsliste') {
-            $url = "https://tbf-db-backend.ep-webdesign.de/renderAusruestungsliste.php"
+            $url = "https://tbf-db-backend.ep-projekte.de/renderAusruestungsliste.php"
         }
 
 		fetch($url)

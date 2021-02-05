@@ -16,7 +16,7 @@ export default class ImportForm extends Component {
     }
 
     uploadFile(table, file) {
-        const url = 'https://tbf-db-backend.ep-webdesign.de/importTable.php'; 
+        const url = 'https://tbf-db-backend.ep-projekte.de/importTable.php'; 
                 
         const formData = new FormData();  
         formData.append('table', table)  

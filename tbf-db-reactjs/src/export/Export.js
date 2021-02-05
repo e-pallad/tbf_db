@@ -10,7 +10,7 @@ export default class Export extends Component {
     }
 
     exportTable = () => {
-		fetch("https://tbf-db-backend.ep-webdesign.de/exportTables.php?table=" + this.state.table)
+		fetch("https://tbf-db-backend.ep-projekte.de/exportTables.php?table=" + this.state.table)
 		.then(response => {
 			response.blob().then(blob => {
 				let url = window.URL.createObjectURL(blob);
