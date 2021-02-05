@@ -11,7 +11,7 @@ export default class Eingabe extends Component {
     }
 
     componentDidMount() {
-        fetch("https://tbf-db.ep-projekte.de/renderTables.php?table=" + this.state.table)
+        fetch("https://tbf-db-backend.ep-projekte.de/renderTables.php?table=" + this.state.table)
         .then(res => res.json())
         .then(
             (result) => {
@@ -36,7 +36,7 @@ export default class Eingabe extends Component {
         } else if (!isLoaded) {
             return <div className="d-flex justify-content-center">
                 <div className="spinner-border" style={{Width: 3 +'rem', Height: 3 + 'rem'}} role="status">
-                    <span className="sr-only">Loading...</span>
+                    <span className="sr-only">Lädt...</span>
                 </div>
             </div>;
         } else 
