@@ -5,7 +5,7 @@ function ButtonRender(props) {
     return props.tables.map((buttonData) => {
         if (buttonData['bearbeiten'] === 1) {
             return (
-                <Link key={buttonData['tablename']} to={{ pathname: "/eingabe", state: {table: buttonData['tablename']} }} className="btn btn-warning btn-block my-2">
+                <Link key={buttonData['tablename']} to={{ pathname: "/bearbeiten", state: {table: buttonData['tablename']} }} className="btn btn-warning btn-block my-2">
                     {buttonData['alias']}
                 </Link> 
             )
@@ -15,7 +15,7 @@ function ButtonRender(props) {
     })
 }
 
-export default class ExportCard extends Component {
+export default class BearbeitenCard extends Component {
     constructor(props) {
         super(props);
         this.state = {

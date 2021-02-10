@@ -1,7 +1,7 @@
 import React, { lazy, Component, Suspense } from 'react';
 const Table = lazy(() => import('./Table'))
 
-export default class Eingabe extends Component {
+export default class Bearbeiten extends Component {
     constructor(props) {
         super(props);
         this.state = {
