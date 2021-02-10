@@ -51,6 +51,12 @@ h1, h2, h3, h4, p {
   margin-bottom: 20px;
 }
 
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .card:hover {
   color: #1b1d20;
   background-color: #ffffff;

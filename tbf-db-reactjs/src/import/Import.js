@@ -14,7 +14,9 @@ export default class Import extends Component {
         return (
             <section>
                 <div className="container">
-                    <h5 className="card-title text-center">Import für <u>{table.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')}</u></h5>
+                    <h5 className="card-title text-center text-dark">
+                        Import für <u>{table.replace('RI-TBF_SEF_', '').replace('_Liste', ' Liste')}</u>
+                    </h5>
                     <ImportForm table={table} />
                 </div>
             </section> 

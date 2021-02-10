@@ -1,70 +1,42 @@
-import React, { Component } from 'react';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import PrivateRoute from './PrivateRoute';
+
+import Home from './pages/Home';
+import Admin from './pages/Admin';
+import Login from './pages/Login';
+import Bearbeiten from './bearbeiten/Bearbeiten';
+import Erzeugen from './erzeugen/Erzeugen';
+import Export from './export/Export';
+//import Auswerten from './auswerten/Auswerten';
+import Import from './import/Import';
+
 import './App.css';
 
-import ImportCard from './cards/ImportCard';
-import EingabeCard from './cards/EingabeCard';
-import ErzeugenCard from './cards/ErzeugenCard';
-import AuswertenCard from './cards/AuswertenCard';
-import ExportCard from './cards/ExportCard';
+import { AuthContext } from "./context/auth";
 
-export default class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tables: [],
-        };
+export default function App(props) {
+    
+    const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+    const [authTokens, setAuthTokens] = useState(existingTokens);
+    
+    const setTokens = (data) => {
+        localStorage.setItem("tokens", JSON.stringify(data));
+        setAuthTokens(data);
     }
-
-    componentDidMount() {
-        fetch("https://tbf-db-backend.ep-projekte.de/fetchTables.php")
-        .then(res => res.json())
-        .then((result) => {
-            const tables = [];
-            result.map(results => {
-                tables.push({
-                    tablename: results[0],
-                    alias: results[1],
-                    importieren: parseInt(results[2], 10),
-                    bearbeiten: parseInt(results[3], 10),
-                    auswerten: parseInt(results[4], 10),
-                    exportieren: parseInt(results[5], 10),
-                    erzeugen: parseInt(results[6], 10),
-                })
-                return undefined
-            })
-            return tables
-        })
-        .then((tables) => {
-            this.setState({
-                tables: tables,
-            })
-        })
-    }
-
-    render() {
-        if (this.state.tables.length <= 0) {
-            return (
-                <div className="d-flex justify-content-around">
-                    <div className="row">
-                        <div className="d-flex align-items-center">
-                        <strong>Lädt...</strong>
-                        <div className="spinner-border ms-auto" role="status" aria-hidden="true" />
-                        </div>
-                    </div>
-                </div>
-            )
-        } else {
-            return (
-                <div className="d-flex justify-content-around">
-                    <div className="row">
-                        <ImportCard tables={this.state.tables} />
-                        <EingabeCard setRedirect={this.renderTable} tables={this.state.tables} />
-                        <AuswertenCard tables={this.state.tables} />
-                        <ExportCard tables={this.state.tables} />
-                        <ErzeugenCard tables={this.state.tables} />
-                    </div>
-                </div>
-            )
-        }
-    }
+    
+    return (
+        <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+            <Router>
+                <PrivateRoute exact path="/" component={Home} />
+                <Route path="/login" component={Login} />
+                <PrivateRoute path="/admin" component={Admin} />
+                <PrivateRoute path="/bearbeiten" component={Bearbeiten} />
+                <PrivateRoute path="/erzeugen" component={Erzeugen} />
+                <PrivateRoute path="/export" component={Export} />
+                {/* <Route path="/auswerten" component={Auswerten} /> */}
+                <PrivateRoute path="/import" component={Import} />
+            </Router>
+        </AuthContext.Provider>
+    );
 }
