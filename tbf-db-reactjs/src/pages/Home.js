@@ -55,13 +55,20 @@ export default class Home extends Component {
 			)
 		} else {
 			return (
-				<div className="d-flex justify-content-around">
-					<div className="row">
-						<ImportCard tables={this.state.tables} />
-						<BearbeitenCard setRedirect={this.renderTable} tables={this.state.tables} />
-						<AuswertenCard tables={this.state.tables} />
-						<ExportCard tables={this.state.tables} />
-						<ErzeugenCard tables={this.state.tables} />
+				<div className="container-fluid">
+					{/*
+					<nav className="navbar navbar-light bg-light">
+						logoutButton
+					</nav>
+					*/}
+					<div className="d-flex justify-content-around">
+						<div className="row">
+							<ImportCard tables={this.state.tables} />
+							<BearbeitenCard setRedirect={this.renderTable} tables={this.state.tables} />
+							<AuswertenCard tables={this.state.tables} />
+							<ExportCard tables={this.state.tables} />
+							<ErzeugenCard tables={this.state.tables} />
+						</div>
 					</div>
 				</div>
 			)
