@@ -29,7 +29,7 @@ export default class BearbeitenCard extends Component {
             <div className="col">
                 <div className="card p-0">
                     <div className="card-body">
-                        <h5 className="card-title">Bearbeiten</h5>
+                        <h5 className="card-title text-dark">Bearbeiten</h5>
                         <ButtonRender tables={tables} />
                     </div>
                 </div>

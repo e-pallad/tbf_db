@@ -29,7 +29,7 @@ export default class ImportCard extends Component {
             <div className="col">
                 <div className="card p-0">
                     <div className="card-body">
-                        <h5 className="card-title">Importieren</h5>
+                        <h5 className="card-title text-dark">Importieren</h5>
                         <ButtonRender tables={tables} />
                     </div>
                 </div>

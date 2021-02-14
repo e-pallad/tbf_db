@@ -27,7 +27,7 @@ export default class ExportCard extends Component {
             <div className="col">
                 <div className="card p-0">
                     <div className="card-body">
-                        <h5 className="card-title">Export</h5>
+                        <h5 className="card-title text-dark">Export</h5>
                         <ButtonRender tables={tables} />
                         {/*tables.map((item) => (
                             <Export key={item['tablename']} table={item['alias']} />
