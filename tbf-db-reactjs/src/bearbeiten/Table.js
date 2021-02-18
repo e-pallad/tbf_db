@@ -31,75 +31,153 @@ async function pushDataToDb(pushData, table) {
 }
 
 function temps(params) {
-    return params.value + ' °C';
+    if (params.value) {
+        return params.value + ' °C';
+    } else {
+        return 'in °C';
+    }
 }
 
 function pressure(params) {
-    return params.value + ' mbar';
+    if (params.value) {
+        return params.value + ' mbar';
+    } else {
+        return 'in mbar';
+    }
 }
 
 function overpressure(params) {
-    return params.value + ' barü';
+    if (params.value) {
+        return params.value + ' barü';
+    } else {
+        return 'in barü';
+    }
 }
 
 function density(params) {
-    return params.value + ' kg/Nm³/h';
+    if (params.value) {
+        return params.value + ' kg/Nm³/h';
+    } else {
+        return 'in kg/Nm³/h';
+    }
+    
 }
 
 function millimeters(params) {
-    return params.value + ' mm';
+    if (params.value) {
+        return params.value + ' mm';
+    } else {
+        return  'in mm';
+    }
 }
 
 function meters(params) {
-    return params.value + ' m';
+    if (params.value) {
+        return params.value + ' m';
+    } else {
+        return  'in m';
+    }
+    
 }
 
 function volumeFlow(params) {
-    return params.value + ' Nm³/h';
+    if (params.value) {
+        return params.value + ' Nm³/h';
+    } else {
+        return 'in Nm³/h';
+    }
+    
 }
 
 function weight(params) {
-    return params.value + ' kg';
+    if (params.value) {
+        return params.value + ' kg';
+    } else {
+        return 'in kg';
+    }
+    
 }
 
 function massFlow(params) {
-    return params.value + ' kg/h';
+    if (params.value) {
+        return params.value + ' kg/h';
+    } else {
+        return 'in kg/h';
+    }
+    
 }
 
 function rpm(params) {
-    return params.value + ' U/min';
+    if (params.value) {
+        return params.value + ' U/min';
+    } else {
+        return 'in U/min';
+    }
 }
 
 function space(params) {
-    return params.value + ' m²';
+    if (params.value) {
+        return params.value + ' m²';
+    } else {
+        return 'in m²';
+    }
+    
 }
 
 function solidsContent(params) {
-    return params.value + ' g/kg';
+    if (params.value) {
+        return params.value + ' g/kg';
+    } else {
+        return 'in g/kg';
+    }
 }
 
 function conveyingVolume(params) {
-    return params.value + ' m³/h';
+    if (params.value) {
+        return params.value + ' m³/h';
+    } else {
+        return 'in m³/h';
+    }
 }
 
 function protectionClass(params) {
-    return 'IP' + params.value;
+    if (params.value) {
+        return 'IP' + params.value;
+    } else {
+        return 'als Schutzartnummer';
+    }
 }
 
 function power(params) {
-    return params.value + ' kW';
+    if (params.value) {
+        return params.value + ' kW';
+    } else {
+        return 'in kW';
+    }
 }
 
 function voltage(params) {
-    return params.value + ' V';
+    if (params.value) {
+        return params.value + ' V';
+    } else {
+        return 'in V';
+    }
 }
 
 function current(params) {
-    return params.value + ' A';
+    if (params.value) {
+        return params.value + ' A';
+    } else {
+        return 'in A';
+    }
 }
 
 function volume(params) {
-    return params.value + ' m³';
+    if (params.value) {
+        return params.value + ' m³';
+    } else {
+        return 'in m³';
+    } 
 }
 
 
