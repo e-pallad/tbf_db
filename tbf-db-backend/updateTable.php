@@ -70,7 +70,11 @@
                         continue;
                     } 
                     
-                    $query .= "`". $key . "`" . " = '" . $value . "'";
+                    if (!empty($value)) {
+                        $query .= "`". $key . "`" . " = '" . $value . "'";
+                    } else {
+                        $query .= "`". $key . "`" . " = NULL";
+                    }
                     
                     if ($i < count($dataArray) - 2) {
                         $query.= ",";
