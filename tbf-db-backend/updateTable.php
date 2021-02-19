@@ -49,8 +49,11 @@
                             $where = " WHERE `TBF_ID`=$value";
                             continue;
                         } 
-                        
-                        $query .= "`". $key . "`" . " = '" . $value . "'";
+                        if (!empty($value) || $value === "0") {
+                            $query .= "`". $key . "`" . " = '" . $value . "'";
+                        } else {
+                            $query .= "`". $key . "`" . " = NULL";
+                        }
                         
                         if ($i < count($dataArray) - 2) {
                             $query.= ",";
@@ -70,7 +73,7 @@
                         continue;
                     } 
                     
-                    if (!empty($value)) {
+                    if (!empty($value) || $value === "0") {
                         $query .= "`". $key . "`" . " = '" . $value . "'";
                     } else {
                         $query .= "`". $key . "`" . " = NULL";
