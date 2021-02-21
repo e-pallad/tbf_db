@@ -29,9 +29,9 @@
 
     if ($table == 'RI-TBF_SEF_Apparateliste') {
         $tableID = 1;
-    } elseif ($table == 'RI-TBF_SEF_Armaturenliste' || $table == "SEF_Armaturenliste") {
+    } elseif ($table == 'RI-TBF_SEF_Armaturenliste') {
         $tableID = 2;
-    } elseif ($table == 'RI-TBF_SEF_Messstellenliste' || $table == "SEF_Messstellenliste") {
+    } elseif ($table == 'RI-TBF_SEF_Messstellenliste') {
         $tableID = 3;
     } elseif ($table == 'RI-TBF_SEF_Elektrokomponentenliste') {
         $tableID = 4;
@@ -39,11 +39,7 @@
         $tableID = 5;
     } elseif ($table == 'RI-TBF_SEF_Stoffstromliste') {
         $tableID = 6;
-    } elseif ($table == "SEF_E-Verbraucherliste") {
-        $tableID = 7;
-    } elseif ($table == "SEF_Ausrüstungsliste") {
-        $tableID = 8;
-    }
+    } 
     
     if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
         if ($xlsx = SimpleXLSX::parse($sourceFile)) {
@@ -66,7 +62,10 @@
                     if (isset($row["TBF_ID"])) {
                         unset($row["TBF_ID"]);
                     }
-                    $row["TableID"] = $tableID;
+                    if ($tableID) {
+                        $row["TableID"] = $tableID;
+                    } 
+                
                     // Check if PnPID already exist
                     $check = $con->query("SELECT `PnPID` FROM `Gesamtdatenbank` WHERE `PnPID` = '" . $row['PnPID'] . "'");
                     // If so build UPDATE query
@@ -79,8 +78,11 @@
                                 $where = " WHERE `PnPID`=$value";
                                 continue;
                             } 
-                            
-                            $query .= "`". $key . "`" . " = '" . str_replace("''", "NULL", $value) . "'";
+                            if ($value === '') {
+                                $query .= "`". $key . "` = NULL";
+                            } else {
+                                $query .= "`". $key . "`" . " = '" . $value . "'";
+                            }
                             
                             if ($i < count($row) - 2) {
                                 $query.= ",";
